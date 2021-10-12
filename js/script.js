@@ -47,7 +47,7 @@ camera.position.y = 3
 scene.add(camera)
 
 gltfLoader.load(
-    '/model/iphone.glb',
+    './model/iphone.glb',
     (gltf) => {
         gltf.scene.traverse((child) => {
             child.material = bakedMaterial
