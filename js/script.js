@@ -49,34 +49,37 @@ scene.add(camera)
 gltfLoader.load(
     './model/iphone.glb',
     (gltf) => {
+
         gltf.scene.traverse((child) => {
-            child.material = bakedMaterial
+            console.log(child)
+            // console.log(child.material)
+            // child.material = bakedMaterial
         })
         scene.add(gltf.scene)
     }
 )
 
 //Lights
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
-gui.add(ambientLight, 'intensity').min(0).max(1).step(0.001)
-scene.add(ambientLight)
+// const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
+// gui.add(ambientLight, 'intensity').min(0).max(1).step(0.001)
+// scene.add(ambientLight)
 
-// const directionalLight = new THREE.DirectionalLight(0x00fffc, 0.3)
-// directionalLight.position.set(0, 0, 0)
-// scene.add(directionalLight)
 
-// const hemisphereLight = new THREE.HemisphereLight(0xff0000, 0x0000ff, 0.3)
-// scene.add(hemisphereLight)
 
-// const pointLight = new THREE.PointLight(0xff9000, 0.5)
-// scene.add(pointLight)
+const hemisphereLight = new THREE.HemisphereLight(0xff0000, 0x0000ff, 10)
+scene.add(hemisphereLight)
+
+const pointLight = new THREE.PointLight(0xff9000, 10)
+pointLight.position.y = 3
+scene.add(pointLight)
 
 // const spotLight = new THREE.SpotLight(0x78ff00, 0.5, 10, Math.PI * 0.1, 0.25, 1)
-// spotLight.position.set(0, 2, 3)
+// spotLight.position.set(0, 4, 1)
 // scene.add(spotLight)
 
-// const hemisphereLightHelper = new THREE.HemisphereLightHelper(hemisphereLight, 0.2)
-// scene.add(hemisphereLightHelper)
+const hemisphereLightHelper = new THREE.HemisphereLightHelper(hemisphereLight, 1)
+hemisphereLight.position.x = 3
+scene.add(hemisphereLightHelper)
 
 // const directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight, 0.2)
 // scene.add(directionalLightHelper)
