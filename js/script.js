@@ -21,8 +21,9 @@ const scene = new THREE.Scene()
 
 //object
 // const geometry = new THREE.BoxGeometry(1, 1, 1)
-// const material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
+// const material = new THREE.MeshStandardMaterial({ color: 0xff0000 })
 // const mesh = new THREE.Mesh(geometry, material)
+// mesh.position.set(3,3,3)
 
 // gui
 //     .add(mesh.position, 'y')
@@ -52,6 +53,7 @@ gltfLoader.load(
 
         gltf.scene.traverse((child) => {
             console.log(child)
+            if ( child.material ) child.material.metalness = 0;
             // console.log(child.material)
             // child.material = bakedMaterial
         })
@@ -60,41 +62,20 @@ gltfLoader.load(
 )
 
 //Lights
-// const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
-// gui.add(ambientLight, 'intensity').min(0).max(1).step(0.001)
-// scene.add(ambientLight)
-
-
-
-const hemisphereLight = new THREE.HemisphereLight(0xff0000, 0x0000ff, 10)
-scene.add(hemisphereLight)
-
-const pointLight = new THREE.PointLight(0xff9000, 10)
-pointLight.position.y = 3
-scene.add(pointLight)
-
-// const spotLight = new THREE.SpotLight(0x78ff00, 0.5, 10, Math.PI * 0.1, 0.25, 1)
-// spotLight.position.set(0, 4, 1)
-// scene.add(spotLight)
-
-const hemisphereLightHelper = new THREE.HemisphereLightHelper(hemisphereLight, 1)
-hemisphereLight.position.x = 3
-scene.add(hemisphereLightHelper)
-
-// const directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight, 0.2)
-// scene.add(directionalLightHelper)
-
-// const pointLightHelper = new THREE.PointLightHelper(pointLight, 0.2)
-// scene.add(pointLightHelper)
+const ambientLight = new THREE.AmbientLight(0xffffff, 1)
+gui.add(ambientLight, 'intensity').min(0).max(5).step(0.001)
+scene.add(ambientLight)
 
 //controls
 const controls = new OrbitControls(camera, canvas)
 
 const renderer = new THREE.WebGLRenderer({
-    canvas: canvas
+    canvas: canvas,
+    alpha: true
 })
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+renderer.setClearColor(0xffc0cb, 1);
 
 //resize
 window.addEventListener('resize', () => {
