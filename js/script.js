@@ -6,8 +6,6 @@ import { GLTFLoader } from '../lib/GLTFLoader.js'
 /**
  * Materials
  */
-// Baked material
-const bakedMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 })
 const gltfLoader = new GLTFLoader()
 
 //Debug UI
@@ -47,13 +45,23 @@ camera.position.y = 3
 
 scene.add(camera)
 
+// const sideMaterial = new THREE.MeshBasicMaterial({ color: 0xdbe4eb })
+// const bodyMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 })
+// const frontMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
 gltfLoader.load(
-    './model/iphone.glb',
+    './model/phone.glb',
     (gltf) => {
 
         gltf.scene.traverse((child) => {
-            console.log(child)
-            if ( child.material ) child.material.metalness = 0;
+            // if(child.name == 'side'){
+            //     child.material = sideMaterial
+            // }else if (child.name == 'body'){
+            //     child.material = bodyMaterial
+            // }else if (child.name == 'front'){
+            //     child.material = frontMaterial
+            // }
+
+            // if ( child.material ) child.material.metalness = 0;
             // console.log(child.material)
             // child.material = bakedMaterial
         })
