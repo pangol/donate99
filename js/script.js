@@ -46,22 +46,24 @@ camera.position.y = 3
 scene.add(camera)
 
 const texture = new THREE.TextureLoader().load( './texture/Metal_Damascus_Steel_001_basecolor.jpg' );
-const sideMaterial = new THREE.MeshBasicMaterial({ map: texture })
-// const bodyMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 })
-// const frontMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 })
-// const portalLightMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
+const normalMap = new THREE.TextureLoader().load( './texture/Metal_Damascus_Steel_001_normal.jpg' );
+const metalnessMap = new THREE.TextureLoader().load( './texture/Metal_Damascus_Steel_001_metallic.jpg' );
+
+const sideMaterial = new THREE.MeshStandardMaterial({ color: 0xdbe4be, metalness: 0.1, roughness:0.9 })
+const bodyMaterial = new THREE.MeshBasicMaterial({ color: 0x112222 })
+const portalLightMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
 
 gltfLoader.load(
-    './model/phone.glb',
+    './model/phone_normal_nmn.glb',
     (gltf) => {
-        // const body = gltf.scene.children.find((child) => child.name === 'smart')
+        const body = gltf.scene.children.find((child) => child.name === 'body')
 
-        // const front = gltf.scene.children.find((child) => child.name === 'front')
-        // const side = gltf.scene.children.find((child) => child.name === 'side')
+        const front = gltf.scene.children.find((child) => child.name === 'front')
+        const side = gltf.scene.children.find((child) => child.name === 'side')
 
-        // body.material = bodyMaterial
-        // front.material = portalLightMaterial
-        // side.material = sideMaterial 
+        body.material = bodyMaterial
+        front.material = portalLightMaterial
+        side.material = sideMaterial 
         // gltf.scene.rotation.z = Math.PI
         // gltf.scene.rotation.y = Math.PI
 
@@ -78,7 +80,7 @@ gltfLoader.load(
 
             // if ( child.material ) child.material.metalness = 0;
             // console.log(child.material)
-            // child.material = bakedMaterial
+        //     child.material = bodyMaterial
         // })
         scene.add(gltf.scene)
     }
