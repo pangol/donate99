@@ -70,18 +70,23 @@ const textureMaterial = new THREE.MeshStandardMaterial({
 const bodyMaterial = new THREE.MeshBasicMaterial({ color: 0x112222 })
 const portalLightMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
 const sideMaterial = new THREE.MeshBasicMaterial({ color: 0xd0f6ff })
+const baked = new THREE.TextureLoader().load( './texture/baked.jpg' );
+baked.flipY = false
+baked.encoding = THREE.sRGBEncoding
+const bakedMaterial = new THREE.MeshBasicMaterial({ map: baked })
 
 gltfLoader.load(
-    './model/phone_normal_nmn.glb',
+    './model/phone_all.glb',
+    // './model/phone_normal_nmn.glb',
     (gltf) => {
-        const body = gltf.scene.children.find((child) => child.name === 'body')
+        // const body = gltf.scene.children.find((child) => child.name === 'body')
 
-        const front = gltf.scene.children.find((child) => child.name === 'front')
-        const side = gltf.scene.children.find((child) => child.name === 'side')
+        // const front = gltf.scene.children.find((child) => child.name === 'front')
+        // const side = gltf.scene.children.find((child) => child.name === 'side')
 
-        body.material = bodyMaterial
-        front.material = portalLightMaterial
-        side.material = sideMaterial 
+        // body.material = bodyMaterial
+        // front.material = portalLightMaterial
+        // side.material = sideMaterial 
         // gltf.scene.rotation.z = Math.PI
         // gltf.scene.rotation.y = Math.PI
 
@@ -100,6 +105,10 @@ gltfLoader.load(
             // console.log(child.material)
         //     child.material = bodyMaterial
         // })
+        gltf.scene.traverse((child) =>
+        {
+            child.material = bakedMaterial
+        })
         scene.add(gltf.scene)
     }
 )
@@ -137,7 +146,7 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 renderer.setClearColor(0xffc0cb, 1);
-
+renderer.outputEncoding = THREE.sRGBEncoding
 //resize
 window.addEventListener('resize', () => {
     sizes.width = window.innerWidth
