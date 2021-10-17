@@ -155,7 +155,8 @@ const tick = () => {
     const elapsedTime = clock.getElapsedTime()
     if(air != null){
         air.position.x = 3 * Math.cos(elapsedTime)
-        air.position.y = 3 * Math.sin(elapsedTime) 
+        air.position.z = 3 * Math.sin(elapsedTime) 
+        air.rotation.y = -elapsedTime
     }    
     
     // mesh.rotation.y = elapsedTime
