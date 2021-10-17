@@ -17,20 +17,7 @@ const canvas = document.querySelector('canvas.webgl')
 // Scene
 const scene = new THREE.Scene()
 
-//object
-// const geometry = new THREE.BoxGeometry(1, 1, 1)
-// const material = new THREE.MeshStandardMaterial({ color: 0xff0000 })
-// const mesh = new THREE.Mesh(geometry, material)
-// mesh.position.set(3,3,3)
 
-// gui
-//     .add(mesh.position, 'y')
-//     .min(- 3)
-//     .max(3)
-//     .step(0.01)
-//     .name('elevation')
-
-// scene.add(mesh)
 
 //camera
 const sizes = {
@@ -45,13 +32,44 @@ camera.position.y = 3
 
 scene.add(camera)
 
-const texture = new THREE.TextureLoader().load( './texture/Metal_Damascus_Steel_001_basecolor.jpg' );
-const normalMap = new THREE.TextureLoader().load( './texture/Metal_Damascus_Steel_001_normal.jpg' );
-const metalnessMap = new THREE.TextureLoader().load( './texture/Metal_Damascus_Steel_001_metallic.jpg' );
+const texture = new THREE.TextureLoader().load( './texture/test/Metal_Pitted_001_basecolor.jpg' );
+const normalMap = new THREE.TextureLoader().load( './texture/test/Metal_Pitted_001_normal.jpg' );
+const metalnessMap = new THREE.TextureLoader().load( './texture/test/Metal_Pitted_001_metallic.jpg' );
+const heightMap = new THREE.TextureLoader().load( './texture/test/Metal_Pitted_001_height.png' );
+const roughnessMap = new THREE.TextureLoader().load( './texture/test/Metal_Pitted_001_roughness.jpg' );
+const aoMap = new THREE.TextureLoader().load( './texture/test/Metal_Pitted_001_ambientOcclusion.jpg' );
 
-const sideMaterial = new THREE.MeshStandardMaterial({ color: 0xdbe4be, metalness: 0.1, roughness:0.9 })
+
+const textureMaterial = new THREE.MeshStandardMaterial({ 
+    map:texture,
+    normalMap: normalMap,
+    displacementMap: heightMap,
+    displacementScale: 0,
+    roughnessMap,
+    roughness: 0.5,
+    aoMap,
+    metalnessMap,
+    metalness: 0
+})
+
+//object
+// const geometry = new THREE.BoxGeometry(1, 1, 1)
+// const material = new THREE.MeshStandardMaterial({ color: 0xff0000 })
+// const mesh = new THREE.Mesh(geometry, sideMaterial)
+// mesh.position.set(3,3,3)
+
+// gui
+//     .add(mesh.position, 'y')
+//     .min(- 3)
+//     .max(3)
+//     .step(0.01)
+//     .name('elevation')
+
+// scene.add(mesh)
+
 const bodyMaterial = new THREE.MeshBasicMaterial({ color: 0x112222 })
 const portalLightMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
+const sideMaterial = new THREE.MeshBasicMaterial({ color: 0xd0f6ff })
 
 gltfLoader.load(
     './model/phone_normal_nmn.glb',
@@ -85,6 +103,24 @@ gltfLoader.load(
         scene.add(gltf.scene)
     }
 )
+let mixer = null
+let air = null
+gltfLoader.load(
+    './model/day6.glb',
+    (gltf) => {
+        air = gltf.scene
+        gltf.scene.scale.x = .5
+        gltf.scene.scale.y = .5
+        gltf.scene.scale.z = .5
+        gltf.scene.position.y = 2
+        scene.add(gltf.scene)
+
+        mixer = new THREE.AnimationMixer(gltf.scene)
+        const action = mixer.clipAction(gltf.animations[0])
+        action.play()
+    }
+    
+)
 
 //Lights
 const ambientLight = new THREE.AmbientLight(0xffffff, 1)
@@ -96,7 +132,7 @@ const controls = new OrbitControls(camera, canvas)
 
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
-    alpha: true
+    alpha: true,
 })
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
@@ -114,12 +150,19 @@ window.addEventListener('resize', () => {
 })
 
 const clock = new THREE.Clock()
-
 const tick = () => {
 
     const elapsedTime = clock.getElapsedTime()
+    if(air != null){
+        air.position.x = 3 * Math.cos(elapsedTime)
+        air.position.y = 3 * Math.sin(elapsedTime) 
+    }    
+    
     // mesh.rotation.y = elapsedTime
-
+    if(mixer)
+    {
+        mixer.update(elapsedTime)
+    }
     renderer.render(scene, camera)
     window.requestAnimationFrame(tick)
 }
