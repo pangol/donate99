@@ -69,24 +69,30 @@ const textureMaterial = new THREE.MeshStandardMaterial({
 
 const bodyMaterial = new THREE.MeshBasicMaterial({ color: 0x112222 })
 const portalLightMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
-const sideMaterial = new THREE.MeshBasicMaterial({ color: 0xd0f6ff })
+// const sideMaterial = new THREE.MeshBasicMaterial({ color: 0xd0f6ff })
+const sideMaterial = new THREE.MeshBasicMaterial({ color: 0xd0f611 })
+
 const baked = new THREE.TextureLoader().load( './texture/baked.jpg' );
 baked.flipY = false
 baked.encoding = THREE.sRGBEncoding
 const bakedMaterial = new THREE.MeshBasicMaterial({ map: baked })
 
+const side = new THREE.TextureLoader().load( './texture/side.jpg' );
+side.flipY = false
+side.encoding = THREE.sRGBEncoding
+const sidetMaterial = new THREE.MeshBasicMaterial({ map: side })
+
 gltfLoader.load(
-    './model/phone_all.glb',
-    // './model/phone_normal_nmn.glb',
+    // './model/phone_all.glb',
+    './model/phone_normal_nmn.glb',
     (gltf) => {
-        // const body = gltf.scene.children.find((child) => child.name === 'body')
+        const body = gltf.scene.children.find((child) => child.name === 'body')
+        const front = gltf.scene.children.find((child) => child.name === 'front')
+        const side = gltf.scene.children.find((child) => child.name === 'side')
 
-        // const front = gltf.scene.children.find((child) => child.name === 'front')
-        // const side = gltf.scene.children.find((child) => child.name === 'side')
-
-        // body.material = bodyMaterial
-        // front.material = portalLightMaterial
-        // side.material = sideMaterial 
+        body.material = bodyMaterial
+        front.material = portalLightMaterial
+        side.material = sideMaterial 
         // gltf.scene.rotation.z = Math.PI
         // gltf.scene.rotation.y = Math.PI
 
@@ -105,10 +111,10 @@ gltfLoader.load(
             // console.log(child.material)
         //     child.material = bodyMaterial
         // })
-        gltf.scene.traverse((child) =>
-        {
-            child.material = bakedMaterial
-        })
+        // gltf.scene.traverse((child) =>
+        // {
+        //     child.material = bakedMaterial
+        // })
         scene.add(gltf.scene)
     }
 )
