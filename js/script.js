@@ -32,26 +32,6 @@ camera.position.y = 3
 
 scene.add(camera)
 
-const texture = new THREE.TextureLoader().load( './texture/test/Metal_Pitted_001_basecolor.jpg' );
-const normalMap = new THREE.TextureLoader().load( './texture/test/Metal_Pitted_001_normal.jpg' );
-const metalnessMap = new THREE.TextureLoader().load( './texture/test/Metal_Pitted_001_metallic.jpg' );
-const heightMap = new THREE.TextureLoader().load( './texture/test/Metal_Pitted_001_height.png' );
-const roughnessMap = new THREE.TextureLoader().load( './texture/test/Metal_Pitted_001_roughness.jpg' );
-const aoMap = new THREE.TextureLoader().load( './texture/test/Metal_Pitted_001_ambientOcclusion.jpg' );
-
-
-const textureMaterial = new THREE.MeshStandardMaterial({ 
-    map:texture,
-    normalMap: normalMap,
-    displacementMap: heightMap,
-    displacementScale: 0,
-    roughnessMap,
-    roughness: 0.5,
-    aoMap,
-    metalnessMap,
-    metalness: 0
-})
-
 //object
 // const geometry = new THREE.BoxGeometry(1, 1, 1)
 // const material = new THREE.MeshStandardMaterial({ color: 0xff0000 })
@@ -82,17 +62,22 @@ side.flipY = false
 side.encoding = THREE.sRGBEncoding
 const sidetMaterial = new THREE.MeshBasicMaterial({ map: side })
 
-gltfLoader.load(
-    // './model/phone_all.glb',
-    './model/phone_normal_nmn.glb',
-    (gltf) => {
-        const body = gltf.scene.children.find((child) => child.name === 'body')
-        const front = gltf.scene.children.find((child) => child.name === 'front')
-        const side = gltf.scene.children.find((child) => child.name === 'side')
+const lightbaked = new THREE.TextureLoader().load( './texture/light_baked.jpg' );
+lightbaked.flipY = false
+lightbaked.encoding = THREE.sRGBEncoding
+const lightbakedMaterial = new THREE.MeshBasicMaterial({ map: lightbaked })
 
-        body.material = bodyMaterial
-        front.material = portalLightMaterial
-        side.material = sideMaterial 
+gltfLoader.load(
+    './model/phone_all.glb',
+    // './model/phone_s_m_nm.glb',
+    (gltf) => {
+        // const body = gltf.scene.children.find((child) => child.name === 'body')
+        // const front = gltf.scene.children.find((child) => child.name === 'front')
+        // const side = gltf.scene.children.find((child) => child.name === 'side')
+
+        // body.material = bodyMaterial
+        // front.material = portalLightMaterial
+        // side.material = sideMaterial 
         // gltf.scene.rotation.z = Math.PI
         // gltf.scene.rotation.y = Math.PI
 
@@ -111,10 +96,10 @@ gltfLoader.load(
             // console.log(child.material)
         //     child.material = bodyMaterial
         // })
-        // gltf.scene.traverse((child) =>
-        // {
-        //     child.material = bakedMaterial
-        // })
+        gltf.scene.traverse((child) =>
+        {
+            child.material = lightbakedMaterial
+        })
         scene.add(gltf.scene)
     }
 )
