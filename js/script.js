@@ -112,7 +112,7 @@ gltfLoader.load(
         gltf.scene.scale.x = .5
         gltf.scene.scale.y = .5
         gltf.scene.scale.z = .5
-        gltf.scene.position.y = 2
+        gltf.scene.position.y = 3
         scene.add(gltf.scene)
 
         mixer = new THREE.AnimationMixer(gltf.scene)
@@ -120,6 +120,16 @@ gltfLoader.load(
         action.play()
     }
     
+)
+
+gltfLoader.load(
+    './model/desk_chair.glb',
+    (gltf) => {
+        gltf.scene.traverse((child) => {
+            child.material = bodyMaterial
+        })
+        scene.add(gltf.scene)
+    }
 )
 
 //Lights
@@ -155,7 +165,8 @@ const tick = () => {
     const elapsedTime = clock.getElapsedTime()
     if(air != null){
         air.position.x = 3 * Math.cos(elapsedTime)
-        air.position.z = 3 * Math.sin(elapsedTime) 
+        air.position.z = 3 * Math.sin(elapsedTime)
+        air.position.y = Math.sin(elapsedTime * 4)
         air.rotation.y = -elapsedTime
     }    
     
