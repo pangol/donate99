@@ -6,7 +6,6 @@ import { GLTFLoader } from '../lib/GLTFLoader.js'
 /**
  * Materials
  */
-const gltfLoader = new GLTFLoader()
 
 //Debug UI
 const gui = new dat.GUI()
@@ -32,20 +31,10 @@ camera.position.y = 3
 
 scene.add(camera)
 
-//object
-// const geometry = new THREE.BoxGeometry(1, 1, 1)
-// const material = new THREE.MeshStandardMaterial({ color: 0xff0000 })
-// const mesh = new THREE.Mesh(geometry, sideMaterial)
-// mesh.position.set(3,3,3)
 
-// gui
-//     .add(mesh.position, 'y')
-//     .min(- 3)
-//     .max(3)
-//     .step(0.01)
-//     .name('elevation')
 
-// scene.add(mesh)
+
+
 
 const bodyMaterial = new THREE.MeshBasicMaterial({ color: 0x112222 })
 const portalLightMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
@@ -65,6 +54,27 @@ const lightbaked = new THREE.TextureLoader().load( './texture/light_baked.jpg' )
 lightbaked.flipY = false
 lightbaked.encoding = THREE.sRGBEncoding
 const lightbakedMaterial = new THREE.MeshBasicMaterial({ map: lightbaked })
+
+
+// Loading Manager
+const manager = new THREE.LoadingManager();
+const loadingDom = document.getElementById('loading')
+manager.onStart = function ( url, itemsLoaded, itemsTotal ) {
+	console.log( 'Started loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
+};
+manager.onLoad = function ( ) {
+    loadingDom.style.display = 'none'
+	console.log( 'Loading complete!')
+};
+manager.onProgress = function ( url, itemsLoaded, itemsTotal ) {
+    loadingDom.style.width = (itemsLoaded / itemsTotal) * 100 + '%'
+	console.log( 'Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
+};
+manager.onError = function ( url ) {
+	console.log( 'There was an error loading ' + url );
+};
+
+const gltfLoader = new GLTFLoader(manager)
 
 gltfLoader.load(
     './model/phone_s_m_nm.glb',
@@ -97,6 +107,7 @@ gltfLoader.load(
         scene.add(gltf.scene)
     }
 )
+
 let mixer = null
 let air = null
 gltfLoader.load(
@@ -115,16 +126,73 @@ gltfLoader.load(
     }
     
 )
+const woodMaterial = new THREE.MeshBasicMaterial({ color: 0x8d6142 })
+const woodTexture= new THREE.TextureLoader(manager).load( './texture/wood.jpg' );
+const woodtMaterial = new THREE.MeshBasicMaterial({ map: woodTexture })
 
 gltfLoader.load(
-    './model/desk_chair.glb',
+    './model/desk.glb',
     (gltf) => {
         gltf.scene.traverse((child) => {
-            child.material = bodyMaterial
+            child.material = woodtMaterial
         })
         scene.add(gltf.scene)
     }
 )
+const chairTexture= new THREE.TextureLoader(manager).load( './texture/chair.jpg' );
+const chairMaterial = new THREE.MeshBasicMaterial({ map: chairTexture })
+const silverMaterial = new THREE.MeshBasicMaterial({ color: 0x82949d })
+
+gltfLoader.load(
+    './model/chair.glb',
+    (gltf) => {
+        const chair_b = gltf.scene.children.find((child) => child.name === 'chair_b')
+        const chair_f = gltf.scene.children.find((child) => child.name === 'chair_f')
+        const silver = gltf.scene.children.find((child) => child.name === 'silver')
+
+        chair_b.material = chairMaterial
+        chair_f.material = chairMaterial
+        silver.material = silverMaterial
+        // gltf.scene.traverse((child) => {
+        //     child.material = woodtMaterial
+        // })
+        scene.add(gltf.scene)
+    }
+)
+
+const monitorMaterial = new THREE.MeshBasicMaterial({ color: 0x9c9c9c })
+const screenTexture= new THREE.TextureLoader(manager).load( './texture/appsscript.png');
+// screenTexture.flipY = false
+screenTexture.encoding = THREE.sRGBEncoding
+const screenMaterial = new THREE.MeshBasicMaterial({ map: screenTexture })
+gltfLoader.load(
+    './model/computer.glb',
+    (gltf) => {
+        const monitor = gltf.scene.children.find((child) => child.name === 'monitor')
+        const screen = gltf.scene.children.find((child) => child.name === 'screen')
+        monitor.material = monitorMaterial
+        screen.material = screenMaterial
+        // gltf.scene.traverse((child) => {
+        //     child.material = woodtMaterial
+        // })
+        scene.add(gltf.scene)
+    }
+)
+
+//object
+// const geometry = new THREE.BoxGeometry(2, 2, 2)
+// const material = new THREE.MeshStandardMaterial({ color: 0xff0000 })
+// const mesh = new THREE.Mesh(geometry, screenMaterial)
+// mesh.position.set(3,3,3)
+
+// gui
+//     .add(mesh.position, 'y')
+//     .min(- 3)
+//     .max(3)
+//     .step(0.01)
+//     .name('elevation')
+
+// scene.add(mesh)
 
 //Lights
 const ambientLight = new THREE.AmbientLight(0xffffff, 1)
