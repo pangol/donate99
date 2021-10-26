@@ -161,20 +161,11 @@ gltfLoader.load(
 )
 
 const monitorMaterial = new THREE.MeshBasicMaterial({ color: 0x9c9c9c })
-const screenTexture= new THREE.TextureLoader(manager).load( './texture/appsscript.png');
-// screenTexture.flipY = false
-screenTexture.encoding = THREE.sRGBEncoding
-const screenMaterial = new THREE.MeshBasicMaterial({ map: screenTexture })
 gltfLoader.load(
-    './model/computer.glb',
+    './model/com_t.glb',
     (gltf) => {
         const monitor = gltf.scene.children.find((child) => child.name === 'monitor')
-        const screen = gltf.scene.children.find((child) => child.name === 'screen')
         monitor.material = monitorMaterial
-        screen.material = screenMaterial
-        // gltf.scene.traverse((child) => {
-        //     child.material = woodtMaterial
-        // })
         scene.add(gltf.scene)
     }
 )
