@@ -137,9 +137,10 @@ gltfLoader.load(
 
         const root = gltf.scene
         const clone = root.clone()
+        const mesh_names = ['desk', 'chair_b', 'chair_f', 'silver', 'monitor']
         clone.position.set(1, 1, 1)
-        settingMaterial(root)
-        settingMaterial(clone)
+        settingMaterial(root, mesh_names)
+        settingMaterial(clone, mesh_names)
 
         scene.add(gltf.scene)
         scene.add(clone)
@@ -147,18 +148,34 @@ gltfLoader.load(
     }
 )
 
-function settingMaterial(mesh) {
-    const desk = mesh.children.find((child) => child.name === 'desk')
-    const chair_b = mesh.children.find((child) => child.name === 'chair_b')
-    const chair_f = mesh.children.find((child) => child.name === 'chair_f')
-    const silver = mesh.children.find((child) => child.name === 'silver')
-    const monitor = mesh.children.find((child) => child.name === 'monitor')
+function settingMaterial(mesh, mesh_names) {
+    const desk = mesh.children.find((child) => child.name === mesh_names[0])
+    const chair_b = mesh.children.find((child) => child.name === mesh_names[1])
+    const chair_f = mesh.children.find((child) => child.name === mesh_names[2])
+    const silver = mesh.children.find((child) => child.name === mesh_names[3])
+    const monitor = mesh.children.find((child) => child.name === mesh_names[4])
     desk.material = woodMaterial
     chair_b.material = chairMaterial
     chair_f.material = chairMaterial
     silver.material = silverMaterial
     monitor.material = monitorMaterial
 }
+
+gltfLoader.load(
+    './model/desk_com2.glb',
+    (gltf) => {
+
+        const root = gltf.scene
+        const mesh_names = ['desk2', 'chair_b2', 'chair_f2', 'silver2', 'com2']
+        settingMaterial(root, mesh_names)
+        // const clone = root.clone()
+        // clone.position.set(1, 1, 1)
+
+        scene.add(root)
+        // scene.add(clone)
+        // desks.push(root, clone)
+    }
+)
 
 
 //object
@@ -222,10 +239,32 @@ const tick = () => {
         // desk.position.y =  ( Math.sin(elapsedTime) )
         // desk.rotation.y =  ( Math.sin(elapsedTime * 4) / 20 )
         // desk.rotation.x =  ( Math.sin(elapsedTime * 4) / 20 )
-        rotateDestAll(desk, elapsedTime)
+        if(i == 1 ){
+            rotateDestAll(desk, elapsedTime)
+        }else{
+            rotateDesksin(desk, elapsedTime)
+        }
     })
+    
     renderer.render(scene, camera)
     window.requestAnimationFrame(tick)
+}
+
+function rotateDesksin(desk, elapsedTime) {
+    const period = 4
+    const width = 8
+    const deskO = desk.getObjectByName('desk')
+    const monitor = desk.getObjectByName('monitor')
+    const chair_b = desk.getObjectByName('chair_b')
+    const chair_f = desk.getObjectByName('chair_f')
+    const silver = desk.getObjectByName('silver')
+    const screen = desk.getObjectByName('screen')
+    deskO.rotation.z = ( Math.sin(elapsedTime * period) / width ) + Math.PI
+    monitor.rotation.z = ( Math.sin(elapsedTime * period) / width )
+    chair_b.rotation.z = ( Math.sin(elapsedTime * period) / width )
+    chair_f.rotation.z = ( Math.sin(elapsedTime * period) / width )
+    silver.rotation.z = ( Math.sin(elapsedTime * period) / width ) + Math.PI
+    screen.rotation.z = -( Math.sin(elapsedTime * period) / width )
 }
 
 function rotateDestAll(desk, elapsedTime) {
