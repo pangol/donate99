@@ -31,11 +31,6 @@ camera.position.y = 3
 
 scene.add(camera)
 
-
-
-
-
-
 const bodyMaterial = new THREE.MeshBasicMaterial({ color: 0x112222 })
 const portalLightMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
 const sideMaterial = new THREE.MeshBasicMaterial({ color: 0xd0f611 })
@@ -137,8 +132,9 @@ const monitorMaterial = new THREE.MeshBasicMaterial({ color: 0x9c9c9c })
 
 let desks = []
 gltfLoader.load(
-    './model/desk_c_com_s_m.glb',
+    './model/desk_all_m_o.glb',
     (gltf) => {
+
         const root = gltf.scene
         const clone = root.clone()
         clone.position.set(1, 1, 1)
@@ -209,7 +205,6 @@ window.addEventListener('resize', () => {
 })
 
 const clock = new THREE.Clock()
-let mul = -1
 const tick = () => {
     const elapsedTime = clock.getElapsedTime()
     if (air != null) {
@@ -222,12 +217,30 @@ const tick = () => {
     if (mixer) {
         mixer.update(elapsedTime)
     }
-    console.log(mul)
-    desks.forEach( (desk) => {
-        desk.position.y =  ( Math.sin(elapsedTime * 4) / 18 )
+    desks.forEach((desk, i) => {
+        // desk.position.x =  ( Math.sin(elapsedTime * 4) / 18 )
+        // desk.position.y =  ( Math.sin(elapsedTime) )
+        // desk.rotation.y =  ( Math.sin(elapsedTime * 4) / 20 )
+        // desk.rotation.x =  ( Math.sin(elapsedTime * 4) / 20 )
+        rotateDestAll(desk, elapsedTime)
     })
     renderer.render(scene, camera)
     window.requestAnimationFrame(tick)
+}
+
+function rotateDestAll(desk, elapsedTime) {
+    const deskO = desk.getObjectByName('desk')
+    const monitor = desk.getObjectByName('monitor')
+    const chair_b = desk.getObjectByName('chair_b')
+    const chair_f = desk.getObjectByName('chair_f')
+    const silver = desk.getObjectByName('silver')
+    const screen = desk.getObjectByName('screen')
+    deskO.rotation.x = elapsedTime
+    monitor.rotation.x = elapsedTime
+    chair_b.rotation.x = elapsedTime
+    chair_f.rotation.x = elapsedTime
+    silver.rotation.x = elapsedTime
+    screen.rotation.x = elapsedTime + Math.PI
 }
 
 tick()
