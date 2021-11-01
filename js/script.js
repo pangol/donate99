@@ -120,9 +120,14 @@ gltfLoader.load(
     }
 
 )
-const woodMaterial = new THREE.MeshBasicMaterial({ color: 0x8d6142 })
-const woodTexture = new THREE.TextureLoader(manager).load('./texture/wood.jpg');
-const woodtMaterial = new THREE.MeshBasicMaterial({ map: woodTexture })
+const woodColor = new THREE.TextureLoader(manager).load('./texture/Wood067_1K_Color.jpg')
+const woodNormal = new THREE.TextureLoader(manager).load('./texture/Wood067_1K_NormalDX.jpg')
+const woodDis = new THREE.TextureLoader(manager).load('./texture/Wood067_1K_Displacement.jpg')
+const woodtMaterial = new THREE.MeshBasicMaterial({ 
+    map: woodColor,
+    normalMap: woodNormal,
+    displacementMap: woodDis
+})
 
 const chairTexture = new THREE.TextureLoader(manager).load('./texture/chair.jpg');
 const chairMaterial = new THREE.MeshBasicMaterial({ map: chairTexture })
@@ -159,7 +164,7 @@ function settingMaterial(mesh, mesh_names) {
     const chair_f = mesh.children.find((child) => child.name === mesh_names[2])
     const silver = mesh.children.find((child) => child.name === mesh_names[3])
     const monitor = mesh.children.find((child) => child.name === mesh_names[4])
-    desk.material = woodMaterial
+    desk.material = woodtMaterial
     chair_b.material = chairMaterial
     chair_f.material = chairMaterial
     silver.material = silverMaterial
