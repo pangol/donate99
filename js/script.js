@@ -25,10 +25,9 @@ const sizes = {
 }
 
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height)
-camera.position.z = 5
-camera.position.x = 3
-camera.position.y = 3
-
+camera.position.z = 2
+camera.position.x = 2.5
+camera.position.y = 2.5
 scene.add(camera)
 
 const bodyMaterial = new THREE.MeshBasicMaterial({ color: 0x112222 })
@@ -131,20 +130,26 @@ const silverMaterial = new THREE.MeshBasicMaterial({ color: 0x82949d })
 const monitorMaterial = new THREE.MeshBasicMaterial({ color: 0x9c9c9c })
 
 let desks = []
+const count_of_desks = 2
 gltfLoader.load(
     './model/desk_all_m_o.glb',
     (gltf) => {
 
         const root = gltf.scene
-        const clone = root.clone()
         const mesh_names = ['desk', 'chair_b', 'chair_f', 'silver', 'monitor']
-        clone.position.set(1, 1, 1)
+        const postion_array = [{x:-0.5,y: 0.3,z: 1}, {x:1.2,y:0.7,z:1.1}]
         settingMaterial(root, mesh_names)
-        settingMaterial(clone, mesh_names)
-
+        desks.push(root)
         scene.add(gltf.scene)
-        scene.add(clone)
-        desks.push(root, clone)
+        for(let i = 0 ; i < count_of_desks; i++){
+            const clone = root.clone()
+            
+            clone.position.set(postion_array[i].x, postion_array[i].y, postion_array[i].z)
+            settingMaterial(clone, mesh_names)
+            desks.push(clone)
+            scene.add(clone)
+        }
+
     }
 )
 
@@ -160,20 +165,27 @@ function settingMaterial(mesh, mesh_names) {
     silver.material = silverMaterial
     monitor.material = monitorMaterial
 }
-
+const desks2 = []
 gltfLoader.load(
     './model/desk_com2.glb',
     (gltf) => {
 
         const root = gltf.scene
         const mesh_names = ['desk2', 'chair_b2', 'chair_f2', 'silver2', 'com2']
+        const postion_array = [{x:0,y: 0.7,z: 2.5}, {x:-1,y:0.3,z:2}]
         settingMaterial(root, mesh_names)
-        // const clone = root.clone()
-        // clone.position.set(1, 1, 1)
-
+        desks2.push(root)
         scene.add(root)
-        // scene.add(clone)
-        // desks.push(root, clone)
+
+        for(let i = 0; i < count_of_desks; i++){
+            const clone = root.clone()
+            
+            clone.position.set(postion_array[i].x, postion_array[i].y, postion_array[i].z)
+            settingMaterial(clone, mesh_names)
+            desks2.push(clone)
+            scene.add(clone)
+        }
+
     }
 )
 
@@ -235,19 +247,53 @@ const tick = () => {
         mixer.update(elapsedTime)
     }
     desks.forEach((desk, i) => {
-        // desk.position.x =  ( Math.sin(elapsedTime * 4) / 18 )
-        // desk.position.y =  ( Math.sin(elapsedTime) )
-        // desk.rotation.y =  ( Math.sin(elapsedTime * 4) / 20 )
-        // desk.rotation.x =  ( Math.sin(elapsedTime * 4) / 20 )
         if(i == 1 ){
             rotateDestAll(desk, elapsedTime)
-        }else{
+        }else if(i == 2){
             rotateDesksin(desk, elapsedTime)
+        }else if(i == 3) {
+            rotateDeskRight(desk, elapsedTime)
+        }
+    })
+    desks2.forEach((desk,i) => {
+        if(i == 1){
+            rotateDesk2Left(desk, elapsedTime)
+        }else if (i == 2){
+            rotateDesk2Right(desk, elapsedTime)
         }
     })
     
     renderer.render(scene, camera)
     window.requestAnimationFrame(tick)
+}
+function rotateDesk2Right(desk, elapsedTime) {
+    const deskO = desk.getObjectByName('desk2')
+    const monitor = desk.getObjectByName('com2')
+    const chair_b = desk.getObjectByName('chair_b2')
+    const chair_f = desk.getObjectByName('chair_f2')
+    const silver = desk.getObjectByName('silver2')
+    const screen = desk.getObjectByName('screen2')
+    deskO.rotation.y = elapsedTime
+    monitor.rotation.y = elapsedTime
+    chair_b.rotation.y = elapsedTime
+    chair_f.rotation.y = elapsedTime
+    silver.rotation.y = elapsedTime
+    screen.rotation.y = elapsedTime
+}
+
+function rotateDeskRight(desk, elapsedTime) {
+    const deskO = desk.getObjectByName('desk')
+    const monitor = desk.getObjectByName('monitor')
+    const chair_b = desk.getObjectByName('chair_b')
+    const chair_f = desk.getObjectByName('chair_f')
+    const silver = desk.getObjectByName('silver')
+    const screen = desk.getObjectByName('screen')
+    deskO.rotation.y = elapsedTime
+    monitor.rotation.y = elapsedTime
+    chair_b.rotation.y = elapsedTime
+    chair_f.rotation.y = elapsedTime
+    silver.rotation.y = elapsedTime
+    screen.rotation.y = -elapsedTime
 }
 
 function rotateDesksin(desk, elapsedTime) {
@@ -265,6 +311,21 @@ function rotateDesksin(desk, elapsedTime) {
     chair_f.rotation.z = ( Math.sin(elapsedTime * period) / width )
     silver.rotation.z = ( Math.sin(elapsedTime * period) / width ) + Math.PI
     screen.rotation.z = -( Math.sin(elapsedTime * period) / width )
+}
+
+function rotateDesk2Left(desk, elapsedTime) {
+    const deskO = desk.getObjectByName('desk2')
+    const comO = desk.getObjectByName('com2')
+    const chair_b = desk.getObjectByName('chair_b2')
+    const chair_f = desk.getObjectByName('chair_f2')
+    const silver = desk.getObjectByName('silver2')
+    const screen = desk.getObjectByName('screen2')
+    deskO.rotation.y = -elapsedTime
+    comO.rotation.y = -elapsedTime
+    chair_b.rotation.y = -elapsedTime
+    chair_f.rotation.y = -elapsedTime
+    silver.rotation.y = -elapsedTime
+    screen.rotation.y = -elapsedTime
 }
 
 function rotateDestAll(desk, elapsedTime) {
