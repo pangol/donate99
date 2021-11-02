@@ -3,7 +3,8 @@
 }
 
 .webgl{
-    position: fixed;
+    width:50%;
+    position: absolute;
     top:0;
     left:0;
     outline: 0;
@@ -14,14 +15,31 @@ body{
     overflow: hidden;
 }
 
+.contents{
+    position: absolute;
+    width:50%;
+    top:0;
+    left:50%;
+}
+
 #loading{
-    position: fixed;
-    top:45%;
+    position: absolute;
+    top:40%;
     left:0;
     outline:0;
     width:0;
-    height: 20%;
+    height: 10%;
     background-color: black;
+    text-align: center;
     color:white;
     z-index: 100;
+}
+#loading p{
+    padding-top: 10px;
+}
+
+.container{
+    width: 80%;
+    margin: 0 auto;
+    padding-top:30px;
 }

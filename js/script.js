@@ -15,12 +15,9 @@ const canvas = document.querySelector('canvas.webgl')
 
 // Scene
 const scene = new THREE.Scene()
-
-
-
 //camera
 const sizes = {
-    width: window.innerWidth,
+    width: canvas.offsetWidth,
     height: window.innerHeight
 }
 
@@ -34,25 +31,10 @@ const bodyMaterial = new THREE.MeshBasicMaterial({ color: 0x112222 })
 const portalLightMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
 const sideMaterial = new THREE.MeshBasicMaterial({ color: 0xd0f611 })
 
-const baked = new THREE.TextureLoader().load('./texture/baked.jpg');
-baked.flipY = false
-baked.encoding = THREE.sRGBEncoding
-const bakedMaterial = new THREE.MeshBasicMaterial({ map: baked })
-
-const side = new THREE.TextureLoader().load('./texture/side.jpg');
-side.flipY = false
-side.encoding = THREE.sRGBEncoding
-const sidetMaterial = new THREE.MeshBasicMaterial({ map: side })
-
-const lightbaked = new THREE.TextureLoader().load('./texture/light_baked.jpg');
-lightbaked.flipY = false
-lightbaked.encoding = THREE.sRGBEncoding
-const lightbakedMaterial = new THREE.MeshBasicMaterial({ map: lightbaked })
-
-
 // Loading Manager
 const manager = new THREE.LoadingManager();
 const loadingDom = document.getElementById('loading')
+
 manager.onStart = function (url, itemsLoaded, itemsTotal) {
     console.log('Started loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.');
 };
@@ -61,7 +43,7 @@ manager.onLoad = function () {
     console.log('Loading complete!')
 };
 manager.onProgress = function (url, itemsLoaded, itemsTotal) {
-    loadingDom.style.width = (itemsLoaded / itemsTotal) * 100 + '%'
+    loadingDom.style.width = (itemsLoaded / itemsTotal) * 50 + '%'
     console.log('Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.');
 };
 manager.onError = function (url) {
@@ -229,7 +211,9 @@ renderer.setClearColor(0xffc0cb, 1);
 renderer.outputEncoding = THREE.sRGBEncoding
 //resize
 window.addEventListener('resize', () => {
-    sizes.width = window.innerWidth
+    const canvas = document.querySelector('canvas.webgl')
+    canvas.style.width = window.innerWidth / 2
+    sizes.width = window.innerWidth / 2
     sizes.height = window.innerHeight
 
     camera.aspect = sizes.width / sizes.height
