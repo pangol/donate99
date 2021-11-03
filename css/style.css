@@ -17,6 +17,11 @@
     font-family: 'GmarketSansMedium';
 }
 
+html,
+body{
+    overflow: hidden;
+}
+
 h1{
     font-size:1.5rem;
     font-family: 'GmarketSansBold';
@@ -28,11 +33,7 @@ h1{
     top:0;
     left:0;
     outline: 0;
-}
-
-html,
-body{
-    overflow: hidden;
+    background-image: linear-gradient(to right,#ffc0cb 40%, rgba(255, 192, 203, .8));
 }
 
 .contents{

@@ -23,13 +23,9 @@ const sizes = {
 
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height)
 camera.position.z = 1
-camera.position.x = 1.5
-camera.position.y = 2
+camera.position.x = 2
+camera.position.y = 3
 scene.add(camera)
-
-const bodyMaterial = new THREE.MeshBasicMaterial({ color: 0x112222 })
-const portalLightMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
-const sideMaterial = new THREE.MeshBasicMaterial({ color: 0xd0f611 })
 
 // Loading Manager
 const manager = new THREE.LoadingManager();
@@ -52,6 +48,20 @@ manager.onError = function (url) {
 
 const gltfLoader = new GLTFLoader(manager)
 
+const bodyMaterial = new THREE.MeshBasicMaterial({ color: 0xAEE1CD })
+const portalLightMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
+
+const sideColor = new THREE.TextureLoader(manager).load('./texture/Plastic006_1K_Color.jpg')
+const sideNormal = new THREE.TextureLoader(manager).load('./texture/Plastic006_1K_NormalDX.jpg')
+const sideDis = new THREE.TextureLoader(manager).load('./texture/Plastic006_1K_Displacement.png')
+const sideRough = new THREE.TextureLoader(manager).load('./texture/Plastic006_1K_Roughness.jpg')
+const sideMaterial = new THREE.MeshBasicMaterial({ 
+    map: sideColor,
+    normalMap: sideNormal,
+    displacementMap: sideDis,
+    roughnessMap: sideRough,
+})
+
 gltfLoader.load(
     './model/phone_s_m_nm.glb',
     (gltf) => {
@@ -59,27 +69,10 @@ gltfLoader.load(
         const front = gltf.scene.children.find((child) => child.name === 'front')
         const side = gltf.scene.children.find((child) => child.name === 'side')
 
-        body.material = bodyMaterial
-        front.material = portalLightMaterial
-        side.material = sideMaterial
-        // gltf.scene.rotation.z = Math.PI
-        // gltf.scene.rotation.y = Math.PI
-
-        // gltf.scene.traverse((child) => {
-
-        // child.rotate.x = 0.5
-        // if(child.name == 'side'){
-        //     child.material = sideMaterial
-        // }else if (child.name == 'body'){
-        //     child.material = bodyMaterial
-        // }else if (child.name == 'front'){
-        //     child.material = frontMaterial
-        // }
-
-        // if ( child.material ) child.material.metalness = 0;
-        // console.log(child.material)
-        //     child.material = bodyMaterial
-        // })
+        body.material = sideMaterial
+        front.material = woodtMaterial
+        side.material = bodyMaterial
+       
         scene.add(gltf.scene)
     }
 )
@@ -102,16 +95,20 @@ gltfLoader.load(
     }
 
 )
-const woodColor = new THREE.TextureLoader(manager).load('./texture/Wood067_1K_Color.jpg')
-const woodNormal = new THREE.TextureLoader(manager).load('./texture/Wood067_1K_NormalDX.jpg')
-const woodDis = new THREE.TextureLoader(manager).load('./texture/Wood067_1K_Displacement.jpg')
+const woodColor = new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_Top_001_basecolor.jpg')
+const woodNormal = new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_Top_001_normal.jpg')
+const woodDis = new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_Top_001_height.png')
+const woodRough = new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_Top_001_roughness.jpg')
+const woodAo= new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_Top_001_ambientOcclusion.jpg')
 const woodtMaterial = new THREE.MeshBasicMaterial({ 
     map: woodColor,
     normalMap: woodNormal,
-    displacementMap: woodDis
+    displacementMap: woodDis,
+    roughnessMap: woodRough,
+    aoMap: woodAo,
 })
 
-const chairTexture = new THREE.TextureLoader(manager).load('./texture/chair.jpg');
+const chairTexture = new THREE.TextureLoader(manager).load('./texture/chair_2.jpg');
 const chairMaterial = new THREE.MeshBasicMaterial({ map: chairTexture })
 const silverMaterial = new THREE.MeshBasicMaterial({ color: 0x82949d })
 const monitorMaterial = new THREE.MeshBasicMaterial({ color: 0x9c9c9c })
@@ -207,7 +204,7 @@ const renderer = new THREE.WebGLRenderer({
 })
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-renderer.setClearColor(0xffc0cb, 1);
+// renderer.setClearColor(0xffc0cb, 1);
 renderer.outputEncoding = THREE.sRGBEncoding
 //resize
 window.addEventListener('resize', () => {
