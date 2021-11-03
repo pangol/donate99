@@ -22,9 +22,9 @@ const sizes = {
 }
 
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height)
-camera.position.z = 2
-camera.position.x = 2.5
-camera.position.y = 2.5
+camera.position.z = 1
+camera.position.x = 1.5
+camera.position.y = 2
 scene.add(camera)
 
 const bodyMaterial = new THREE.MeshBasicMaterial({ color: 0x112222 })
@@ -43,7 +43,7 @@ manager.onLoad = function () {
     console.log('Loading complete!')
 };
 manager.onProgress = function (url, itemsLoaded, itemsTotal) {
-    loadingDom.style.width = (itemsLoaded / itemsTotal) * 50 + '%'
+    loadingDom.style.width = (itemsLoaded / itemsTotal) * 70 + '%'
     console.log('Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.');
 };
 manager.onError = function (url) {
@@ -212,8 +212,8 @@ renderer.outputEncoding = THREE.sRGBEncoding
 //resize
 window.addEventListener('resize', () => {
     const canvas = document.querySelector('canvas.webgl')
-    canvas.style.width = window.innerWidth / 2
-    sizes.width = window.innerWidth / 2
+    canvas.style.width = window.innerWidth  * 70/100
+    sizes.width = window.innerWidth * 70/100
     sizes.height = window.innerHeight
 
     camera.aspect = sizes.width / sizes.height
