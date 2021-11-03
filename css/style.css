@@ -72,6 +72,7 @@ body{
     box-shadow: 10px 10px rgba(255, 192, 203, .9);
 }
 
-.header h1 {
-    color: #ffc0cb;
+.header p {
+    text-shadow: #ffc0c0 1px 0px 10px;
 }
+
