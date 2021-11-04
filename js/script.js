@@ -53,13 +53,26 @@ const portalLightMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
 
 const sideColor = new THREE.TextureLoader(manager).load('./texture/Plastic006_1K_Color.jpg')
 const sideNormal = new THREE.TextureLoader(manager).load('./texture/Plastic006_1K_NormalDX.jpg')
-const sideDis = new THREE.TextureLoader(manager).load('./texture/Plastic006_1K_Displacement.png')
+const sideDis = new THREE.TextureLoader(manager).load('./texture/Plastic006_1K_Displacement.jpg')
 const sideRough = new THREE.TextureLoader(manager).load('./texture/Plastic006_1K_Roughness.jpg')
 const sideMaterial = new THREE.MeshBasicMaterial({ 
     map: sideColor,
     normalMap: sideNormal,
     displacementMap: sideDis,
     roughnessMap: sideRough,
+})
+
+const frontColor = new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_Top_001_basecolor.jpg')
+const frontNormal = new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_Top_001_normal.jpg')
+const frontDis = new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_Top_001_height.png')
+const frontRough = new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_Top_001_roughness.jpg')
+const frontAo= new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_Top_001_ambientOcclusion.jpg')
+const frontMaterial = new THREE.MeshBasicMaterial({ 
+    map: frontColor,
+    normalMap: frontNormal,
+    displacementMap: frontDis,
+    roughnessMap: frontRough,
+    aoMap: frontAo,
 })
 
 gltfLoader.load(
@@ -70,31 +83,31 @@ gltfLoader.load(
         const side = gltf.scene.children.find((child) => child.name === 'side')
 
         body.material = sideMaterial
-        front.material = woodtMaterial
+        front.material = frontMaterial
         side.material = bodyMaterial
        
         scene.add(gltf.scene)
     }
 )
 
-let mixer = null
-let air = null
-gltfLoader.load(
-    './model/day6.glb',
-    (gltf) => {
-        air = gltf.scene
-        gltf.scene.scale.x = .5
-        gltf.scene.scale.y = .5
-        gltf.scene.scale.z = .5
-        gltf.scene.position.y = 3
-        scene.add(gltf.scene)
+// let mixer = null
+// let air = null
+// gltfLoader.load(
+//     './model/day6.glb',
+//     (gltf) => {
+//         air = gltf.scene
+//         gltf.scene.scale.x = .5
+//         gltf.scene.scale.y = .5
+//         gltf.scene.scale.z = .5
+//         gltf.scene.position.y = 3
+//         scene.add(gltf.scene)
 
-        mixer = new THREE.AnimationMixer(gltf.scene)
-        const action = mixer.clipAction(gltf.animations[0])
-        action.play()
-    }
+//         mixer = new THREE.AnimationMixer(gltf.scene)
+//         const action = mixer.clipAction(gltf.animations[0])
+//         action.play()
+//     }
 
-)
+// )
 const woodColor = new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_Top_001_basecolor.jpg')
 const woodNormal = new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_Top_001_normal.jpg')
 const woodDis = new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_Top_001_height.png')
@@ -172,22 +185,31 @@ gltfLoader.load(
 
     }
 )
+const video = document.getElementById('video')
+video.play()
+const videoTexture = new THREE.VideoTexture( video );
+videoTexture.flipY = false;
+videoTexture.encoding = THREE.sRGBEncoding;
+// videoTexture.rotation = Math.PI
+const videoMaterial = new THREE.MeshBasicMaterial({map: videoTexture})
 
+gltfLoader.load(
+    './model/whiteBoard.glb',
+    (gltf) => {
+        const root = gltf.scene
+        root.scale.set(.6,.6,.6)
+        root.position.y = .6
 
-//object
-// const geometry = new THREE.BoxGeometry(2, 2, 2)
-// const material = new THREE.MeshStandardMaterial({ color: 0xff0000 })
-// const mesh = new THREE.Mesh(geometry, screenMaterial)
-// mesh.position.set(3,3,3)
+        const outertBoard = root.children.find((child) => child.name === 'outertBoard')
+        const videoScreen = root.children.find((child) => child.name === 'videoScreen')
+        const outertBoardMaterial = new THREE.MeshBasicMaterial({ color: 0x9c9c9c })
+        outertBoard.material = outertBoardMaterial
+        videoScreen.material = videoMaterial
 
-// gui
-//     .add(mesh.position, 'y')
-//     .min(- 3)
-//     .max(3)
-//     .step(0.01)
-//     .name('elevation')
+        scene.add(root)
+    }
+)
 
-// scene.add(mesh)
 
 //Lights
 const ambientLight = new THREE.AmbientLight(0xffffff, 1)
@@ -222,16 +244,16 @@ window.addEventListener('resize', () => {
 const clock = new THREE.Clock()
 const tick = () => {
     const elapsedTime = clock.getElapsedTime()
-    if (air != null) {
-        air.position.x = 3 * Math.cos(elapsedTime)
-        air.position.z = 3 * Math.sin(elapsedTime)
-        air.position.y = Math.sin(elapsedTime * 4)
-        air.rotation.y = -elapsedTime
-    }
+    // if (air != null) {
+    //     air.position.x = 3 * Math.cos(elapsedTime)
+    //     air.position.z = 3 * Math.sin(elapsedTime)
+    //     air.position.y = Math.sin(elapsedTime * 4)
+    //     air.rotation.y = -elapsedTime
+    // }
 
-    if (mixer) {
-        mixer.update(elapsedTime)
-    }
+    // if (mixer) {
+    //     mixer.update(elapsedTime)
+    // }
     desks.forEach((desk, i) => {
         if(i == 1 ){
             rotateDestAll(desk, elapsedTime)
