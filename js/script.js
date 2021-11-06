@@ -31,6 +31,7 @@ scene.add(camera)
 const manager = new THREE.LoadingManager();
 const loadingDom = document.getElementById('loading')
 
+
 manager.onStart = function (url, itemsLoaded, itemsTotal) {
     console.log('Started loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.');
 };
@@ -49,7 +50,6 @@ manager.onError = function (url) {
 const gltfLoader = new GLTFLoader(manager)
 
 const bodyMaterial = new THREE.MeshBasicMaterial({ color: 0xAEE1CD })
-const portalLightMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
 
 const sideColor = new THREE.TextureLoader(manager).load('./texture/Plastic006_1K_Color.jpg')
 const sideNormal = new THREE.TextureLoader(manager).load('./texture/Plastic006_1K_NormalDX.jpg')
@@ -63,6 +63,8 @@ const sideMaterial = new THREE.MeshBasicMaterial({
 })
 
 const frontColor = new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_Top_001_basecolor.jpg')
+frontColor.encoding = THREE.sRGBEncoding;
+
 const frontNormal = new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_Top_001_normal.jpg')
 const frontDis = new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_Top_001_height.png')
 const frontRough = new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_Top_001_roughness.jpg')
@@ -74,6 +76,8 @@ const frontMaterial = new THREE.MeshBasicMaterial({
     roughnessMap: frontRough,
     aoMap: frontAo,
 })
+
+
 
 gltfLoader.load(
     './model/phone_s_m_nm.glb',
@@ -90,25 +94,8 @@ gltfLoader.load(
     }
 )
 
-// let mixer = null
-// let air = null
-// gltfLoader.load(
-//     './model/day6.glb',
-//     (gltf) => {
-//         air = gltf.scene
-//         gltf.scene.scale.x = .5
-//         gltf.scene.scale.y = .5
-//         gltf.scene.scale.z = .5
-//         gltf.scene.position.y = 3
-//         scene.add(gltf.scene)
-
-//         mixer = new THREE.AnimationMixer(gltf.scene)
-//         const action = mixer.clipAction(gltf.animations[0])
-//         action.play()
-//     }
-
-// )
 const woodColor = new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_Top_001_basecolor.jpg')
+
 const woodNormal = new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_Top_001_normal.jpg')
 const woodDis = new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_Top_001_height.png')
 const woodRough = new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_Top_001_roughness.jpg')
@@ -122,6 +109,7 @@ const woodtMaterial = new THREE.MeshBasicMaterial({
 })
 
 const chairTexture = new THREE.TextureLoader(manager).load('./texture/chair_2.jpg');
+chairTexture.encoding = THREE.sRGBEncoding;
 const chairMaterial = new THREE.MeshBasicMaterial({ map: chairTexture })
 const silverMaterial = new THREE.MeshBasicMaterial({ color: 0x82949d })
 const monitorMaterial = new THREE.MeshBasicMaterial({ color: 0x9c9c9c })
@@ -190,7 +178,6 @@ video.play()
 const videoTexture = new THREE.VideoTexture( video );
 videoTexture.flipY = false;
 videoTexture.encoding = THREE.sRGBEncoding;
-// videoTexture.rotation = Math.PI
 const videoMaterial = new THREE.MeshBasicMaterial({map: videoTexture})
 
 gltfLoader.load(
@@ -244,16 +231,6 @@ window.addEventListener('resize', () => {
 const clock = new THREE.Clock()
 const tick = () => {
     const elapsedTime = clock.getElapsedTime()
-    // if (air != null) {
-    //     air.position.x = 3 * Math.cos(elapsedTime)
-    //     air.position.z = 3 * Math.sin(elapsedTime)
-    //     air.position.y = Math.sin(elapsedTime * 4)
-    //     air.rotation.y = -elapsedTime
-    // }
-
-    // if (mixer) {
-    //     mixer.update(elapsedTime)
-    // }
     desks.forEach((desk, i) => {
         if(i == 1 ){
             rotateDestAll(desk, elapsedTime)
