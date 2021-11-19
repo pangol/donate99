@@ -10,9 +10,9 @@ import { GLTFLoader } from '../lib/GLTFLoader.js'
 //Debug UI
 const gui = new dat.GUI()
 
-//Canvas
+//get Element
 const canvas = document.querySelector('canvas.webgl')
-
+const sceneBtn = document.querySelector('#sceneBtn')
 // Scene
 const scene = new THREE.Scene()
 //camera
@@ -82,15 +82,16 @@ const frontMaterial = new THREE.MeshBasicMaterial({
 gltfLoader.load(
     './model/phone_s_m_nm.glb',
     (gltf) => {
-        const body = gltf.scene.children.find((child) => child.name === 'body')
-        const front = gltf.scene.children.find((child) => child.name === 'front')
-        const side = gltf.scene.children.find((child) => child.name === 'side')
+        const root = gltf.scene
+        const body = root.children.find((child) => child.name === 'body')
+        const front = root.children.find((child) => child.name === 'front')
+        const side = root.children.find((child) => child.name === 'side')
 
         body.material = sideMaterial
         front.material = frontMaterial
         side.material = bodyMaterial
        
-        scene.add(gltf.scene)
+        scene.add(root)
     }
 )
 
@@ -124,8 +125,9 @@ gltfLoader.load(
         const mesh_names = ['desk', 'chair_b', 'chair_f', 'silver', 'monitor']
         const postion_array = [{x:-0.5,y: 0.3,z: 1}, {x:1.2,y:0.7,z:1.1}]
         settingMaterial(root, mesh_names)
+
         desks.push(root)
-        scene.add(gltf.scene)
+        scene.add(root)
         for(let i = 0 ; i < count_of_desks; i++){
             const clone = root.clone()
             
@@ -180,13 +182,14 @@ videoTexture.flipY = false;
 videoTexture.encoding = THREE.sRGBEncoding;
 const videoMaterial = new THREE.MeshBasicMaterial({map: videoTexture})
 
+let whiteBoardObject = ""
 gltfLoader.load(
     './model/whiteBoard.glb',
     (gltf) => {
         const root = gltf.scene
         root.scale.set(.6,.6,.6)
         root.position.y = .6
-
+        whiteBoardObject = root
         const outertBoard = root.children.find((child) => child.name === 'outertBoard')
         const videoScreen = root.children.find((child) => child.name === 'videoScreen')
         const outertBoardMaterial = new THREE.MeshBasicMaterial({ color: 0x9c9c9c })
@@ -251,6 +254,23 @@ const tick = () => {
     renderer.render(scene, camera)
     window.requestAnimationFrame(tick)
 }
+
+sceneBtn.addEventListener('click', function(event){
+    const zIndex = 5
+    const duration = 2
+    desks.forEach(desk => {
+        gsap.to(desk.position, { duration: duration, delay: 0, z: desk.position.z + zIndex })
+    })
+    desks2.forEach(desk => {
+        const zIndex = 5
+        gsap.to(desk.position, { duration: duration, delay: 0, z: desk.position.z + zIndex })
+    })
+    gsap.to(whiteBoardObject.position, { duration: duration, delay: 0, z: whiteBoardObject.position.z + zIndex })
+    gsap.to('.webgl', { duration: duration, delay:0, backgroundImage:'linear-gradient(to right, rgba(100, 192, 203, 1) 40%, rgba(100, 192, 203, .8))'})
+})
+
+
+
 function rotateDesk2Right(desk, elapsedTime) {
     const deskO = desk.getObjectByName('desk2')
     const monitor = desk.getObjectByName('com2')
