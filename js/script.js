@@ -12,7 +12,10 @@ const gui = new dat.GUI()
 
 //get Element
 const canvas = document.querySelector('canvas.webgl')
-const sceneBtn = document.querySelector('#sceneBtn')
+const nextSceneBtn = document.querySelector('#nextSceneBtn')
+const beForeSceneBtn = document.querySelector('#beforeSceneBtn')
+let sceneState = 0
+
 // Scene
 const scene = new THREE.Scene()
 //camera
@@ -255,20 +258,52 @@ const tick = () => {
     window.requestAnimationFrame(tick)
 }
 
-sceneBtn.addEventListener('click', function(event){
-    const zIndex = 5
+nextSceneBtn.addEventListener('click', function(event){
+
+    const lastState = 1
+    if (sceneState != lastState){
+        sceneState++
+        changebgColor(sceneState)
+        changeSceneOnePosition('next')
+    } else {
+        sceneState = 0
+    }
+    
+})
+
+beforeSceneBtn.addEventListener('click', function(event){
+    sceneState--
+    changebgColor(sceneState)
+    changeSceneOnePosition('before')
+})
+
+function changebgColor(state){
     const duration = 2
+    if(state == 1){
+        gsap.to('#info', {duration: duration, delay:0, backgroundColor: '#64c1cb'})
+        gsap.to('.webgl', { duration: duration, delay:0, backgroundImage:'linear-gradient(to right, rgba(100, 192, 203, 1) 40%, rgba(100, 192, 203, .8))'})
+        gsap.to('.header', { duration: duration, delay:0, boxShadow:'10px 10px rgb(100 192 203 / 90%)'})
+    }else{
+        gsap.to('#info', {duration: duration, delay:0, backgroundColor: '#ffc0cb'})
+        gsap.to('.webgl', { duration: duration, delay:0, backgroundImage:'linear-gradient(to right,#ffc0cb 40%, rgba(255, 192, 203, .8))'})
+        gsap.to('.header', { duration: duration, delay:0, boxShadow:'10px 10px rgb(255 192 203 / 90%)'})
+    }
+}
+
+function changeSceneOnePosition(direction){
+    let zIndex = 5
+    const duration = 2
+    if(direction != 'next'){
+        zIndex *= -1
+    }
     desks.forEach(desk => {
         gsap.to(desk.position, { duration: duration, delay: 0, z: desk.position.z + zIndex })
     })
     desks2.forEach(desk => {
-        const zIndex = 5
         gsap.to(desk.position, { duration: duration, delay: 0, z: desk.position.z + zIndex })
     })
     gsap.to(whiteBoardObject.position, { duration: duration, delay: 0, z: whiteBoardObject.position.z + zIndex })
-    gsap.to('.webgl', { duration: duration, delay:0, backgroundImage:'linear-gradient(to right, rgba(100, 192, 203, 1) 40%, rgba(100, 192, 203, .8))'})
-})
-
+}
 
 
 function rotateDesk2Right(desk, elapsedTime) {
