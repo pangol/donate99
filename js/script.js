@@ -81,7 +81,7 @@ const frontMaterial = new THREE.MeshBasicMaterial({
 })
 
 
-
+let frontObj
 gltfLoader.load(
     './model/phone_s_m_nm.glb',
     (gltf) => {
@@ -94,6 +94,7 @@ gltfLoader.load(
         front.material = frontMaterial
         side.material = bodyMaterial
        
+        frontObj = front
         scene.add(root)
     }
 )
@@ -203,6 +204,33 @@ gltfLoader.load(
     }
 )
 
+let scene2Object = []
+const sceneMoveZindex = 5
+loadScene2()
+function loadScene2(){
+    gltfLoader.load(
+        './model/sDesk.glb',
+        (gltf) => {
+            const root = gltf.scene
+            root.position.set(0,0, sceneMoveZindex * -1)
+            root.traverse( child => {
+                child.material = sideMaterial
+            })
+            // root.scale.set(.6,.6,.6)
+            // root.position.y = .6
+            // whiteBoardObject = root
+            // const outertBoard = root.children.find((child) => child.name === 'outertBoard')
+            // const videoScreen = root.children.find((child) => child.name === 'videoScreen')
+            // const outertBoardMaterial = new THREE.MeshBasicMaterial({ color: 0x9c9c9c })
+            // outertBoard.material = outertBoardMaterial
+            // videoScreen.material = videoMaterial
+    
+            scene.add(root)
+            scene2Object.push(root)
+        }
+    )
+}
+
 
 //Lights
 const ambientLight = new THREE.AmbientLight(0xffffff, 1)
@@ -283,15 +311,17 @@ function changebgColor(state){
         gsap.to('#info', {duration: duration, delay:0, backgroundColor: '#64c1cb'})
         gsap.to('.webgl', { duration: duration, delay:0, backgroundImage:'linear-gradient(to right, rgba(100, 192, 203, 1) 40%, rgba(100, 192, 203, .8))'})
         gsap.to('.header', { duration: duration, delay:0, boxShadow:'10px 10px rgb(100 192 203 / 90%)'})
+        frontObj.material = woodtMaterial
     }else{
         gsap.to('#info', {duration: duration, delay:0, backgroundColor: '#ffc0cb'})
         gsap.to('.webgl', { duration: duration, delay:0, backgroundImage:'linear-gradient(to right,#ffc0cb 40%, rgba(255, 192, 203, .8))'})
         gsap.to('.header', { duration: duration, delay:0, boxShadow:'10px 10px rgb(255 192 203 / 90%)'})
+        frontObj.material = frontMaterial
     }
 }
 
 function changeSceneOnePosition(direction){
-    let zIndex = 5
+    let zIndex = sceneMoveZindex
     const duration = 2
     if(direction != 'next'){
         zIndex *= -1
@@ -303,6 +333,11 @@ function changeSceneOnePosition(direction){
         gsap.to(desk.position, { duration: duration, delay: 0, z: desk.position.z + zIndex })
     })
     gsap.to(whiteBoardObject.position, { duration: duration, delay: 0, z: whiteBoardObject.position.z + zIndex })
+
+    //change Scene2
+    scene2Object.forEach(obj => {
+        gsap.to(obj.position, { duration: duration, delay: 0, z: obj.position.z + zIndex })
+    })
 }
 
 
