@@ -209,13 +209,24 @@ const sceneMoveZindex = 5
 loadScene2()
 function loadScene2(){
     gltfLoader.load(
-        './model/sDesk.glb',
+        './model/scene2_desk_mServers.glb',
         (gltf) => {
             const root = gltf.scene
             root.position.set(0,0, sceneMoveZindex * -1)
-            root.traverse( child => {
-                child.material = sideMaterial
-            })
+            const s2Desk = root.children.find((child) => child.name === 'sDesk')
+            s2Desk.material = sideMaterial
+
+            const circleBtn1 = root.children.find((child) => child.name === 'circleBtn1')
+            const circleBtn2 = root.children.find((child) => child.name === 'circleBtn2')
+            const circleBtn3 = root.children.find((child) => child.name === 'circleBtn3')
+            const circleBtn4 = root.children.find((child) => child.name === 'circleBtn4')
+            const circleBtn5 = root.children.find((child) => child.name === 'circleBtn5')
+            circleBtn1.material = sideMaterial
+            circleBtn2.material = sideMaterial
+            circleBtn3.material = sideMaterial
+            circleBtn4.material = sideMaterial
+            circleBtn5.material = sideMaterial
+            
             // root.scale.set(.6,.6,.6)
             // root.position.y = .6
             // whiteBoardObject = root
@@ -326,6 +337,7 @@ function changeSceneOnePosition(direction){
     if(direction != 'next'){
         zIndex *= -1
     }
+    //change Scene1
     desks.forEach(desk => {
         gsap.to(desk.position, { duration: duration, delay: 0, z: desk.position.z + zIndex })
     })
