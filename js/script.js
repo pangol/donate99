@@ -208,10 +208,21 @@ let scene2Object = []
 const sceneMoveZindex = 5
 const circleMaterial = new THREE.MeshBasicMaterial({ color: 0xff00ff })
 const sDiskMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 })
+
+const s2screenTexture1 = new THREE.TextureLoader(manager).load('./texture/project1.png');
+s2screenTexture1.encoding = THREE.sRGBEncoding;
+s2screenTexture1.center.x = 0.5
+s2screenTexture1.center.y = 0.5
+s2screenTexture1.rotation = 3.15
+// s2screenTexture1.flipY = false;
+// s2screenTexture1.repeat.set(2,1)
+// s2screenTexture1.wrapS = THREE.RepeatWrapping;
+// s2screenTexture1.wrapT = THREE.RepeatWrapping;
+const s2screenMaterial1 = new THREE.MeshBasicMaterial({ map: s2screenTexture1 })
 loadScene2()
 function loadScene2(){
     gltfLoader.load(
-        './model/scene2_desk_mServer_2.glb',
+        './model/scene2_desk_mserver_screen.glb',
         (gltf) => {
             const root = gltf.scene
             root.position.set(0,0, sceneMoveZindex * -1)
@@ -231,6 +242,17 @@ function loadScene2(){
             sDisk3.material = sDiskMaterial
             sDisk4.material = sDiskMaterial
             sDisk5.material = sDiskMaterial
+
+            const sMonitor1 = root.children.find((child) => child.name === 'sMonitor1')
+            const sMonitor2 = root.children.find((child) => child.name === 'sMonitor2')
+            sMonitor1.material = sideMaterial
+            sMonitor2.material = sideMaterial
+
+            const sScreenBoard = root.children.find((child) => child.name === 'sScreenBoard')
+            sScreenBoard.material = sideMaterial
+
+            const sScreen2= root.children.find((child) => child.name === 'sScreen2')
+            sScreen2.material = s2screenMaterial1
             
             // root.scale.set(.6,.6,.6)
             // root.position.y = .6
@@ -248,7 +270,6 @@ function loadScene2(){
 }
 
 function changeCircleMaterial(root, colorMaterial){
-    console.log(root)
     const circleBtn1 = root.children.find((child) => child.name === 'circleBtn1')
     const circleBtn2 = root.children.find((child) => child.name === 'circleBtn2')
     const circleBtn3 = root.children.find((child) => child.name === 'circleBtn3')
