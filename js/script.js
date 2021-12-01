@@ -206,26 +206,31 @@ gltfLoader.load(
 
 let scene2Object = []
 const sceneMoveZindex = 5
+const circleMaterial = new THREE.MeshBasicMaterial({ color: 0xff00ff })
+const sDiskMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 })
 loadScene2()
 function loadScene2(){
     gltfLoader.load(
-        './model/scene2_desk_mServers.glb',
+        './model/scene2_desk_mServer_2.glb',
         (gltf) => {
             const root = gltf.scene
             root.position.set(0,0, sceneMoveZindex * -1)
+
             const s2Desk = root.children.find((child) => child.name === 'sDesk')
             s2Desk.material = sideMaterial
+            changeCircleMaterial(root, circleMaterial)
+            
 
-            const circleBtn1 = root.children.find((child) => child.name === 'circleBtn1')
-            const circleBtn2 = root.children.find((child) => child.name === 'circleBtn2')
-            const circleBtn3 = root.children.find((child) => child.name === 'circleBtn3')
-            const circleBtn4 = root.children.find((child) => child.name === 'circleBtn4')
-            const circleBtn5 = root.children.find((child) => child.name === 'circleBtn5')
-            circleBtn1.material = sideMaterial
-            circleBtn2.material = sideMaterial
-            circleBtn3.material = sideMaterial
-            circleBtn4.material = sideMaterial
-            circleBtn5.material = sideMaterial
+            const sDisk1 = root.children.find((child) => child.name === 'sDisk1')
+            const sDisk2 = root.children.find((child) => child.name === 'sDisk2')
+            const sDisk3 = root.children.find((child) => child.name === 'sDisk3')
+            const sDisk4 = root.children.find((child) => child.name === 'sDisk4')
+            const sDisk5 = root.children.find((child) => child.name === 'sDisk5')
+            sDisk1.material = sDiskMaterial
+            sDisk2.material = sDiskMaterial
+            sDisk3.material = sDiskMaterial
+            sDisk4.material = sDiskMaterial
+            sDisk5.material = sDiskMaterial
             
             // root.scale.set(.6,.6,.6)
             // root.position.y = .6
@@ -240,6 +245,20 @@ function loadScene2(){
             scene2Object.push(root)
         }
     )
+}
+
+function changeCircleMaterial(root, colorMaterial){
+    console.log(root)
+    const circleBtn1 = root.children.find((child) => child.name === 'circleBtn1')
+    const circleBtn2 = root.children.find((child) => child.name === 'circleBtn2')
+    const circleBtn3 = root.children.find((child) => child.name === 'circleBtn3')
+    const circleBtn4 = root.children.find((child) => child.name === 'circleBtn4')
+    const circleBtn5 = root.children.find((child) => child.name === 'circleBtn5')
+    circleBtn1.material = colorMaterial
+    circleBtn2.material = colorMaterial
+    circleBtn3.material = colorMaterial
+    circleBtn4.material = colorMaterial
+    circleBtn5.material = colorMaterial
 }
 
 
@@ -292,6 +311,17 @@ const tick = () => {
             rotateDesk2Right(desk, elapsedTime)
         }
     })
+
+    //animate scene2
+    if(scene2Object.length > 0){
+        const scene2root = scene2Object[0]
+        if(Math.sin(elapsedTime*4) > 0){
+            changeCircleMaterial(scene2root, circleMaterial)
+        }else{
+            changeCircleMaterial(scene2root, sDiskMaterial)
+        }
+    }
+    
     
     renderer.render(scene, camera)
     window.requestAnimationFrame(tick)
