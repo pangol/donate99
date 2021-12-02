@@ -214,11 +214,15 @@ s2screenTexture1.encoding = THREE.sRGBEncoding;
 s2screenTexture1.center.x = 0.5
 s2screenTexture1.center.y = 0.5
 s2screenTexture1.rotation = 3.15
-// s2screenTexture1.flipY = false;
-// s2screenTexture1.repeat.set(2,1)
-// s2screenTexture1.wrapS = THREE.RepeatWrapping;
-// s2screenTexture1.wrapT = THREE.RepeatWrapping;
 const s2screenMaterial1 = new THREE.MeshBasicMaterial({ map: s2screenTexture1 })
+
+const testTexture = new THREE.TextureLoader(manager).load('./texture/uv-test-bw.png');
+testTexture.encoding = THREE.sRGBEncoding;
+testTexture.center.x = 0.5
+testTexture.center.y = 0.5
+// testTexture.rotation = 3.15
+const testMaterial = new THREE.MeshBasicMaterial({ map: testTexture })
+
 loadScene2()
 function loadScene2(){
     gltfLoader.load(
@@ -248,11 +252,17 @@ function loadScene2(){
             sMonitor1.material = sideMaterial
             sMonitor2.material = sideMaterial
 
-            const sScreenBoard = root.children.find((child) => child.name === 'sScreenBoard')
-            sScreenBoard.material = sideMaterial
+            const projectBoard = root.children.find((child) => child.name === 'projectBoard')
+            projectBoard.material = sideMaterial
 
             const sScreen2= root.children.find((child) => child.name === 'sScreen2')
             sScreen2.material = s2screenMaterial1
+
+            const sScreen1= root.children.find((child) => child.name === 'sScreen1')
+            sScreen1.material = testMaterial
+
+            const sScreenBoard= root.children.find((child) => child.name === 'sScreenBoard')
+            sScreenBoard.material = testMaterial
             
             // root.scale.set(.6,.6,.6)
             // root.position.y = .6
