@@ -276,6 +276,22 @@ function loadScene2(){
     )
 }
 
+
+let mixer
+gltfLoader.load(
+    './model/ready_play.glb',
+    (gltf) => {
+        const root = gltf.scene
+        const clips = gltf.animations;
+        root.scale.set(.7,.7,.7)
+        scene.add(root)
+
+        mixer = new THREE.AnimationMixer( root );
+        const action = mixer.clipAction( clips[ 0 ] ); // access first animation clip
+        action.play();
+    }
+)
+
 function settingChildMaterial(root, objName, material){
     const obj= root.children.find((child) => child.name === objName)
     obj.material = material
@@ -328,7 +344,9 @@ window.addEventListener('resize', () => {
 
 const clock = new THREE.Clock()
 const tick = () => {
+    const delta = clock.getDelta();
     const elapsedTime = clock.getElapsedTime()
+    console.log(delta)
     desks.forEach((desk, i) => {
         if(i == 1 ){
             rotateDestAll(desk, elapsedTime)
@@ -355,8 +373,7 @@ const tick = () => {
             changeCircleMaterial(scene2root, sDiskMaterial)
         }
     }
-    
-    
+    if ( mixer ) mixer.update( delta );
     renderer.render(scene, camera)
     window.requestAnimationFrame(tick)
 }
