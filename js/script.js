@@ -226,7 +226,7 @@ const testMaterial = new THREE.MeshBasicMaterial({ map: testTexture })
 loadScene2()
 function loadScene2(){
     gltfLoader.load(
-        './model/scene2_desk_mserver_screen.glb',
+        './model/scene2_desk_mserver_screen_server.glb',
         (gltf) => {
             const root = gltf.scene
             root.position.set(0,0, sceneMoveZindex * -1)
@@ -260,18 +260,15 @@ function loadScene2(){
 
             const sScreen1= root.children.find((child) => child.name === 'sScreen1')
             sScreen1.material = testMaterial
-
-            const sScreenBoard= root.children.find((child) => child.name === 'sScreenBoard')
-            sScreenBoard.material = testMaterial
             
-            // root.scale.set(.6,.6,.6)
-            // root.position.y = .6
-            // whiteBoardObject = root
-            // const outertBoard = root.children.find((child) => child.name === 'outertBoard')
-            // const videoScreen = root.children.find((child) => child.name === 'videoScreen')
-            // const outertBoardMaterial = new THREE.MeshBasicMaterial({ color: 0x9c9c9c })
-            // outertBoard.material = outertBoardMaterial
-            // videoScreen.material = videoMaterial
+            settingChildMaterial(root, 'sScreenBoard', testMaterial)
+            settingChildMaterial(root, 'serverOut', sideMaterial)
+            settingChildMaterial(root, 'serverIn', testMaterial)
+            settingChildMaterial(root, 'circleServer', circleMaterial)
+            settingChildMaterial(root, 'circleServer1', circleMaterial)
+            settingChildMaterial(root, 'circleServer2', circleMaterial)
+            settingChildMaterial(root, 'circleServer3', circleMaterial)
+            
     
             scene.add(root)
             scene2Object.push(root)
@@ -279,17 +276,23 @@ function loadScene2(){
     )
 }
 
+function settingChildMaterial(root, objName, material){
+    const obj= root.children.find((child) => child.name === objName)
+    obj.material = material
+}
+
 function changeCircleMaterial(root, colorMaterial){
-    const circleBtn1 = root.children.find((child) => child.name === 'circleBtn1')
-    const circleBtn2 = root.children.find((child) => child.name === 'circleBtn2')
-    const circleBtn3 = root.children.find((child) => child.name === 'circleBtn3')
-    const circleBtn4 = root.children.find((child) => child.name === 'circleBtn4')
-    const circleBtn5 = root.children.find((child) => child.name === 'circleBtn5')
-    circleBtn1.material = colorMaterial
-    circleBtn2.material = colorMaterial
-    circleBtn3.material = colorMaterial
-    circleBtn4.material = colorMaterial
-    circleBtn5.material = colorMaterial
+    const circles = []
+    circles.push(root.children.find((child) => child.name === 'circleBtn1'))
+    circles.push(root.children.find((child) => child.name === 'circleBtn2'))
+    circles.push(root.children.find((child) => child.name === 'circleBtn3'))
+    circles.push(root.children.find((child) => child.name === 'circleBtn4'))
+    circles.push(root.children.find((child) => child.name === 'circleBtn5'))
+    circles.push(root.children.find((child) => child.name === 'circleServer'))
+    circles.push(root.children.find((child) => child.name === 'circleServer1'))
+    circles.push(root.children.find((child) => child.name === 'circleServer2'))
+    circles.push(root.children.find((child) => child.name === 'circleServer3'))
+    circles.forEach(circle => circle.material = colorMaterial)
 }
 
 
