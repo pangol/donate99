@@ -279,15 +279,16 @@ function loadScene2(){
 
 let mixer
 gltfLoader.load(
-    './model/ready_play.glb',
+    './model/readyPlay_c_r.glb',
     (gltf) => {
         const root = gltf.scene
         const clips = gltf.animations;
+        console.log(clips)
         root.scale.set(.7,.7,.7)
         scene.add(root)
 
         mixer = new THREE.AnimationMixer( root );
-        const action = mixer.clipAction( clips[ 0 ] ); // access first animation clip
+        const action = mixer.clipAction( clips[ 1 ] ); // access first animation clip
         action.play();
     }
 )
@@ -346,7 +347,6 @@ const clock = new THREE.Clock()
 const tick = () => {
     const delta = clock.getDelta();
     const elapsedTime = clock.getElapsedTime()
-    console.log(delta)
     desks.forEach((desk, i) => {
         if(i == 1 ){
             rotateDestAll(desk, elapsedTime)
