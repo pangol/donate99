@@ -223,10 +223,12 @@ testTexture.center.y = 0.5
 // testTexture.rotation = 3.15
 const testMaterial = new THREE.MeshBasicMaterial({ map: testTexture })
 
+const wireSecondMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 })
+let wireObjs
 loadScene2()
 function loadScene2(){
     gltfLoader.load(
-        './model/scene2_desk_mserver_screen_server.glb',
+        './model/scend2_desk_mserver_screen_server_wire.glb',
         (gltf) => {
             const root = gltf.scene
             root.position.set(0,0, sceneMoveZindex * -1)
@@ -268,18 +270,32 @@ function loadScene2(){
             settingChildMaterial(root, 'circleServer1', circleMaterial)
             settingChildMaterial(root, 'circleServer2', circleMaterial)
             settingChildMaterial(root, 'circleServer3', circleMaterial)
-            
+            settingChildMaterial(root, 'wire1', circleMaterial)
     
+            const wireRe = /wire*/
+            wireObjs = root.children.filter( child => wireRe.test(child.name))
+            settingWireMaterial(wireObjs, circleMaterial, wireSecondMaterial)
+            console.log(wireObjs.length)
             scene.add(root)
             scene2Object.push(root)
         }
     )
 }
 
+function settingWireMaterial(objs, firstMaterial, secondMaterial){
+ objs.forEach( (obj, i) => {
+     if(i % 2 == 0){
+         obj.material = firstMaterial
+     }else{
+         obj.material = secondMaterial
+     }
+ })
+}
+
 
 let mixer
 gltfLoader.load(
-    './model/readyPlay_c_r.glb',
+    './model/face_w_2.glb',
     (gltf) => {
         const root = gltf.scene
         const clips = gltf.animations;
@@ -288,7 +304,7 @@ gltfLoader.load(
         scene.add(root)
 
         mixer = new THREE.AnimationMixer( root );
-        const action = mixer.clipAction( clips[ 1 ] ); // access first animation clip
+        const action = mixer.clipAction( clips[ 0 ] ); // access first animation clip
         action.play();
     }
 )
@@ -369,8 +385,12 @@ const tick = () => {
         const scene2root = scene2Object[0]
         if(Math.sin(elapsedTime*4) > 0){
             changeCircleMaterial(scene2root, circleMaterial)
+            settingWireMaterial(wireObjs, circleMaterial, wireSecondMaterial)
+
         }else{
             changeCircleMaterial(scene2root, sDiskMaterial)
+            settingWireMaterial(wireObjs, wireSecondMaterial, circleMaterial)
+
         }
     }
     if ( mixer ) mixer.update( delta );
