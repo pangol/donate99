@@ -295,7 +295,7 @@ function settingWireMaterial(objs, firstMaterial, secondMaterial){
 
 let mixer
 gltfLoader.load(
-    './model/face_w_2.glb',
+    './model/readyPlay_c_r.glb',
     (gltf) => {
         const root = gltf.scene
         const clips = gltf.animations;
