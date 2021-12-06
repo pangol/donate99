@@ -80,6 +80,23 @@ const frontMaterial = new THREE.MeshBasicMaterial({
     aoMap: frontAo,
 })
 
+const scene2Floor = new THREE.TextureLoader(manager).load('./texture/Metal_Plate_012_basecolor.jpg')
+scene2Floor.encoding = THREE.sRGBEncoding;
+scene2Floor.repeat.set(1,1.5)
+scene2Floor.wrapT = THREE.RepeatWrapping;
+scene2Floor.wrapU = THREE.RepeatWrapping;
+const scene2FloorNormal = new THREE.TextureLoader(manager).load('./texture/Metal_Plate_012_normal.jpg')
+const scene2FloorRough = new THREE.TextureLoader(manager).load('./texture/Metal_Plate_012_roughness.jpg')
+const scene2FloorAo= new THREE.TextureLoader(manager).load('./texture/Metal_Plate_012_ambientOcclusion.jpg')
+const scene2FloorMm= new THREE.TextureLoader(manager).load('./texture/Metal_Plate_012_metallic.jpg')
+const scene2FloorMaterial = new THREE.MeshStandardMaterial({ 
+    map: scene2Floor,
+    normalMap: scene2FloorNormal,
+    roughnessMap: scene2FloorRough,
+    aoMap: scene2FloorAo,
+    metalnessMap: scene2FloorMm
+})
+
 
 let frontObj
 gltfLoader.load(
@@ -423,7 +440,7 @@ function changebgColor(state){
         gsap.to('#info', {duration: duration, delay:0, backgroundColor: '#64c1cb'})
         gsap.to('.webgl', { duration: duration, delay:0, backgroundImage:'linear-gradient(to right, rgba(100, 192, 203, 1) 40%, rgba(100, 192, 203, .8))'})
         gsap.to('.header', { duration: duration, delay:0, boxShadow:'10px 10px rgb(100 192 203 / 90%)'})
-        frontObj.material = woodtMaterial
+        frontObj.material = scene2FloorMaterial
     }else{
         gsap.to('#info', {duration: duration, delay:0, backgroundColor: '#ffc0cb'})
         gsap.to('.webgl', { duration: duration, delay:0, backgroundImage:'linear-gradient(to right,#ffc0cb 40%, rgba(255, 192, 203, .8))'})
