@@ -80,22 +80,7 @@ const frontMaterial = new THREE.MeshBasicMaterial({
     aoMap: frontAo,
 })
 
-const scene2Floor = new THREE.TextureLoader(manager).load('./texture/Metal_Plate_012_basecolor.jpg')
-scene2Floor.encoding = THREE.sRGBEncoding;
-scene2Floor.repeat.set(1,1.5)
-scene2Floor.wrapT = THREE.RepeatWrapping;
-scene2Floor.wrapU = THREE.RepeatWrapping;
-const scene2FloorNormal = new THREE.TextureLoader(manager).load('./texture/Metal_Plate_012_normal.jpg')
-const scene2FloorRough = new THREE.TextureLoader(manager).load('./texture/Metal_Plate_012_roughness.jpg')
-const scene2FloorAo= new THREE.TextureLoader(manager).load('./texture/Metal_Plate_012_ambientOcclusion.jpg')
-const scene2FloorMm= new THREE.TextureLoader(manager).load('./texture/Metal_Plate_012_metallic.jpg')
-const scene2FloorMaterial = new THREE.MeshStandardMaterial({ 
-    map: scene2Floor,
-    normalMap: scene2FloorNormal,
-    roughnessMap: scene2FloorRough,
-    aoMap: scene2FloorAo,
-    metalnessMap: scene2FloorMm
-})
+
 
 
 let frontObj
@@ -223,8 +208,12 @@ gltfLoader.load(
 
 let scene2Object = []
 const sceneMoveZindex = 5
-const circleMaterial = new THREE.MeshBasicMaterial({ color: 0xff00ff })
+
+const circleMaterial = new THREE.MeshBasicMaterial({ color: 0x7CCAD3 })
+const wireMaterial = new THREE.MeshBasicMaterial({ color: 0xfcf400 })
 const sDiskMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 })
+const witeMaterial = new THREE.MeshBasicMaterial({ color: 0xf0f0f0 })
+
 
 const s2screenTexture1 = new THREE.TextureLoader(manager).load('./texture/project1.png');
 s2screenTexture1.encoding = THREE.sRGBEncoding;
@@ -240,7 +229,60 @@ testTexture.center.y = 0.5
 // testTexture.rotation = 3.15
 const testMaterial = new THREE.MeshBasicMaterial({ map: testTexture })
 
-const wireSecondMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 })
+
+const scene2Floor = new THREE.TextureLoader(manager).load('./texture/Metal_Plate_012_basecolor.jpg')
+scene2Floor.encoding = THREE.sRGBEncoding;
+scene2Floor.repeat.set(1,1.5)
+scene2Floor.wrapT = THREE.RepeatWrapping;
+scene2Floor.wrapU = THREE.RepeatWrapping;
+const scene2FloorNormal = new THREE.TextureLoader(manager).load('./texture/Metal_Plate_012_normal.jpg')
+const scene2FloorRough = new THREE.TextureLoader(manager).load('./texture/Metal_Plate_012_roughness.jpg')
+const scene2FloorAo= new THREE.TextureLoader(manager).load('./texture/Metal_Plate_012_ambientOcclusion.jpg')
+const scene2FloorMm= new THREE.TextureLoader(manager).load('./texture/Metal_Plate_012_metallic.jpg')
+const scene2FloorMaterial = new THREE.MeshStandardMaterial({ 
+    map: scene2Floor,
+    normalMap: scene2FloorNormal,
+    roughnessMap: scene2FloorRough,
+    aoMap: scene2FloorAo,
+    metalnessMap: scene2FloorMm
+})
+
+
+const scene2mserver = new THREE.TextureLoader(manager).load('./texture/Metal_Plate_013_basecolor.jpg')
+scene2mserver.encoding = THREE.sRGBEncoding;
+// scene2mserver.repeat.set(1,1.5)
+scene2mserver.wrapT = THREE.RepeatWrapping;
+scene2mserver.wrapU = THREE.RepeatWrapping;
+const scene2mserverNormal = new THREE.TextureLoader(manager).load('./texture/Metal_Plate_013_normal.jpg')
+const scene2mserverRough = new THREE.TextureLoader(manager).load('./texture/Metal_Plate_013_roughness.jpg')
+const scene2mserverAo= new THREE.TextureLoader(manager).load('./texture/Metal_Plate_013_ambientOcclusion.jpg')
+const scene2mserverMm= new THREE.TextureLoader(manager).load('./texture/Metal_Plate_013_metallic.jpg')
+const scene2mserverMaterial = new THREE.MeshStandardMaterial({ 
+    map: scene2mserver,
+    normalMap: scene2mserverNormal,
+    roughnessMap: scene2mserverRough,
+    aoMap: scene2mserverAo,
+    metalnessMap: scene2mserverMm
+})
+
+const scene2server = new THREE.TextureLoader(manager).load('./texture/Sci-fi_Pipes_001_basecolor.jpg')
+scene2server.encoding = THREE.sRGBEncoding;
+scene2server.repeat.set(1.5,1)
+scene2server.wrapT = THREE.RepeatWrapping;
+scene2server.wrapU = THREE.RepeatWrapping;
+const scene2serverNormal = new THREE.TextureLoader(manager).load('./texture/Sci-fi_Pipes_001_normal.jpg')
+const scene2serverRough = new THREE.TextureLoader(manager).load('./texture/Sci-fi_Pipes_001_roughness.jpg')
+const scene2serverAo= new THREE.TextureLoader(manager).load('./texture/Sci-fi_Pipes_001_ambientOcclusion.jpg')
+const scene2serverMm= new THREE.TextureLoader(manager).load('./texture/Sci-fi_Pipes_001_metallic.jpg')
+const scene2serverMaterial = new THREE.MeshStandardMaterial({ 
+    map: scene2server,
+    normalMap: scene2serverNormal,
+    roughnessMap: scene2serverRough,
+    aoMap: scene2serverAo,
+    metalnessMap: scene2serverMm
+})
+
+
 let wireObjs
 loadScene2()
 function loadScene2(){
@@ -254,45 +296,28 @@ function loadScene2(){
             s2Desk.material = sideMaterial
             changeCircleMaterial(root, circleMaterial)
             
-
-            const sDisk1 = root.children.find((child) => child.name === 'sDisk1')
-            const sDisk2 = root.children.find((child) => child.name === 'sDisk2')
-            const sDisk3 = root.children.find((child) => child.name === 'sDisk3')
-            const sDisk4 = root.children.find((child) => child.name === 'sDisk4')
-            const sDisk5 = root.children.find((child) => child.name === 'sDisk5')
-            sDisk1.material = sDiskMaterial
-            sDisk2.material = sDiskMaterial
-            sDisk3.material = sDiskMaterial
-            sDisk4.material = sDiskMaterial
-            sDisk5.material = sDiskMaterial
-
-            const sMonitor1 = root.children.find((child) => child.name === 'sMonitor1')
-            const sMonitor2 = root.children.find((child) => child.name === 'sMonitor2')
-            sMonitor1.material = sideMaterial
-            sMonitor2.material = sideMaterial
-
-            const projectBoard = root.children.find((child) => child.name === 'projectBoard')
-            projectBoard.material = sideMaterial
-
-            const sScreen2= root.children.find((child) => child.name === 'sScreen2')
-            sScreen2.material = s2screenMaterial1
-
-            const sScreen1= root.children.find((child) => child.name === 'sScreen1')
-            sScreen1.material = testMaterial
+            settingChildMaterial(root, 'sMonitor1', witeMaterial)
+            settingChildMaterial(root, 'sMonitor2', witeMaterial)
+            settingChildMaterial(root, 'sScreen2', s2screenMaterial1)
+            settingChildMaterial(root, 'projectBoard', witeMaterial)
+            settingChildMaterial(root, 'sScreen1', testMaterial)
             
+            settingChildMaterial(root, 'sDisk1', scene2mserverMaterial)
+            settingChildMaterial(root, 'sDisk2', scene2mserverMaterial)
+            settingChildMaterial(root, 'sDisk3', scene2mserverMaterial)
+            settingChildMaterial(root, 'sDisk4', scene2mserverMaterial)
+            settingChildMaterial(root, 'sDisk5', scene2mserverMaterial)
             settingChildMaterial(root, 'sScreenBoard', testMaterial)
-            settingChildMaterial(root, 'serverOut', sideMaterial)
-            settingChildMaterial(root, 'serverIn', testMaterial)
+            settingChildMaterial(root, 'serverOut', scene2serverMaterial)
+            settingChildMaterial(root, 'serverIn', scene2mserverMaterial)
             settingChildMaterial(root, 'circleServer', circleMaterial)
             settingChildMaterial(root, 'circleServer1', circleMaterial)
             settingChildMaterial(root, 'circleServer2', circleMaterial)
             settingChildMaterial(root, 'circleServer3', circleMaterial)
-            settingChildMaterial(root, 'wire1', circleMaterial)
     
             const wireRe = /wire*/
             wireObjs = root.children.filter( child => wireRe.test(child.name))
-            settingWireMaterial(wireObjs, circleMaterial, wireSecondMaterial)
-            console.log(wireObjs.length)
+            settingWireMaterial(wireObjs, wireMaterial, circleMaterial)
             scene.add(root)
             scene2Object.push(root)
         }
@@ -402,11 +427,10 @@ const tick = () => {
         const scene2root = scene2Object[0]
         if(Math.sin(elapsedTime*4) > 0){
             changeCircleMaterial(scene2root, circleMaterial)
-            settingWireMaterial(wireObjs, circleMaterial, wireSecondMaterial)
-
+            settingWireMaterial(wireObjs, wireMaterial, circleMaterial)
         }else{
             changeCircleMaterial(scene2root, sDiskMaterial)
-            settingWireMaterial(wireObjs, wireSecondMaterial, circleMaterial)
+            settingWireMaterial(wireObjs, circleMaterial, wireMaterial)
 
         }
     }
