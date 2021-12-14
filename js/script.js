@@ -80,9 +80,6 @@ const frontMaterial = new THREE.MeshBasicMaterial({
     aoMap: frontAo,
 })
 
-
-
-
 let frontObj
 gltfLoader.load(
     './model/phone_s_m_nm.glb',
@@ -229,6 +226,20 @@ testTexture.center.y = 0.5
 // testTexture.rotation = 3.15
 const testMaterial = new THREE.MeshBasicMaterial({ map: testTexture })
 
+const screenProject2Texture = new THREE.TextureLoader(manager).load('./texture/project2.png');
+screenProject2Texture.encoding = THREE.sRGBEncoding;
+screenProject2Texture.center.x = 0.5
+screenProject2Texture.center.y = 0.5
+// screenProject2Texture.rotation = 3.15
+const screenProject2Material = new THREE.MeshBasicMaterial({ map: screenProject2Texture })
+
+const screendBoardTexture = new THREE.TextureLoader(manager).load('./texture/total_project.png');
+screendBoardTexture.encoding = THREE.sRGBEncoding;
+screendBoardTexture.center.x = 0.5
+screendBoardTexture.center.y = 0.5
+// screendBoardTexture.rotation = 3.15
+const screenBoardMaterial = new THREE.MeshBasicMaterial({ map: screendBoardTexture })
+
 
 const scene2Floor = new THREE.TextureLoader(manager).load('./texture/Metal_Plate_012_basecolor.jpg')
 scene2Floor.encoding = THREE.sRGBEncoding;
@@ -300,14 +311,14 @@ function loadScene2(){
             settingChildMaterial(root, 'sMonitor2', witeMaterial)
             settingChildMaterial(root, 'sScreen2', s2screenMaterial1)
             settingChildMaterial(root, 'projectBoard', witeMaterial)
-            settingChildMaterial(root, 'sScreen1', testMaterial)
+            settingChildMaterial(root, 'sScreen1', screenProject2Material)
             
             settingChildMaterial(root, 'sDisk1', scene2mserverMaterial)
             settingChildMaterial(root, 'sDisk2', scene2mserverMaterial)
             settingChildMaterial(root, 'sDisk3', scene2mserverMaterial)
             settingChildMaterial(root, 'sDisk4', scene2mserverMaterial)
             settingChildMaterial(root, 'sDisk5', scene2mserverMaterial)
-            settingChildMaterial(root, 'sScreenBoard', testMaterial)
+            settingChildMaterial(root, 'sScreenBoard', screenBoardMaterial)
             settingChildMaterial(root, 'serverOut', scene2serverMaterial)
             settingChildMaterial(root, 'serverIn', scene2mserverMaterial)
             settingChildMaterial(root, 'circleServer', circleMaterial)
@@ -342,7 +353,8 @@ gltfLoader.load(
         const root = gltf.scene
         const clips = gltf.animations;
         console.log(clips)
-        root.scale.set(.7,.7,.7)
+        root.scale.set(.6,.6,.6)
+        root.rotation.y = Math.PI
         scene.add(root)
 
         mixer = new THREE.AnimationMixer( root );
