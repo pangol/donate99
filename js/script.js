@@ -130,13 +130,14 @@ screen1Texture.center.x = 0.5
 screen1Texture.center.y = 0.5
 const screen1Material = new THREE.MeshBasicMaterial({ map: screen1Texture })
 
-const scene1Objects = []
+const sceneObjects = []
 loadScene1()
 function loadScene1(){
     gltfLoader.load(
         './model/scene1.glb',
         (gltf) => {
             const root = gltf.scene
+            
             settingChildMaterial(root, 'outertBoard', outertBoardMaterial)
             settingChildMaterial(root, 'videoScreen', videoMaterial)
             settingChildMaterial(root, 'desk', woodtMaterial)
@@ -150,20 +151,45 @@ function loadScene1(){
             settingChildMaterial(root, 'monitor', monitorMaterial)
             settingChildMaterial(root, 'com2', monitorMaterial)
            
+            const scene1_root = new THREE.Group()
+            const scene1_desk1 = settingGroup(root, ['desk', 'chair_b', 'chair_f', 'silver', 'monitor','screen'])
+            const scene1_desk2 = settingGroup(root, ['desk2', 'chair_b2', 'chair_f2', 'silver2', 'com2', 'screen2'])
+            const scene1_board = settingGroup(root, ['outertBoard', 'videoScreen'])
+            const clones1 = cloneGroups(scene1_desk1, [{x:-0.5,y: 0.3,z: 1}, {x:1.2,y:0.7,z:1.1}])
+            const clones2 = cloneGroups(scene1_desk2, [{x:0,y: 0.7,z: 2.5}, {x:-1,y:0.3,z:2}])
 
-            cloneObj(root, 'desk', scene1Objects, scene)
-            scene.add(root)
-            scene1Objects.push(root)
+            scene1_root.add(scene1_desk1)
+            scene1_root.add(scene1_desk2)
+            scene1_root.add(scene1_board)
+            clones1.forEach( clone => {
+                scene1_root.add(clone)
+            })
+            clones2.forEach( clone => {
+                scene1_root.add(clone)
+            })
+
+            scene.add(scene1_root)
+            sceneObjects.push(scene1_root)
         })
 }
 
-function cloneObj(root, name, sceneObjs, scene){
-    const obj = root.children.find((child) => child.name === name)
-    const clone = obj.clone()
-    console.log(clone)
-    clone.position.set(-0.5,0.3,1)
-    scene.add(clone)
-    sceneObjs.push(clone)
+function settingGroup(root, objNames){
+    const group = new THREE.Group()
+    objNames.forEach( name => {
+        const obj = root.children.find( (child) => child.name === name)
+        group.add(obj)
+    })
+    return group
+}
+
+function cloneGroups(rawObj, positions){
+    const resultArray = []
+    positions.forEach( position => {
+        const clone = rawObj.clone()
+        clone.position.set(position.x,position.y,position.z)
+        resultArray.push(clone)
+    }) 
+    return resultArray
 }
 
 // let desks = []
