@@ -149,11 +149,21 @@ function loadScene1(){
             settingChildMaterial(root, 'silver2', silverMaterial)
             settingChildMaterial(root, 'monitor', monitorMaterial)
             settingChildMaterial(root, 'com2', monitorMaterial)
-            // settingChildMaterial(root, 'screen', testMaterial)
-            // settingChildMaterial(root, 'screen2',  screen1Material)
+           
+
+            cloneObj(root, 'desk', scene1Objects, scene)
             scene.add(root)
             scene1Objects.push(root)
         })
+}
+
+function cloneObj(root, name, sceneObjs, scene){
+    const obj = root.children.find((child) => child.name === name)
+    const clone = obj.clone()
+    console.log(clone)
+    clone.position.set(-0.5,0.3,1)
+    scene.add(clone)
+    sceneObjs.push(clone)
 }
 
 // let desks = []
