@@ -98,48 +98,110 @@ gltfLoader.load(
     }
 )
 
-const woodColor = new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_Top_001_basecolor.jpg')
-const woodNormal = new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_Top_001_normal.jpg')
-const woodDis = new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_Top_001_height.png')
-const woodRough = new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_Top_001_roughness.jpg')
-const woodAo = new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_Top_001_ambientOcclusion.jpg')
-const woodtMaterial = new THREE.MeshStandardMaterial({
-    map: woodColor,
-    normalMap: woodNormal,
-    roughnessMap: woodRough,
-    aoMap: woodAo,
+const materials = [
+    {
+        name: 'wood',
+        encoding: false,
+        color: false,
+        textures: [
+            './texture/Wood_Barrel_Top_001_basecolor.jpg',
+            './texture/Wood_Barrel_Top_001_normal.jpg',
+            './texture/Wood_Barrel_Top_001_height.png',
+            './texture/Wood_Barrel_Top_001_roughness.jpg',
+            './texture/Wood_Barrel_Top_001_ambientOcclusion.jpg'
+        ],
+    }, {
+        name: 'chair',
+        encoding: THREE.sRGBEncoding,
+        color: false,
+        textures: [
+            './texture/chair_2.jpg'
+        ]
+    }, {
+        name: 'silver',
+        encoding: false,
+        color: true,
+        textures: [
+            0x82949d
+        ],
+    }, {
+        name: 'monitor',
+        encoding: false,
+        color: true,
+        textures: [
+            0x9c9c9c
+        ],
+    }, {
+        name: 'outBoarder',
+        encoding: false,
+        color: true,
+        textures: [
+            0xf1f1f1
+        ],
+    }, {
+        video: 'video',
+        color: false,
+        encoding: THREE.sRGBEncoding,
+
+    }
+]
+
+materials.forEach(material => {
+    makingMaterial(material)
 })
 
-const chairTexture = new THREE.TextureLoader(manager).load('./texture/chair_2.jpg');
-chairTexture.encoding = THREE.sRGBEncoding;
-const chairMaterial = new THREE.MeshStandardMaterial({ map: chairTexture })
-const silverMaterial = new THREE.MeshStandardMaterial({ color: 0x82949d })
-const monitorMaterial = new THREE.MeshStandardMaterial({ color: 0x9c9c9c })
-const outertBoardMaterial = new THREE.MeshStandardMaterial({ color: 0xf1f1f1 })
+function makingMaterial(material) {
+    let resultMaterial
+    if (material['color']) {
+        resultMaterial = new THREE.MeshStandardMaterial({ color: material['textures'][0] })
+    } else if (material['video']) {
+        const video = document.getElementById(material['video'])
+        video.play()
+        const videoTexture = new THREE.VideoTexture(video);
+        videoTexture.flipY = false;
+        videoTexture.encoding = material.encoding
+        resultMaterial = new THREE.MeshBasicMaterial({ map: videoTexture })
+    } else {
+        const colorTex = new THREE.TextureLoader(manager).load(material['textures'][0])
+        let normalTex, disTex, roughTex, aoTex
+        if (material['textures'].length > 1) {
+            normalTex = new THREE.TextureLoader(manager).load(material['textures'][1])
+            disTex = new THREE.TextureLoader(manager).load(material['textures'][2])
+            roughTex = new THREE.TextureLoader(manager).load(material['textures'][3])
+            aoTex = new THREE.TextureLoader(manager).load(material['textures'][4])
+        }
 
-const video = document.getElementById('video')
-video.play()
-const videoTexture = new THREE.VideoTexture(video);
-videoTexture.flipY = false;
-videoTexture.encoding = THREE.sRGBEncoding;
-const videoMaterial = new THREE.MeshBasicMaterial({ map: videoTexture })
+
+        if (material['encoding']) {
+            colorTex.encoding = material['encoding']
+        }
+
+        resultMaterial = new THREE.MeshStandardMaterial({
+            map: colorTex,
+            normalMap: normalTex,
+            roughnessMap: roughTex,
+            aoMap: aoTex,
+        })
+    }
+    material['obj'] = resultMaterial
+}
 
 const sceneEnv = {
     'objFile': './model/scene1.glb',
     'root': new THREE.Group(),
     'models': [
-        { name: 'outertBoard', material: outertBoardMaterial },
-        { name: 'videoScreen', material: videoMaterial },
-        { name: 'desk', material: woodtMaterial },
-        { name: 'desk2', material: woodtMaterial },
-        { name: 'chair_b', material: chairMaterial },
-        { name: 'chair_f', material: chairMaterial },
-        { name: 'chair_b2', material: chairMaterial },
-        { name: 'chair_f2', material: chairMaterial },
-        { name: 'silver', material: silverMaterial },
-        { name: 'silver2', material: silverMaterial },
-        { name: 'monitor', material: monitorMaterial },
-        { name: 'com2', material: monitorMaterial },
+        { name: 'outertBoard', material: materials[4]['obj'] },
+        { name: 'videoScreen', material: materials[5]['obj'] },
+        { name: 'desk', material: materials[0]['obj'] },
+        { name: 'desk2', material: materials[0]['obj'] },
+        { name: 'chair_b', material: materials[1]['obj'] },
+        { name: 'chair_f', material: materials[1]['obj'] },
+        { name: 'chair_b2', material: materials[1]['obj'] },
+        { name: 'chair_f2', material: materials[1]['obj'] },
+        { name: 'silver', material: materials[2]['obj'] },
+        { name: 'silver2', material: materials[2]['obj'] },
+        { name: 'monitor', material: materials[3]['obj'] },
+        { name: 'com2', material: materials[3]['obj'] },
     ],
     'groups': [
         {
@@ -211,11 +273,11 @@ function cloneGroups(rawObj, positions) {
     return result
 }
 
-function cloneAnimate(obj, elapsedTime ,speed, sin){
+function cloneAnimate(obj, elapsedTime, speed, sin) {
     let middle
-    if(sin){
+    if (sin) {
         middle = Math.sin(elapsedTime)
-    }else{
+    } else {
         middle = Math.cos(elapsedTime)
     }
     obj.position.y += middle / speed
@@ -436,13 +498,13 @@ const tick = () => {
 
     const deskGroup1 = sceneEnv['groups'].find(group => group.name === 'desk1')
     if (Object.keys(deskGroup1).includes('cloneobjs')) {
-        deskGroup1['cloneobjs'].forEach( (desk, i) => {
+        deskGroup1['cloneobjs'].forEach((desk, i) => {
             cloneAnimate(desk, elapsedTime, deskGroup1['cloneAnimationSpeed'][i], true)
         })
     }
     const deskGroup2 = sceneEnv['groups'].find(group => group.name === 'desk2')
     if (Object.keys(deskGroup2).includes('cloneobjs')) {
-        deskGroup2['cloneobjs'].forEach( (desk, i) => {
+        deskGroup2['cloneobjs'].forEach((desk, i) => {
             cloneAnimate(desk, elapsedTime, deskGroup2['cloneAnimationSpeed'][i], false)
         })
     }
@@ -517,84 +579,6 @@ function changeSceneOnePosition(direction) {
     scene2Object.forEach(obj => {
         gsap.to(obj.position, { duration: duration, delay: 0, z: obj.position.z + zIndex })
     })
-}
-
-
-function rotateDesk2Right(desk, elapsedTime) {
-    const deskO = desk.getObjectByName('desk2')
-    const monitor = desk.getObjectByName('com2')
-    const chair_b = desk.getObjectByName('chair_b2')
-    const chair_f = desk.getObjectByName('chair_f2')
-    const silver = desk.getObjectByName('silver2')
-    const screen = desk.getObjectByName('screen2')
-    deskO.rotation.y = elapsedTime
-    monitor.rotation.y = elapsedTime
-    chair_b.rotation.y = elapsedTime
-    chair_f.rotation.y = elapsedTime
-    silver.rotation.y = elapsedTime
-    screen.rotation.y = elapsedTime
-}
-
-function rotateDeskRight(desk, elapsedTime) {
-    const deskO = desk.getObjectByName('desk')
-    const monitor = desk.getObjectByName('monitor')
-    const chair_b = desk.getObjectByName('chair_b')
-    const chair_f = desk.getObjectByName('chair_f')
-    const silver = desk.getObjectByName('silver')
-    const screen = desk.getObjectByName('screen')
-    deskO.rotation.y = elapsedTime
-    monitor.rotation.y = elapsedTime
-    chair_b.rotation.y = elapsedTime
-    chair_f.rotation.y = elapsedTime
-    silver.rotation.y = elapsedTime
-    screen.rotation.y = -elapsedTime
-}
-
-function rotateDesksin(desk, elapsedTime) {
-    const period = 4
-    const width = 8
-    const deskO = desk.getObjectByName('desk')
-    const monitor = desk.getObjectByName('monitor')
-    const chair_b = desk.getObjectByName('chair_b')
-    const chair_f = desk.getObjectByName('chair_f')
-    const silver = desk.getObjectByName('silver')
-    const screen = desk.getObjectByName('screen')
-    deskO.rotation.z = (Math.sin(elapsedTime * period) / width) + Math.PI
-    monitor.rotation.z = (Math.sin(elapsedTime * period) / width)
-    chair_b.rotation.z = (Math.sin(elapsedTime * period) / width)
-    chair_f.rotation.z = (Math.sin(elapsedTime * period) / width)
-    silver.rotation.z = (Math.sin(elapsedTime * period) / width) + Math.PI
-    screen.rotation.z = -(Math.sin(elapsedTime * period) / width)
-}
-
-function rotateDesk2Left(desk, elapsedTime) {
-    const deskO = desk.getObjectByName('desk2')
-    const comO = desk.getObjectByName('com2')
-    const chair_b = desk.getObjectByName('chair_b2')
-    const chair_f = desk.getObjectByName('chair_f2')
-    const silver = desk.getObjectByName('silver2')
-    const screen = desk.getObjectByName('screen2')
-    deskO.rotation.y = -elapsedTime
-    comO.rotation.y = -elapsedTime
-    chair_b.rotation.y = -elapsedTime
-    chair_f.rotation.y = -elapsedTime
-    silver.rotation.y = -elapsedTime
-    screen.rotation.y = -elapsedTime
-}
-
-function rotateDestAll(desk, elapsedTime) {
-    const deskO = desk.getObjectByName('desk')
-    const monitor = desk.getObjectByName('monitor')
-    const chair_b = desk.getObjectByName('chair_b')
-    const chair_f = desk.getObjectByName('chair_f')
-    const silver = desk.getObjectByName('silver')
-    const screen = desk.getObjectByName('screen')
-    deskO.rotation.x = elapsedTime
-    monitor.rotation.x = elapsedTime
-    chair_b.rotation.x = elapsedTime
-    chair_f.rotation.x = elapsedTime
-    silver.rotation.x = elapsedTime
-    screen.rotation.x = elapsedTime + Math.PI
 }
 
 tick()
