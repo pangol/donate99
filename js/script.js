@@ -58,7 +58,7 @@ const sideColor = new THREE.TextureLoader(manager).load('./texture/Plastic006_1K
 const sideNormal = new THREE.TextureLoader(manager).load('./texture/Plastic006_1K_NormalDX.jpg')
 const sideDis = new THREE.TextureLoader(manager).load('./texture/Plastic006_1K_Displacement.jpg')
 const sideRough = new THREE.TextureLoader(manager).load('./texture/Plastic006_1K_Roughness.jpg')
-const sideMaterial = new THREE.MeshBasicMaterial({ 
+const sideMaterial = new THREE.MeshBasicMaterial({
     map: sideColor,
     normalMap: sideNormal,
     displacementMap: sideDis,
@@ -71,8 +71,8 @@ frontColor.encoding = THREE.sRGBEncoding;
 const frontNormal = new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_Top_001_normal.jpg')
 const frontDis = new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_Top_001_height.png')
 const frontRough = new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_Top_001_roughness.jpg')
-const frontAo= new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_Top_001_ambientOcclusion.jpg')
-const frontMaterial = new THREE.MeshBasicMaterial({ 
+const frontAo = new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_Top_001_ambientOcclusion.jpg')
+const frontMaterial = new THREE.MeshBasicMaterial({
     map: frontColor,
     normalMap: frontNormal,
     displacementMap: frontDis,
@@ -92,7 +92,7 @@ gltfLoader.load(
         body.material = sideMaterial
         front.material = frontMaterial
         side.material = bodyMaterial
-       
+
         frontObj = front
         scene.add(root)
     }
@@ -102,8 +102,8 @@ const woodColor = new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_T
 const woodNormal = new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_Top_001_normal.jpg')
 const woodDis = new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_Top_001_height.png')
 const woodRough = new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_Top_001_roughness.jpg')
-const woodAo= new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_Top_001_ambientOcclusion.jpg')
-const woodtMaterial = new THREE.MeshStandardMaterial({ 
+const woodAo = new THREE.TextureLoader(manager).load('./texture/Wood_Barrel_Top_001_ambientOcclusion.jpg')
+const woodtMaterial = new THREE.MeshStandardMaterial({
     map: woodColor,
     normalMap: woodNormal,
     roughnessMap: woodRough,
@@ -119,163 +119,107 @@ const outertBoardMaterial = new THREE.MeshStandardMaterial({ color: 0xf1f1f1 })
 
 const video = document.getElementById('video')
 video.play()
-const videoTexture = new THREE.VideoTexture( video );
+const videoTexture = new THREE.VideoTexture(video);
 videoTexture.flipY = false;
 videoTexture.encoding = THREE.sRGBEncoding;
-const videoMaterial = new THREE.MeshBasicMaterial({map: videoTexture})
+const videoMaterial = new THREE.MeshBasicMaterial({ map: videoTexture })
 
-const screen1Texture = new THREE.TextureLoader(manager).load('./texture/appsscript_1.jpg');
-screen1Texture.encoding = THREE.sRGBEncoding;
-screen1Texture.center.x = 0.5
-screen1Texture.center.y = 0.5
-const screen1Material = new THREE.MeshBasicMaterial({ map: screen1Texture })
+const sceneEnv = {
+    'objFile': './model/scene1.glb',
+    'root': new THREE.Group(),
+    'models': [
+        { name: 'outertBoard', material: outertBoardMaterial },
+        { name: 'videoScreen', material: videoMaterial },
+        { name: 'desk', material: woodtMaterial },
+        { name: 'desk2', material: woodtMaterial },
+        { name: 'chair_b', material: chairMaterial },
+        { name: 'chair_f', material: chairMaterial },
+        { name: 'chair_b2', material: chairMaterial },
+        { name: 'chair_f2', material: chairMaterial },
+        { name: 'silver', material: silverMaterial },
+        { name: 'silver2', material: silverMaterial },
+        { name: 'monitor', material: monitorMaterial },
+        { name: 'com2', material: monitorMaterial },
+    ],
+    'groups': [
+        {
+            name: 'desk1',
+            components: ['desk', 'chair_b', 'chair_f', 'silver', 'monitor', 'screen'],
+            clonePositions: [{ x: -0.5, y: 0.3, z: 1 }, { x: 1.2, y: 0.7, z: 1.1 }],
+            cloneAnimationSpeed: [1000, 2000]
+        },
+        {
+            name: 'desk2',
+            components: ['desk2', 'chair_b2', 'chair_f2', 'silver2', 'com2', 'screen2'],
+            clonePositions: [{ x: 0, y: 0.7, z: 2.5 }, { x: -1, y: 0.3, z: 2 }],
+            cloneAnimationSpeed: [800, 1000]
+        }, {
+            name: 'board',
+            components: ['outertBoard', 'videoScreen']
+        }
+    ]
+}
 
 const sceneObjects = []
 loadScene1()
-function loadScene1(){
+function loadScene1() {
     gltfLoader.load(
-        './model/scene1.glb',
+        sceneEnv.objFile,
         (gltf) => {
             const root = gltf.scene
-            
-            settingChildMaterial(root, 'outertBoard', outertBoardMaterial)
-            settingChildMaterial(root, 'videoScreen', videoMaterial)
-            settingChildMaterial(root, 'desk', woodtMaterial)
-            settingChildMaterial(root, 'desk2', woodtMaterial)
-            settingChildMaterial(root, 'chair_b', chairMaterial)
-            settingChildMaterial(root, 'chair_f', chairMaterial)
-            settingChildMaterial(root, 'chair_b2', chairMaterial)
-            settingChildMaterial(root, 'chair_f2', chairMaterial)
-            settingChildMaterial(root, 'silver', silverMaterial)
-            settingChildMaterial(root, 'silver2', silverMaterial)
-            settingChildMaterial(root, 'monitor', monitorMaterial)
-            settingChildMaterial(root, 'com2', monitorMaterial)
-           
-            const scene1_root = new THREE.Group()
-            const scene1_desk1 = settingGroup(root, ['desk', 'chair_b', 'chair_f', 'silver', 'monitor','screen'])
-            const scene1_desk2 = settingGroup(root, ['desk2', 'chair_b2', 'chair_f2', 'silver2', 'com2', 'screen2'])
-            const scene1_board = settingGroup(root, ['outertBoard', 'videoScreen'])
-            const clones1 = cloneGroups(scene1_desk1, [{x:-0.5,y: 0.3,z: 1}, {x:1.2,y:0.7,z:1.1}])
-            const clones2 = cloneGroups(scene1_desk2, [{x:0,y: 0.7,z: 2.5}, {x:-1,y:0.3,z:2}])
-
-            scene1_root.add(scene1_desk1)
-            scene1_root.add(scene1_desk2)
-            scene1_root.add(scene1_board)
-            clones1.forEach( clone => {
-                scene1_root.add(clone)
-            })
-            clones2.forEach( clone => {
-                scene1_root.add(clone)
+            sceneEnv.models.forEach(model => {
+                settingChildMaterial(root, model.name, model.material)
             })
 
-            scene.add(scene1_root)
-            sceneObjects.push(scene1_root)
+            sceneEnv.groups.forEach(group => {
+                group['obj'] = settingGroup(root, group.components)
+                sceneEnv.root.add(group['obj'])
+            })
+
+            sceneEnv.groups.forEach(group => {
+                if (Object.keys(group).includes('clonePositions')) {
+                    const clones = cloneGroups(group.obj, group.clonePositions)
+                    group['cloneobjs'] = clones
+                    clones.forEach(clone => {
+                        sceneEnv.root.add(clone)
+                    })
+
+                }
+            })
+            scene.add(sceneEnv.root)
+            sceneObjects.push(sceneEnv.root)
         })
 }
 
-function settingGroup(root, objNames){
+function settingGroup(root, objNames) {
     const group = new THREE.Group()
-    objNames.forEach( name => {
-        const obj = root.children.find( (child) => child.name === name)
+    objNames.forEach(name => {
+        const obj = root.children.find((child) => child.name === name)
         group.add(obj)
     })
     return group
 }
 
-function cloneGroups(rawObj, positions){
-    const resultArray = []
-    positions.forEach( position => {
+function cloneGroups(rawObj, positions) {
+    const result = new Array()
+    positions.forEach(position => {
         const clone = rawObj.clone()
-        clone.position.set(position.x,position.y,position.z)
-        resultArray.push(clone)
-    }) 
-    return resultArray
+        clone.position.set(position.x, position.y, position.z)
+
+        result.push(clone)
+    })
+    return result
 }
 
-// let desks = []
-// const count_of_desks = 2
-// gltfLoader.load(
-//     './model/desk_all_m_o.glb',
-//     (gltf) => {
-
-//         const root = gltf.scene
-//         const mesh_names = ['desk', 'chair_b', 'chair_f', 'silver', 'monitor']
-//         const postion_array = [{x:-0.5,y: 0.3,z: 1}, {x:1.2,y:0.7,z:1.1}]
-//         settingMaterial(root, mesh_names)
-
-//         desks.push(root)
-//         scene.add(root)
-//         for(let i = 0 ; i < count_of_desks; i++){
-//             const clone = root.clone()
-            
-//             clone.position.set(postion_array[i].x, postion_array[i].y, postion_array[i].z)
-//             settingMaterial(clone, mesh_names)
-//             desks.push(clone)
-//             scene.add(clone)
-//         }
-
-//     }
-// )
-
-// function settingMaterial(mesh, mesh_names) {
-//     const desk = mesh.children.find((child) => child.name === mesh_names[0])
-//     const chair_b = mesh.children.find((child) => child.name === mesh_names[1])
-//     const chair_f = mesh.children.find((child) => child.name === mesh_names[2])
-//     const silver = mesh.children.find((child) => child.name === mesh_names[3])
-//     const monitor = mesh.children.find((child) => child.name === mesh_names[4])
-//     desk.material = woodtMaterial
-//     chair_b.material = chairMaterial
-//     chair_f.material = chairMaterial
-//     silver.material = silverMaterial
-//     monitor.material = monitorMaterial
-// }
-// const desks2 = []
-// gltfLoader.load(
-//     './model/desk_com2.glb',
-//     (gltf) => {
-
-//         const root = gltf.scene
-//         const mesh_names = ['desk2', 'chair_b2', 'chair_f2', 'silver2', 'com2']
-//         const postion_array = [{x:0,y: 0.7,z: 2.5}, {x:-1,y:0.3,z:2}]
-//         settingMaterial(root, mesh_names)
-//         desks2.push(root)
-//         scene.add(root)
-
-//         for(let i = 0; i < count_of_desks; i++){
-//             const clone = root.clone()
-            
-//             clone.position.set(postion_array[i].x, postion_array[i].y, postion_array[i].z)
-//             settingMaterial(clone, mesh_names)
-//             desks2.push(clone)
-//             scene.add(clone)
-//         }
-
-//     }
-// )
-// const video = document.getElementById('video')
-// video.play()
-// const videoTexture = new THREE.VideoTexture( video );
-// videoTexture.flipY = false;
-// videoTexture.encoding = THREE.sRGBEncoding;
-// const videoMaterial = new THREE.MeshBasicMaterial({map: videoTexture})
-
-// let whiteBoardObject = ""
-// gltfLoader.load(
-//     './model/whiteBoard.glb',
-//     (gltf) => {
-//         const root = gltf.scene
-//         root.scale.set(.6,.6,.6)
-//         root.position.y = .6
-//         whiteBoardObject = root
-//         const outertBoard = root.children.find((child) => child.name === 'outertBoard')
-//         const videoScreen = root.children.find((child) => child.name === 'videoScreen')
-//         const outertBoardMaterial = new THREE.MeshBasicMaterial({ color: 0x9c9c9c })
-//         outertBoard.material = outertBoardMaterial
-//         videoScreen.material = videoMaterial
-
-//         scene.add(root)
-//     }
-// )
+function cloneAnimate(obj, elapsedTime ,speed, sin){
+    let middle
+    if(sin){
+        middle = Math.sin(elapsedTime)
+    }else{
+        middle = Math.cos(elapsedTime)
+    }
+    obj.position.y += middle / speed
+}
 
 let scene2Object = []
 const sceneMoveZindex = 5
@@ -297,7 +241,6 @@ const testTexture = new THREE.TextureLoader(manager).load('./texture/uv-test-bw.
 testTexture.encoding = THREE.sRGBEncoding;
 testTexture.center.x = 0.5
 testTexture.center.y = 0.5
-// testTexture.rotation = 3.15
 const testMaterial = new THREE.MeshBasicMaterial({ map: testTexture })
 
 const screenProject2Texture = new THREE.TextureLoader(manager).load('./texture/project2.png');
@@ -317,14 +260,14 @@ const screenBoardMaterial = new THREE.MeshBasicMaterial({ map: screendBoardTextu
 
 const scene2Floor = new THREE.TextureLoader(manager).load('./texture/Metal_Plate_012_basecolor.jpg')
 scene2Floor.encoding = THREE.sRGBEncoding;
-scene2Floor.repeat.set(1,1.5)
+scene2Floor.repeat.set(1, 1.5)
 scene2Floor.wrapT = THREE.RepeatWrapping;
 scene2Floor.wrapU = THREE.RepeatWrapping;
 const scene2FloorNormal = new THREE.TextureLoader(manager).load('./texture/Metal_Plate_012_normal.jpg')
 const scene2FloorRough = new THREE.TextureLoader(manager).load('./texture/Metal_Plate_012_roughness.jpg')
-const scene2FloorAo= new THREE.TextureLoader(manager).load('./texture/Metal_Plate_012_ambientOcclusion.jpg')
-const scene2FloorMm= new THREE.TextureLoader(manager).load('./texture/Metal_Plate_012_metallic.jpg')
-const scene2FloorMaterial = new THREE.MeshStandardMaterial({ 
+const scene2FloorAo = new THREE.TextureLoader(manager).load('./texture/Metal_Plate_012_ambientOcclusion.jpg')
+const scene2FloorMm = new THREE.TextureLoader(manager).load('./texture/Metal_Plate_012_metallic.jpg')
+const scene2FloorMaterial = new THREE.MeshStandardMaterial({
     map: scene2Floor,
     normalMap: scene2FloorNormal,
     roughnessMap: scene2FloorRough,
@@ -340,9 +283,9 @@ scene2mserver.wrapT = THREE.RepeatWrapping;
 scene2mserver.wrapU = THREE.RepeatWrapping;
 const scene2mserverNormal = new THREE.TextureLoader(manager).load('./texture/Metal_Plate_013_normal.jpg')
 const scene2mserverRough = new THREE.TextureLoader(manager).load('./texture/Metal_Plate_013_roughness.jpg')
-const scene2mserverAo= new THREE.TextureLoader(manager).load('./texture/Metal_Plate_013_ambientOcclusion.jpg')
-const scene2mserverMm= new THREE.TextureLoader(manager).load('./texture/Metal_Plate_013_metallic.jpg')
-const scene2mserverMaterial = new THREE.MeshStandardMaterial({ 
+const scene2mserverAo = new THREE.TextureLoader(manager).load('./texture/Metal_Plate_013_ambientOcclusion.jpg')
+const scene2mserverMm = new THREE.TextureLoader(manager).load('./texture/Metal_Plate_013_metallic.jpg')
+const scene2mserverMaterial = new THREE.MeshStandardMaterial({
     map: scene2mserver,
     normalMap: scene2mserverNormal,
     roughnessMap: scene2mserverRough,
@@ -352,14 +295,14 @@ const scene2mserverMaterial = new THREE.MeshStandardMaterial({
 
 const scene2server = new THREE.TextureLoader(manager).load('./texture/Sci-fi_Pipes_001_basecolor.jpg')
 scene2server.encoding = THREE.sRGBEncoding;
-scene2server.repeat.set(1.5,1)
+scene2server.repeat.set(1.5, 1)
 scene2server.wrapT = THREE.RepeatWrapping;
 scene2server.wrapU = THREE.RepeatWrapping;
 const scene2serverNormal = new THREE.TextureLoader(manager).load('./texture/Sci-fi_Pipes_001_normal.jpg')
 const scene2serverRough = new THREE.TextureLoader(manager).load('./texture/Sci-fi_Pipes_001_roughness.jpg')
-const scene2serverAo= new THREE.TextureLoader(manager).load('./texture/Sci-fi_Pipes_001_ambientOcclusion.jpg')
-const scene2serverMm= new THREE.TextureLoader(manager).load('./texture/Sci-fi_Pipes_001_metallic.jpg')
-const scene2serverMaterial = new THREE.MeshStandardMaterial({ 
+const scene2serverAo = new THREE.TextureLoader(manager).load('./texture/Sci-fi_Pipes_001_ambientOcclusion.jpg')
+const scene2serverMm = new THREE.TextureLoader(manager).load('./texture/Sci-fi_Pipes_001_metallic.jpg')
+const scene2serverMaterial = new THREE.MeshStandardMaterial({
     map: scene2server,
     normalMap: scene2serverNormal,
     roughnessMap: scene2serverRough,
@@ -370,23 +313,23 @@ const scene2serverMaterial = new THREE.MeshStandardMaterial({
 
 let wireObjs
 loadScene2()
-function loadScene2(){
+function loadScene2() {
     gltfLoader.load(
         './model/scend2_desk_mserver_screen_server_wire.glb',
         (gltf) => {
             const root = gltf.scene
-            root.position.set(0,0, sceneMoveZindex * -1)
+            root.position.set(0, 0, sceneMoveZindex * -1)
 
             const s2Desk = root.children.find((child) => child.name === 'sDesk')
             s2Desk.material = sideMaterial
             changeCircleMaterial(root, circleMaterial)
-            
+
             settingChildMaterial(root, 'sMonitor1', witeMaterial)
             settingChildMaterial(root, 'sMonitor2', witeMaterial)
             settingChildMaterial(root, 'sScreen2', s2screenMaterial1)
             settingChildMaterial(root, 'projectBoard', witeMaterial)
             settingChildMaterial(root, 'sScreen1', screenProject2Material)
-            
+
             settingChildMaterial(root, 'sDisk1', scene2mserverMaterial)
             settingChildMaterial(root, 'sDisk2', scene2mserverMaterial)
             settingChildMaterial(root, 'sDisk3', scene2mserverMaterial)
@@ -399,9 +342,9 @@ function loadScene2(){
             settingChildMaterial(root, 'circleServer1', circleMaterial)
             settingChildMaterial(root, 'circleServer2', circleMaterial)
             settingChildMaterial(root, 'circleServer3', circleMaterial)
-    
+
             const wireRe = /wire*/
-            wireObjs = root.children.filter( child => wireRe.test(child.name))
+            wireObjs = root.children.filter(child => wireRe.test(child.name))
             settingWireMaterial(wireObjs, wireMaterial, circleMaterial)
             scene.add(root)
             scene2Object.push(root)
@@ -409,16 +352,15 @@ function loadScene2(){
     )
 }
 
-function settingWireMaterial(objs, firstMaterial, secondMaterial){
- objs.forEach( (obj, i) => {
-     if(i % 2 == 0){
-         obj.material = firstMaterial
-     }else{
-         obj.material = secondMaterial
-     }
- })
+function settingWireMaterial(objs, firstMaterial, secondMaterial) {
+    objs.forEach((obj, i) => {
+        if (i % 2 == 0) {
+            obj.material = firstMaterial
+        } else {
+            obj.material = secondMaterial
+        }
+    })
 }
-
 
 let mixer
 gltfLoader.load(
@@ -427,22 +369,22 @@ gltfLoader.load(
         const root = gltf.scene
         const clips = gltf.animations;
         // console.log(clips)
-        root.scale.set(.6,.6,.6)
+        root.scale.set(.6, .6, .6)
         root.rotation.y = Math.PI
         scene.add(root)
 
-        mixer = new THREE.AnimationMixer( root );
-        const action = mixer.clipAction( clips[ 0 ] ); // access first animation clip
+        mixer = new THREE.AnimationMixer(root);
+        const action = mixer.clipAction(clips[0]); // access first animation clip
         action.play();
     }
 )
 
-function settingChildMaterial(root, objName, material){
-    const obj= root.children.find((child) => child.name === objName)
+function settingChildMaterial(root, objName, material) {
+    const obj = root.children.find((child) => child.name === objName)
     obj.material = material
 }
 
-function changeCircleMaterial(root, colorMaterial){
+function changeCircleMaterial(root, colorMaterial) {
     const circles = []
     circles.push(root.children.find((child) => child.name === 'circleBtn1'))
     circles.push(root.children.find((child) => child.name === 'circleBtn2'))
@@ -477,8 +419,8 @@ renderer.outputEncoding = THREE.sRGBEncoding
 //resize
 window.addEventListener('resize', () => {
     const canvas = document.querySelector('canvas.webgl')
-    canvas.style.width = window.innerWidth  * 70/100
-    sizes.width = window.innerWidth * 70/100
+    canvas.style.width = window.innerWidth * 70 / 100
+    sizes.width = window.innerWidth * 70 / 100
     sizes.height = window.innerHeight
 
     camera.aspect = sizes.width / sizes.height
@@ -491,78 +433,75 @@ const clock = new THREE.Clock()
 const tick = () => {
     const delta = clock.getDelta();
     const elapsedTime = clock.getElapsedTime()
-    // desks.forEach((desk, i) => {
-    //     if(i == 1 ){
-    //         rotateDestAll(desk, elapsedTime)
-    //     }else if(i == 2){
-    //         rotateDesksin(desk, elapsedTime)
-    //     }else if(i == 3) {
-    //         rotateDeskRight(desk, elapsedTime)
-    //     }
-    // })
-    // desks2.forEach((desk,i) => {
-    //     if(i == 1){
-    //         rotateDesk2Left(desk, elapsedTime)
-    //     }else if (i == 2){
-    //         rotateDesk2Right(desk, elapsedTime)
-    //     }
-    // })
+
+    const deskGroup1 = sceneEnv['groups'].find(group => group.name === 'desk1')
+    if (Object.keys(deskGroup1).includes('cloneobjs')) {
+        deskGroup1['cloneobjs'].forEach( (desk, i) => {
+            cloneAnimate(desk, elapsedTime, deskGroup1['cloneAnimationSpeed'][i], true)
+        })
+    }
+    const deskGroup2 = sceneEnv['groups'].find(group => group.name === 'desk2')
+    if (Object.keys(deskGroup2).includes('cloneobjs')) {
+        deskGroup2['cloneobjs'].forEach( (desk, i) => {
+            cloneAnimate(desk, elapsedTime, deskGroup2['cloneAnimationSpeed'][i], false)
+        })
+    }
 
     //animate scene2
-    if(scene2Object.length > 0){
+    if (scene2Object.length > 0) {
         const scene2root = scene2Object[0]
-        if(Math.sin(elapsedTime*4) > 0){
+        if (Math.sin(elapsedTime * 4) > 0) {
             changeCircleMaterial(scene2root, circleMaterial)
             settingWireMaterial(wireObjs, wireMaterial, circleMaterial)
-        }else{
+        } else {
             changeCircleMaterial(scene2root, sDiskMaterial)
             settingWireMaterial(wireObjs, circleMaterial, wireMaterial)
 
         }
     }
-    if ( mixer ) mixer.update( delta );
+    if (mixer) mixer.update(delta);
     renderer.render(scene, camera)
     window.requestAnimationFrame(tick)
 }
 
-nextSceneBtn.addEventListener('click', function(event){
+nextSceneBtn.addEventListener('click', function (event) {
 
     const lastState = 1
-    if (sceneState != lastState){
+    if (sceneState != lastState) {
         sceneState++
         changebgColor(sceneState)
         changeSceneOnePosition('next')
     } else {
         sceneState = 0
     }
-    
+
 })
 
-beforeSceneBtn.addEventListener('click', function(event){
+beforeSceneBtn.addEventListener('click', function (event) {
     sceneState--
     changebgColor(sceneState)
     changeSceneOnePosition('before')
 })
 
-function changebgColor(state){
+function changebgColor(state) {
     const duration = 2
-    if(state == 1){
-        gsap.to('#info', {duration: duration, delay:0, backgroundColor: '#64c1cb'})
-        gsap.to('.webgl', { duration: duration, delay:0, backgroundImage:'linear-gradient(to right, rgba(100, 192, 203, 1) 40%, rgba(100, 192, 203, .8))'})
-        gsap.to('.header', { duration: duration, delay:0, boxShadow:'10px 10px rgb(100 192 203 / 90%)'})
+    if (state == 1) {
+        gsap.to('#info', { duration: duration, delay: 0, backgroundColor: '#64c1cb' })
+        gsap.to('.webgl', { duration: duration, delay: 0, backgroundImage: 'linear-gradient(to right, rgba(100, 192, 203, 1) 40%, rgba(100, 192, 203, .8))' })
+        gsap.to('.header', { duration: duration, delay: 0, boxShadow: '10px 10px rgb(100 192 203 / 90%)' })
         frontObj.material = scene2FloorMaterial
-    }else{
-        gsap.to('#info', {duration: duration, delay:0, backgroundColor: '#ffc0cb'})
-        gsap.to('.webgl', { duration: duration, delay:0, backgroundImage:'linear-gradient(to right,#ffc0cb 40%, rgba(255, 192, 203, .8))'})
-        gsap.to('.header', { duration: duration, delay:0, boxShadow:'10px 10px rgb(255 192 203 / 90%)'})
+    } else {
+        gsap.to('#info', { duration: duration, delay: 0, backgroundColor: '#ffc0cb' })
+        gsap.to('.webgl', { duration: duration, delay: 0, backgroundImage: 'linear-gradient(to right,#ffc0cb 40%, rgba(255, 192, 203, .8))' })
+        gsap.to('.header', { duration: duration, delay: 0, boxShadow: '10px 10px rgb(255 192 203 / 90%)' })
         frontObj.material = frontMaterial
     }
 }
 
-function changeSceneOnePosition(direction){
+function changeSceneOnePosition(direction) {
     let zIndex = sceneMoveZindex
     const duration = 2
-    if(direction != 'next'){
+    if (direction != 'next') {
         zIndex *= -1
     }
     //change Scene1
@@ -620,12 +559,12 @@ function rotateDesksin(desk, elapsedTime) {
     const chair_f = desk.getObjectByName('chair_f')
     const silver = desk.getObjectByName('silver')
     const screen = desk.getObjectByName('screen')
-    deskO.rotation.z = ( Math.sin(elapsedTime * period) / width ) + Math.PI
-    monitor.rotation.z = ( Math.sin(elapsedTime * period) / width )
-    chair_b.rotation.z = ( Math.sin(elapsedTime * period) / width )
-    chair_f.rotation.z = ( Math.sin(elapsedTime * period) / width )
-    silver.rotation.z = ( Math.sin(elapsedTime * period) / width ) + Math.PI
-    screen.rotation.z = -( Math.sin(elapsedTime * period) / width )
+    deskO.rotation.z = (Math.sin(elapsedTime * period) / width) + Math.PI
+    monitor.rotation.z = (Math.sin(elapsedTime * period) / width)
+    chair_b.rotation.z = (Math.sin(elapsedTime * period) / width)
+    chair_f.rotation.z = (Math.sin(elapsedTime * period) / width)
+    silver.rotation.z = (Math.sin(elapsedTime * period) / width) + Math.PI
+    screen.rotation.z = -(Math.sin(elapsedTime * period) / width)
 }
 
 function rotateDesk2Left(desk, elapsedTime) {
