@@ -1,7 +1,8 @@
 
-import * as THREE from '../lib/three.module.js'
+// import * as THREE from '../lib/three.module.js'
 import { OrbitControls } from '../lib/OrbitControls.js'
 import { GLTFLoader } from '../lib/GLTFLoader.js'
+import { sceneEnv, THREE } from './scene.js'
 
 /**
  * Materials
@@ -98,57 +99,106 @@ gltfLoader.load(
     }
 )
 
-const materials = [
-    {
-        name: 'wood',
-        encoding: false,
-        color: false,
-        textures: [
-            './texture/Wood_Barrel_Top_001_basecolor.jpg',
-            './texture/Wood_Barrel_Top_001_normal.jpg',
-            './texture/Wood_Barrel_Top_001_height.png',
-            './texture/Wood_Barrel_Top_001_roughness.jpg',
-            './texture/Wood_Barrel_Top_001_ambientOcclusion.jpg'
-        ],
-    }, {
-        name: 'chair',
-        encoding: THREE.sRGBEncoding,
-        color: false,
-        textures: [
-            './texture/chair_2.jpg'
-        ]
-    }, {
-        name: 'silver',
-        encoding: false,
-        color: true,
-        textures: [
-            0x82949d
-        ],
-    }, {
-        name: 'monitor',
-        encoding: false,
-        color: true,
-        textures: [
-            0x9c9c9c
-        ],
-    }, {
-        name: 'outBoarder',
-        encoding: false,
-        color: true,
-        textures: [
-            0xf1f1f1
-        ],
-    }, {
-        video: 'video',
-        color: false,
-        encoding: THREE.sRGBEncoding,
 
-    }
-]
 
-materials.forEach(material => {
+
+// const sceneEnv = {
+//     'objFile': './model/scene1.glb',
+//     'root': new THREE.Group(),
+//     'models': [
+//         { name: 'outertBoard', materialName:'outBoarder' },
+//         { name: 'videoScreen', materialName:'video' },
+//         { name: 'desk',  materialName:'wood' },
+//         { name: 'desk2', materialName:'wood' },
+//         { name: 'chair_b',  materialName:'chair' },
+//         { name: 'chair_f',  materialName:'chair' },
+//         { name: 'chair_b2', materialName:'chair' },
+//         { name: 'chair_f2', materialName:'chair' },
+//         { name: 'silver', materialName:'silver' },
+//         { name: 'silver2', materialName:'silver' },
+//         { name: 'monitor', materialName:'monitor' },
+//         { name: 'com2', materialName:'monitor' },
+//     ],
+//     'groups': [
+//         {
+//             name: 'desk1',
+//             components: ['desk', 'chair_b', 'chair_f', 'silver', 'monitor', 'screen'],
+//             clonePositions: [{ x: -0.5, y: 0.3, z: 1 }, { x: 1.2, y: 0.7, z: 1.1 }],
+//             cloneAnimationSpeed: [1000, 2000]
+//         },
+//         {
+//             name: 'desk2',
+//             components: ['desk2', 'chair_b2', 'chair_f2', 'silver2', 'com2', 'screen2'],
+//             clonePositions: [{ x: 0, y: 0.7, z: 2.5 }, { x: -1, y: 0.3, z: 2 }],
+//             cloneAnimationSpeed: [800, 1000]
+//         }, {
+//             name: 'board',
+//             components: ['outertBoard', 'videoScreen']
+//         }
+//     ],
+//     'materials':[
+//         {
+//             name: 'wood',
+//             encoding: false,
+//             color: false,
+//             textures: [
+//                 './texture/Wood_Barrel_Top_001_basecolor.jpg',
+//                 './texture/Wood_Barrel_Top_001_normal.jpg',
+//                 './texture/Wood_Barrel_Top_001_height.png',
+//                 './texture/Wood_Barrel_Top_001_roughness.jpg',
+//                 './texture/Wood_Barrel_Top_001_ambientOcclusion.jpg'
+//             ],
+//         }, {
+//             name: 'chair',
+//             encoding: THREE.sRGBEncoding,
+//             color: false,
+//             textures: [
+//                 './texture/chair_2.jpg'
+//             ]
+//         }, {
+//             name: 'silver',
+//             encoding: false,
+//             color: true,
+//             textures: [
+//                 0x82949d
+//             ],
+//         }, {
+//             name: 'monitor',
+//             encoding: false,
+//             color: true,
+//             textures: [
+//                 0x9c9c9c
+//             ],
+//         }, {
+//             name: 'outBoarder',
+//             encoding: false,
+//             color: true,
+//             textures: [
+//                 0xf1f1f1
+//             ],
+//         }, {
+//             name: 'video',
+//             video: 'video',
+//             color: false,
+//             encoding: THREE.sRGBEncoding,
+    
+//         }
+//     ]
+// }
+
+sceneEnv.materials.forEach(material => {
     makingMaterial(material)
 })
+
+mappingMaterial(sceneEnv)
+function mappingMaterial(env){
+    const models = env['models']
+    const materials = env['materials']
+    models.forEach( (model) => {
+        const material = materials.find( material => material['name'] === model['materialName'])
+        model['material'] = material['obj']
+    })
+}
 
 function makingMaterial(material) {
     let resultMaterial
@@ -184,42 +234,6 @@ function makingMaterial(material) {
         })
     }
     material['obj'] = resultMaterial
-}
-
-const sceneEnv = {
-    'objFile': './model/scene1.glb',
-    'root': new THREE.Group(),
-    'models': [
-        { name: 'outertBoard', material: materials[4]['obj'] },
-        { name: 'videoScreen', material: materials[5]['obj'] },
-        { name: 'desk', material: materials[0]['obj'] },
-        { name: 'desk2', material: materials[0]['obj'] },
-        { name: 'chair_b', material: materials[1]['obj'] },
-        { name: 'chair_f', material: materials[1]['obj'] },
-        { name: 'chair_b2', material: materials[1]['obj'] },
-        { name: 'chair_f2', material: materials[1]['obj'] },
-        { name: 'silver', material: materials[2]['obj'] },
-        { name: 'silver2', material: materials[2]['obj'] },
-        { name: 'monitor', material: materials[3]['obj'] },
-        { name: 'com2', material: materials[3]['obj'] },
-    ],
-    'groups': [
-        {
-            name: 'desk1',
-            components: ['desk', 'chair_b', 'chair_f', 'silver', 'monitor', 'screen'],
-            clonePositions: [{ x: -0.5, y: 0.3, z: 1 }, { x: 1.2, y: 0.7, z: 1.1 }],
-            cloneAnimationSpeed: [1000, 2000]
-        },
-        {
-            name: 'desk2',
-            components: ['desk2', 'chair_b2', 'chair_f2', 'silver2', 'com2', 'screen2'],
-            clonePositions: [{ x: 0, y: 0.7, z: 2.5 }, { x: -1, y: 0.3, z: 2 }],
-            cloneAnimationSpeed: [800, 1000]
-        }, {
-            name: 'board',
-            components: ['outertBoard', 'videoScreen']
-        }
-    ]
 }
 
 const sceneObjects = []
