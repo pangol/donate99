@@ -71,9 +71,8 @@ gltfLoader.load(
     }
 )
 
-scene1Obj.makingMaterial()
+scene1Obj.makingMaterials()
 scene1Obj.mappingMaterial()
-// const sceneObjects = []
 scene1Obj.loadScene()
 
 let scene2Object = []

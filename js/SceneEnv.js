@@ -1,4 +1,5 @@
 import { THREE, manager, gltfLoader, scene } from './game.js'
+import { MaterialObj, VideoMaterialObj, BasicMaterialObj, StandardMaterialObj } from './MaterialObj.js'
 
 const scene2Info = {
     'objFile': './model/scend2_desk_mserver_screen_server_wire.glb',
@@ -26,7 +27,7 @@ const scene2Info = {
         {
             name: 'white',
             encoding: false,
-            color: true,
+            type: MaterialObj,
             textures: [
                 0xf0f0f0
             ],
@@ -34,7 +35,7 @@ const scene2Info = {
         {
             name: 'circle',
             encoding: false,
-            color: true,
+            type: MaterialObj,
             textures: [
                 0x7CCAD3
             ],
@@ -42,7 +43,7 @@ const scene2Info = {
         {
             name: 'wire',
             encoding: false,
-            color: true,
+            type: MaterialObj,
             textures: [
                 0xfcf400
             ],
@@ -50,7 +51,7 @@ const scene2Info = {
         {
             name: 's2screen',
             encoding: THREE.sRGBEncoding,
-            color: false,
+            type: BasicMaterialObj,
             center: [0.5, 0.5],
             rotation: 3.15,
             textures: [
@@ -60,7 +61,7 @@ const scene2Info = {
         {
             name: 'screenProject2',
             encoding: THREE.sRGBEncoding,
-            color: false,
+            type: BasicMaterialObj,
             center: [0.5, 0.5],
             textures: [
                 './texture/project2.png'
@@ -69,7 +70,7 @@ const scene2Info = {
         {
             name: 'sScreenBoard',
             encoding: THREE.sRGBEncoding,
-            color: false,
+            type: BasicMaterialObj,
             center: [0.5, 0.5],
             textures: [
                 './texture/total_project.png'
@@ -78,29 +79,29 @@ const scene2Info = {
         {
             name: 'scene2mserver',
             encoding: THREE.sRGBEncoding,
-            color: false,
+            type: StandardMaterialObj,
             wrapping: true,
             textures: [
-                './texture/Metal_Plate_013_basecolor.jpg',
-                './texture/Metal_Plate_013_normal.jpg',
-                './texture/Metal_Plate_013_height.png',
-                './texture/Metal_Plate_013_roughness.png',
-                './texture/Metal_Plate_013_ambientOcclusion.jpg',
-                './texture/Metal_Plate_013_metallic.jpg'
+                {map:'map', filepath: './texture/Metal_Plate_013_basecolor.jpg'},
+                {map: 'normalMap', filepath: './texture/Metal_Plate_013_normal.jpg'},
+                // {map: 'height', filepath: './texture/Metal_Plate_013_height.png'},
+                {map: 'roughnessMap', filepath: './texture/Metal_Plate_013_roughness.png'},
+                {map: 'aoMap', filepath:'./texture/Metal_Plate_013_ambientOcclusion.jpg'},
+                {map: 'metalnessMap', filepath: './texture/Metal_Plate_013_metallic.jpg'}
             ],
         },
         {
             name: 'scene2server',
             encoding: THREE.sRGBEncoding,
-            color: false,
+            type: StandardMaterialObj,
             repeat: [1.5, 1],
             wrapping: true,
             textures: [
-                './texture/Sci-fi_Pipes_001_basecolor.jpg',
-                './texture/Sci-fi_Pipes_001_normal.jpg',
-                './texture/Sci-fi_Pipes_001_roughness.jpg',
-                './texture/Sci-fi_Pipes_001_ambientOcclusion.jpg',
-                './texture/Sci-fi_Pipes_001_metallic.jpg',
+                {map:'map', filepath:'./texture/Sci-fi_Pipes_001_basecolor.jpg'},
+                {map: 'normalMap', filepath:'./texture/Sci-fi_Pipes_001_normal.jpg'},
+                {map: 'roughnessMap',filepath:'./texture/Sci-fi_Pipes_001_roughness.jpg'},
+                {map: 'aoMap', filepath:'./texture/Sci-fi_Pipes_001_ambientOcclusion.jpg'},
+                {map: 'metalnessMap', filepath: './texture/Sci-fi_Pipes_001_metallic.jpg'},
             ],
         }
         
@@ -144,46 +145,46 @@ const scene1Info = {
         {
             name: 'wood',
             encoding: false,
-            color: false,
+            type: StandardMaterialObj,
             textures: [
-                './texture/Wood_Barrel_Top_001_basecolor.jpg',
-                './texture/Wood_Barrel_Top_001_normal.jpg',
-                './texture/Wood_Barrel_Top_001_height.png',
-                './texture/Wood_Barrel_Top_001_roughness.jpg',
-                './texture/Wood_Barrel_Top_001_ambientOcclusion.jpg'
+                {map:'map', filepath:'./texture/Wood_Barrel_Top_001_basecolor.jpg'},
+                {map: 'normalMap', filapath:'./texture/Wood_Barrel_Top_001_normal.jpg'},
+                // {map:'heightMap', filepath:'./texture/Wood_Barrel_Top_001_height.png',
+                {map:'roughnessMap', filepath:'./texture/Wood_Barrel_Top_001_roughness.jpg'},
+                {map: 'aoMap', filepath:'./texture/Wood_Barrel_Top_001_ambientOcclusion.jpg'}
             ],
         }, {
             name: 'chair',
             encoding: THREE.sRGBEncoding,
-            color: false,
+            type: BasicMaterialObj,
             textures: [
                 './texture/chair_2.jpg'
             ]
         }, {
             name: 'silver',
             encoding: false,
-            color: true,
+            type: MaterialObj,
             textures: [
                 0x82949d
             ],
         }, {
             name: 'monitor',
             encoding: false,
-            color: true,
+            type: MaterialObj,
             textures: [
                 0x9c9c9c
             ],
         }, {
             name: 'outBoarder',
             encoding: false,
-            color: true,
+            type: MaterialObj,
             textures: [
                 0xf1f1f1
             ],
         }, {
             name: 'video',
             video: 'video',
-            color: false,
+            type: VideoMaterialObj,
             encoding: THREE.sRGBEncoding,
         }
     ]
@@ -205,40 +206,9 @@ class SceneEnv {
             model['material'] = material['obj']
         })
     }
-    makingMaterial() {
+    makingMaterials() {
         this.materials.forEach( material => {
-            let resultMaterial
-            if (material['color']) {
-                resultMaterial = new THREE.MeshStandardMaterial({ color: material['textures'][0] })
-            } else if (material['video']) {
-                const video = document.getElementById(material['video'])
-                video.play()
-                const videoTexture = new THREE.VideoTexture(video);
-                videoTexture.flipY = false;
-                videoTexture.encoding = material.encoding
-                resultMaterial = new THREE.MeshBasicMaterial({ map: videoTexture })
-            } else {
-                const colorTex = new THREE.TextureLoader(manager).load(material['textures'][0])
-                let normalTex, disTex, roughTex, aoTex
-                if (material['textures'].length > 1) {
-                    normalTex = new THREE.TextureLoader(manager).load(material['textures'][1])
-                    disTex = new THREE.TextureLoader(manager).load(material['textures'][2])
-                    roughTex = new THREE.TextureLoader(manager).load(material['textures'][3])
-                    aoTex = new THREE.TextureLoader(manager).load(material['textures'][4])
-                }
-        
-                if (material['encoding']) {
-                    colorTex.encoding = material['encoding']
-                }
-        
-                resultMaterial = new THREE.MeshStandardMaterial({
-                    map: colorTex,
-                    normalMap: normalTex,
-                    roughnessMap: roughTex,
-                    aoMap: aoTex,
-                })
-            }
-            material['obj'] = resultMaterial
+            material.type.makingMaterial(material)
         })
     }
     loadScene() {
