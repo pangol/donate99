@@ -1,4 +1,4 @@
-import * as THREE from '../lib/three.module.js'
+import { THREE, manager, gltfLoader, scene } from './game.js'
 
 const sceneEnv = {
     'objFile': './model/scene1.glb',
@@ -81,7 +81,111 @@ const sceneEnv = {
             encoding: THREE.sRGBEncoding,
     
         }
-    ]
+    ],
+    mappingMaterial : function mappingMaterial(){
+        const models = this['models']
+        const materials = this['materials']
+        models.forEach( (model) => {
+            const material = materials.find( material => material['name'] === model['materialName'])
+            model['material'] = material['obj']
+        })
+    },
+    makingMaterial: function makingMaterial() {
+        this.materials.forEach( material => {
+            let resultMaterial
+            if (material['color']) {
+                resultMaterial = new THREE.MeshStandardMaterial({ color: material['textures'][0] })
+            } else if (material['video']) {
+                const video = document.getElementById(material['video'])
+                video.play()
+                const videoTexture = new THREE.VideoTexture(video);
+                videoTexture.flipY = false;
+                videoTexture.encoding = material.encoding
+                resultMaterial = new THREE.MeshBasicMaterial({ map: videoTexture })
+            } else {
+                const colorTex = new THREE.TextureLoader(manager).load(material['textures'][0])
+                let normalTex, disTex, roughTex, aoTex
+                if (material['textures'].length > 1) {
+                    normalTex = new THREE.TextureLoader(manager).load(material['textures'][1])
+                    disTex = new THREE.TextureLoader(manager).load(material['textures'][2])
+                    roughTex = new THREE.TextureLoader(manager).load(material['textures'][3])
+                    aoTex = new THREE.TextureLoader(manager).load(material['textures'][4])
+                }
+        
+                if (material['encoding']) {
+                    colorTex.encoding = material['encoding']
+                }
+        
+                resultMaterial = new THREE.MeshStandardMaterial({
+                    map: colorTex,
+                    normalMap: normalTex,
+                    roughnessMap: roughTex,
+                    aoMap: aoTex,
+                })
+            }
+            material['obj'] = resultMaterial
+        })
+    },
+    loadScene: function loadScene() {
+        gltfLoader.load(
+            this.objFile,
+            (gltf) => {
+                const root = gltf.scene
+                this.models.forEach(model => {
+                    this.settingChildMaterial(root, model.name, model.material)
+                })
+    
+                this.groups.forEach(group => {
+                    group['obj'] = this.settingGroup(root, group.components)
+                    this.root.add(group['obj'])
+                })
+    
+                this.groups.forEach(group => {
+                    if (Object.keys(group).includes('clonePositions')) {
+                        const clones = this.cloneGroups(group.obj, group.clonePositions)
+                        group['cloneobjs'] = clones
+                        clones.forEach(clone => {
+                            this.root.add(clone)
+                        })
+    
+                    }
+                })
+                scene.add(this.root)
+                // sceneObjects.push(sceneObj.root)
+            }
+        )
+    },
+    settingGroup: function settingGroup(root, objNames) {
+        const group = new THREE.Group()
+        objNames.forEach(name => {
+            const obj = root.children.find((child) => child.name === name)
+            group.add(obj)
+        })
+        return group
+    },
+    cloneGroups: function cloneGroups(rawObj, positions) {
+        const result = new Array()
+        positions.forEach(position => {
+            const clone = rawObj.clone()
+            clone.position.set(position.x, position.y, position.z)
+    
+            result.push(clone)
+        })
+        return result
+    },
+    cloneAnimate: function cloneAnimate(obj, elapsedTime, speed, sin) {
+        let middle
+        if (sin) {
+            middle = Math.sin(elapsedTime)
+        } else {
+            middle = Math.cos(elapsedTime)
+        }
+        obj.position.y += middle / speed
+    },
+    settingChildMaterial: function settingChildMaterial(root, objName, material) {
+        const obj = root.children.find((child) => child.name === objName)
+        obj.material = material
+    }
 }
 
-export { sceneEnv, THREE }
+export { sceneEnv, THREE, manager, gltfLoader, scene }

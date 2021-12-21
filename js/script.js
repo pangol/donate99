@@ -1,12 +1,7 @@
 
 // import * as THREE from '../lib/three.module.js'
 import { OrbitControls } from '../lib/OrbitControls.js'
-import { GLTFLoader } from '../lib/GLTFLoader.js'
-import { sceneEnv, THREE } from './scene.js'
-
-/**
- * Materials
- */
+import { sceneEnv, THREE, manager, gltfLoader, scene } from './scene.js'
 
 //Debug UI
 const gui = new dat.GUI()
@@ -17,8 +12,7 @@ const nextSceneBtn = document.querySelector('#nextSceneBtn')
 const beForeSceneBtn = document.querySelector('#beforeSceneBtn')
 let sceneState = 0
 
-// Scene
-const scene = new THREE.Scene()
+
 //camera
 const sizes = {
     width: canvas.offsetWidth,
@@ -30,28 +24,6 @@ camera.position.z = 1
 camera.position.x = 2
 camera.position.y = 3
 scene.add(camera)
-
-// Loading Manager
-const manager = new THREE.LoadingManager();
-const loadingDom = document.getElementById('loading')
-
-
-manager.onStart = function (url, itemsLoaded, itemsTotal) {
-    console.log('Started loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.');
-};
-manager.onLoad = function () {
-    loadingDom.style.display = 'none'
-    console.log('Loading complete!')
-};
-manager.onProgress = function (url, itemsLoaded, itemsTotal) {
-    loadingDom.style.width = (itemsLoaded / itemsTotal) * 70 + '%'
-    // console.log('Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.');
-};
-manager.onError = function (url) {
-    console.log('There was an error loading ' + url);
-};
-
-const gltfLoader = new GLTFLoader(manager)
 
 const bodyMaterial = new THREE.MeshBasicMaterial({ color: 0xAEE1CD })
 
@@ -99,203 +71,10 @@ gltfLoader.load(
     }
 )
 
-
-
-
-// const sceneEnv = {
-//     'objFile': './model/scene1.glb',
-//     'root': new THREE.Group(),
-//     'models': [
-//         { name: 'outertBoard', materialName:'outBoarder' },
-//         { name: 'videoScreen', materialName:'video' },
-//         { name: 'desk',  materialName:'wood' },
-//         { name: 'desk2', materialName:'wood' },
-//         { name: 'chair_b',  materialName:'chair' },
-//         { name: 'chair_f',  materialName:'chair' },
-//         { name: 'chair_b2', materialName:'chair' },
-//         { name: 'chair_f2', materialName:'chair' },
-//         { name: 'silver', materialName:'silver' },
-//         { name: 'silver2', materialName:'silver' },
-//         { name: 'monitor', materialName:'monitor' },
-//         { name: 'com2', materialName:'monitor' },
-//     ],
-//     'groups': [
-//         {
-//             name: 'desk1',
-//             components: ['desk', 'chair_b', 'chair_f', 'silver', 'monitor', 'screen'],
-//             clonePositions: [{ x: -0.5, y: 0.3, z: 1 }, { x: 1.2, y: 0.7, z: 1.1 }],
-//             cloneAnimationSpeed: [1000, 2000]
-//         },
-//         {
-//             name: 'desk2',
-//             components: ['desk2', 'chair_b2', 'chair_f2', 'silver2', 'com2', 'screen2'],
-//             clonePositions: [{ x: 0, y: 0.7, z: 2.5 }, { x: -1, y: 0.3, z: 2 }],
-//             cloneAnimationSpeed: [800, 1000]
-//         }, {
-//             name: 'board',
-//             components: ['outertBoard', 'videoScreen']
-//         }
-//     ],
-//     'materials':[
-//         {
-//             name: 'wood',
-//             encoding: false,
-//             color: false,
-//             textures: [
-//                 './texture/Wood_Barrel_Top_001_basecolor.jpg',
-//                 './texture/Wood_Barrel_Top_001_normal.jpg',
-//                 './texture/Wood_Barrel_Top_001_height.png',
-//                 './texture/Wood_Barrel_Top_001_roughness.jpg',
-//                 './texture/Wood_Barrel_Top_001_ambientOcclusion.jpg'
-//             ],
-//         }, {
-//             name: 'chair',
-//             encoding: THREE.sRGBEncoding,
-//             color: false,
-//             textures: [
-//                 './texture/chair_2.jpg'
-//             ]
-//         }, {
-//             name: 'silver',
-//             encoding: false,
-//             color: true,
-//             textures: [
-//                 0x82949d
-//             ],
-//         }, {
-//             name: 'monitor',
-//             encoding: false,
-//             color: true,
-//             textures: [
-//                 0x9c9c9c
-//             ],
-//         }, {
-//             name: 'outBoarder',
-//             encoding: false,
-//             color: true,
-//             textures: [
-//                 0xf1f1f1
-//             ],
-//         }, {
-//             name: 'video',
-//             video: 'video',
-//             color: false,
-//             encoding: THREE.sRGBEncoding,
-    
-//         }
-//     ]
-// }
-
-sceneEnv.materials.forEach(material => {
-    makingMaterial(material)
-})
-
-mappingMaterial(sceneEnv)
-function mappingMaterial(env){
-    const models = env['models']
-    const materials = env['materials']
-    models.forEach( (model) => {
-        const material = materials.find( material => material['name'] === model['materialName'])
-        model['material'] = material['obj']
-    })
-}
-
-function makingMaterial(material) {
-    let resultMaterial
-    if (material['color']) {
-        resultMaterial = new THREE.MeshStandardMaterial({ color: material['textures'][0] })
-    } else if (material['video']) {
-        const video = document.getElementById(material['video'])
-        video.play()
-        const videoTexture = new THREE.VideoTexture(video);
-        videoTexture.flipY = false;
-        videoTexture.encoding = material.encoding
-        resultMaterial = new THREE.MeshBasicMaterial({ map: videoTexture })
-    } else {
-        const colorTex = new THREE.TextureLoader(manager).load(material['textures'][0])
-        let normalTex, disTex, roughTex, aoTex
-        if (material['textures'].length > 1) {
-            normalTex = new THREE.TextureLoader(manager).load(material['textures'][1])
-            disTex = new THREE.TextureLoader(manager).load(material['textures'][2])
-            roughTex = new THREE.TextureLoader(manager).load(material['textures'][3])
-            aoTex = new THREE.TextureLoader(manager).load(material['textures'][4])
-        }
-
-
-        if (material['encoding']) {
-            colorTex.encoding = material['encoding']
-        }
-
-        resultMaterial = new THREE.MeshStandardMaterial({
-            map: colorTex,
-            normalMap: normalTex,
-            roughnessMap: roughTex,
-            aoMap: aoTex,
-        })
-    }
-    material['obj'] = resultMaterial
-}
-
-const sceneObjects = []
-loadScene1()
-function loadScene1() {
-    gltfLoader.load(
-        sceneEnv.objFile,
-        (gltf) => {
-            const root = gltf.scene
-            sceneEnv.models.forEach(model => {
-                settingChildMaterial(root, model.name, model.material)
-            })
-
-            sceneEnv.groups.forEach(group => {
-                group['obj'] = settingGroup(root, group.components)
-                sceneEnv.root.add(group['obj'])
-            })
-
-            sceneEnv.groups.forEach(group => {
-                if (Object.keys(group).includes('clonePositions')) {
-                    const clones = cloneGroups(group.obj, group.clonePositions)
-                    group['cloneobjs'] = clones
-                    clones.forEach(clone => {
-                        sceneEnv.root.add(clone)
-                    })
-
-                }
-            })
-            scene.add(sceneEnv.root)
-            sceneObjects.push(sceneEnv.root)
-        })
-}
-
-function settingGroup(root, objNames) {
-    const group = new THREE.Group()
-    objNames.forEach(name => {
-        const obj = root.children.find((child) => child.name === name)
-        group.add(obj)
-    })
-    return group
-}
-
-function cloneGroups(rawObj, positions) {
-    const result = new Array()
-    positions.forEach(position => {
-        const clone = rawObj.clone()
-        clone.position.set(position.x, position.y, position.z)
-
-        result.push(clone)
-    })
-    return result
-}
-
-function cloneAnimate(obj, elapsedTime, speed, sin) {
-    let middle
-    if (sin) {
-        middle = Math.sin(elapsedTime)
-    } else {
-        middle = Math.cos(elapsedTime)
-    }
-    obj.position.y += middle / speed
-}
+sceneEnv.makingMaterial()
+sceneEnv.mappingMaterial()
+// const sceneObjects = []
+sceneEnv.loadScene()
 
 let scene2Object = []
 const sceneMoveZindex = 5
@@ -513,13 +292,13 @@ const tick = () => {
     const deskGroup1 = sceneEnv['groups'].find(group => group.name === 'desk1')
     if (Object.keys(deskGroup1).includes('cloneobjs')) {
         deskGroup1['cloneobjs'].forEach((desk, i) => {
-            cloneAnimate(desk, elapsedTime, deskGroup1['cloneAnimationSpeed'][i], true)
+            sceneEnv.cloneAnimate(desk, elapsedTime, deskGroup1['cloneAnimationSpeed'][i], true)
         })
     }
     const deskGroup2 = sceneEnv['groups'].find(group => group.name === 'desk2')
     if (Object.keys(deskGroup2).includes('cloneobjs')) {
         deskGroup2['cloneobjs'].forEach((desk, i) => {
-            cloneAnimate(desk, elapsedTime, deskGroup2['cloneAnimationSpeed'][i], false)
+            sceneEnv.cloneAnimate(desk, elapsedTime, deskGroup2['cloneAnimationSpeed'][i], false)
         })
     }
 
