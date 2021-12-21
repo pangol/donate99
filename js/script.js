@@ -1,7 +1,7 @@
 
 // import * as THREE from '../lib/three.module.js'
 import { OrbitControls } from '../lib/OrbitControls.js'
-import { sceneEnv, THREE, manager, gltfLoader, scene } from './scene.js'
+import { scene1Obj, THREE, manager, gltfLoader, scene } from './SceneEnv.js'
 
 //Debug UI
 const gui = new dat.GUI()
@@ -71,10 +71,10 @@ gltfLoader.load(
     }
 )
 
-sceneEnv.makingMaterial()
-sceneEnv.mappingMaterial()
+scene1Obj.makingMaterial()
+scene1Obj.mappingMaterial()
 // const sceneObjects = []
-sceneEnv.loadScene()
+scene1Obj.loadScene()
 
 let scene2Object = []
 const sceneMoveZindex = 5
@@ -289,16 +289,16 @@ const tick = () => {
     const delta = clock.getDelta();
     const elapsedTime = clock.getElapsedTime()
 
-    const deskGroup1 = sceneEnv['groups'].find(group => group.name === 'desk1')
+    const deskGroup1 = scene1Obj['groups'].find(group => group.name === 'desk1')
     if (Object.keys(deskGroup1).includes('cloneobjs')) {
         deskGroup1['cloneobjs'].forEach((desk, i) => {
-            sceneEnv.cloneAnimate(desk, elapsedTime, deskGroup1['cloneAnimationSpeed'][i], true)
+            scene1Obj.cloneAnimate(desk, elapsedTime, deskGroup1['cloneAnimationSpeed'][i], true)
         })
     }
-    const deskGroup2 = sceneEnv['groups'].find(group => group.name === 'desk2')
+    const deskGroup2 = scene1Obj['groups'].find(group => group.name === 'desk2')
     if (Object.keys(deskGroup2).includes('cloneobjs')) {
         deskGroup2['cloneobjs'].forEach((desk, i) => {
-            sceneEnv.cloneAnimate(desk, elapsedTime, deskGroup2['cloneAnimationSpeed'][i], false)
+            scene1Obj.cloneAnimate(desk, elapsedTime, deskGroup2['cloneAnimationSpeed'][i], false)
         })
     }
 

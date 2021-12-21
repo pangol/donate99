@@ -1,8 +1,114 @@
 import { THREE, manager, gltfLoader, scene } from './game.js'
 
-const sceneEnv = {
+const scene2Info = {
+    'objFile': './model/scend2_desk_mserver_screen_server_wire.glb',
+    'models': [
+        {name:'sMonitor1', materialName:'white'},
+        {name:'sMonitor2', materialName:'white'},
+        {name:'projectBoard', materialName:'white'},
+        {name:'sScreen2', materialName:'s2screen'},
+        {name:'sScreen1', materialName:'screenProject2'},
+        {name:'sDisk1', materialName:'scene2mserver'},
+        {name:'sDisk2', materialName:'scene2mserver'},
+        {name:'sDisk3', materialName:'scene2mserver'},
+        {name:'sDisk4', materialName:'scene2mserver'},
+        {name:'sDisk5', materialName:'scene2mserver'},
+        {name:'sScreenBoard', materialName:'sScreenBoard'},
+        {name:'serverOut', materialName:'scene2server'},
+        {name:'serverIn', materialName:'scene2mserver'},
+        {name:'circleServer', materialName:'circle'},
+        {name:'circleServer1', materialName:'circle'},
+        {name:'circleServer2', materialName:'circle'},
+        {name:'circleServer3', materialName:'circle'},
+        {name:'wire', type:'groups', materialName: ['wire, circle']}
+    ],
+    'mateirals': [
+        {
+            name: 'white',
+            encoding: false,
+            color: true,
+            textures: [
+                0xf0f0f0
+            ],
+        },
+        {
+            name: 'circle',
+            encoding: false,
+            color: true,
+            textures: [
+                0x7CCAD3
+            ],
+        },
+        {
+            name: 'wire',
+            encoding: false,
+            color: true,
+            textures: [
+                0xfcf400
+            ],
+        },
+        {
+            name: 's2screen',
+            encoding: THREE.sRGBEncoding,
+            color: false,
+            center: [0.5, 0.5],
+            rotation: 3.15,
+            textures: [
+                './texture/project1.png'
+            ],
+        },
+        {
+            name: 'screenProject2',
+            encoding: THREE.sRGBEncoding,
+            color: false,
+            center: [0.5, 0.5],
+            textures: [
+                './texture/project2.png'
+            ],
+        },
+        {
+            name: 'sScreenBoard',
+            encoding: THREE.sRGBEncoding,
+            color: false,
+            center: [0.5, 0.5],
+            textures: [
+                './texture/total_project.png'
+            ],
+        },
+        {
+            name: 'scene2mserver',
+            encoding: THREE.sRGBEncoding,
+            color: false,
+            wrapping: true,
+            textures: [
+                './texture/Metal_Plate_013_basecolor.jpg',
+                './texture/Metal_Plate_013_normal.jpg',
+                './texture/Metal_Plate_013_height.png',
+                './texture/Metal_Plate_013_roughness.png',
+                './texture/Metal_Plate_013_ambientOcclusion.jpg',
+                './texture/Metal_Plate_013_metallic.jpg'
+            ],
+        },
+        {
+            name: 'scene2server',
+            encoding: THREE.sRGBEncoding,
+            color: false,
+            repeat: [1.5, 1],
+            wrapping: true,
+            textures: [
+                './texture/Sci-fi_Pipes_001_basecolor.jpg',
+                './texture/Sci-fi_Pipes_001_normal.jpg',
+                './texture/Sci-fi_Pipes_001_roughness.jpg',
+                './texture/Sci-fi_Pipes_001_ambientOcclusion.jpg',
+                './texture/Sci-fi_Pipes_001_metallic.jpg',
+            ],
+        }
+        
+    ]
+}
+
+const scene1Info = {
     'objFile': './model/scene1.glb',
-    'root': new THREE.Group(),
     'models': [
         { name: 'outertBoard', materialName:'outBoarder' },
         { name: 'videoScreen', materialName:'video' },
@@ -79,18 +185,27 @@ const sceneEnv = {
             video: 'video',
             color: false,
             encoding: THREE.sRGBEncoding,
-    
         }
-    ],
-    mappingMaterial : function mappingMaterial(){
+    ]
+}
+
+class SceneEnv {
+    constructor(objFile, models, groups, materials){
+        this.objFile = objFile
+        this.root = new THREE.Group()
+        this.models = models
+        this.groups = groups
+        this.materials = materials
+    }
+    mappingMaterial(){
         const models = this['models']
         const materials = this['materials']
         models.forEach( (model) => {
             const material = materials.find( material => material['name'] === model['materialName'])
             model['material'] = material['obj']
         })
-    },
-    makingMaterial: function makingMaterial() {
+    }
+    makingMaterial() {
         this.materials.forEach( material => {
             let resultMaterial
             if (material['color']) {
@@ -125,8 +240,8 @@ const sceneEnv = {
             }
             material['obj'] = resultMaterial
         })
-    },
-    loadScene: function loadScene() {
+    }
+    loadScene() {
         gltfLoader.load(
             this.objFile,
             (gltf) => {
@@ -154,16 +269,16 @@ const sceneEnv = {
                 // sceneObjects.push(sceneObj.root)
             }
         )
-    },
-    settingGroup: function settingGroup(root, objNames) {
+    }
+    settingGroup(root, objNames) {
         const group = new THREE.Group()
         objNames.forEach(name => {
             const obj = root.children.find((child) => child.name === name)
             group.add(obj)
         })
         return group
-    },
-    cloneGroups: function cloneGroups(rawObj, positions) {
+    }
+    cloneGroups(rawObj, positions) {
         const result = new Array()
         positions.forEach(position => {
             const clone = rawObj.clone()
@@ -172,8 +287,8 @@ const sceneEnv = {
             result.push(clone)
         })
         return result
-    },
-    cloneAnimate: function cloneAnimate(obj, elapsedTime, speed, sin) {
+    }
+    cloneAnimate(obj, elapsedTime, speed, sin) {
         let middle
         if (sin) {
             middle = Math.sin(elapsedTime)
@@ -181,11 +296,13 @@ const sceneEnv = {
             middle = Math.cos(elapsedTime)
         }
         obj.position.y += middle / speed
-    },
-    settingChildMaterial: function settingChildMaterial(root, objName, material) {
+    }
+    settingChildMaterial(root, objName, material) {
         const obj = root.children.find((child) => child.name === objName)
         obj.material = material
     }
 }
 
-export { sceneEnv, THREE, manager, gltfLoader, scene }
+const scene1Obj = new SceneEnv(scene1Info.objFile, scene1Info.models, scene1Info.groups, scene1Info.materials)
+
+export { scene1Obj, THREE, manager, gltfLoader, scene }
