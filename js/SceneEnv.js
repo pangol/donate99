@@ -21,9 +21,9 @@ const scene2Info = {
         {name:'circleServer1', materialName:'circle'},
         {name:'circleServer2', materialName:'circle'},
         {name:'circleServer3', materialName:'circle'},
-        {name:'wire', type:'groups', materialName: ['wire, circle']}
+        {name:'wire', materialName: 'wire'}
     ],
-    'mateirals': [
+    'materials': [
         {
             name: 'white',
             encoding: false,
@@ -85,7 +85,7 @@ const scene2Info = {
                 {map:'map', filepath: './texture/Metal_Plate_013_basecolor.jpg'},
                 {map: 'normalMap', filepath: './texture/Metal_Plate_013_normal.jpg'},
                 // {map: 'height', filepath: './texture/Metal_Plate_013_height.png'},
-                {map: 'roughnessMap', filepath: './texture/Metal_Plate_013_roughness.png'},
+                {map: 'roughnessMap', filepath: './texture/Metal_Plate_013_roughness.jpg'},
                 {map: 'aoMap', filepath:'./texture/Metal_Plate_013_ambientOcclusion.jpg'},
                 {map: 'metalnessMap', filepath: './texture/Metal_Plate_013_metallic.jpg'}
             ],
@@ -148,12 +148,13 @@ const scene1Info = {
             type: StandardMaterialObj,
             textures: [
                 {map:'map', filepath:'./texture/Wood_Barrel_Top_001_basecolor.jpg'},
-                {map: 'normalMap', filapath:'./texture/Wood_Barrel_Top_001_normal.jpg'},
-                // {map:'heightMap', filepath:'./texture/Wood_Barrel_Top_001_height.png',
+                {map: 'normalMap', filepath:'./texture/Wood_Barrel_Top_001_normal.jpg'},
+                {map:'heightMap', filepath:'./texture/Wood_Barrel_Top_001_height.png'},
                 {map:'roughnessMap', filepath:'./texture/Wood_Barrel_Top_001_roughness.jpg'},
                 {map: 'aoMap', filepath:'./texture/Wood_Barrel_Top_001_ambientOcclusion.jpg'}
             ],
-        }, {
+        }, 
+        {
             name: 'chair',
             encoding: THREE.sRGBEncoding,
             type: BasicMaterialObj,
@@ -274,5 +275,6 @@ class SceneEnv {
 }
 
 const scene1Obj = new SceneEnv(scene1Info.objFile, scene1Info.models, scene1Info.groups, scene1Info.materials)
+const scene2Obj = new SceneEnv(scene2Info.objFile, scene2Info.models, scene2Info.groups, scene2Info.materials)
 
-export { scene1Obj, THREE, manager, gltfLoader, scene }
+export { scene2Obj, scene1Obj, THREE, manager, gltfLoader, scene }

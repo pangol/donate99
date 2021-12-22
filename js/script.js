@@ -1,7 +1,7 @@
 
 // import * as THREE from '../lib/three.module.js'
 import { OrbitControls } from '../lib/OrbitControls.js'
-import { scene1Obj, THREE, manager, gltfLoader, scene } from './SceneEnv.js'
+import { scene1Obj, scene2Obj, THREE, manager, gltfLoader, scene } from './SceneEnv.js'
 
 //Debug UI
 const gui = new dat.GUI()
@@ -72,8 +72,11 @@ gltfLoader.load(
 )
 
 scene1Obj.makingMaterials()
-scene1Obj.mappingMaterial()
-scene1Obj.loadScene()
+// scene1Obj.mappingMaterial()
+// scene1Obj.loadScene()
+
+// scene2Obj.makingMaterials()
+// scene2Obj.mappingMaterial()
 
 let scene2Object = []
 const sceneMoveZindex = 5

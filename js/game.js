@@ -20,7 +20,6 @@ manager.onLoad = function () {
 };
 manager.onProgress = function (url, itemsLoaded, itemsTotal) {
     loadingDom.style.width = (itemsLoaded / itemsTotal) * 70 + '%'
-    // console.log('Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.');
 };
 manager.onError = function (url) {
     console.log('There was an error loading ' + url);

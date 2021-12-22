@@ -46,7 +46,6 @@ class StandardMaterialObj extends MaterialObj {
         return result 
     }
     static makingMaterial(material) {
-        
         const basicTexture = this.loadingTexture(material, 'map')
         const normalTexture = this.loadingTexture(material, 'normalMap')
         const roughnessTexture = this.loadingTexture(material, 'roughnessMap')
