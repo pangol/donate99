@@ -4,24 +4,24 @@ import { MaterialObj, VideoMaterialObj, BasicMaterialObj, StandardMaterialObj } 
 const scene2Info = {
     'objFile': './model/scend2_desk_mserver_screen_server_wire.glb',
     'models': [
-        {name:'sMonitor1', materialName:'white'},
-        {name:'sMonitor2', materialName:'white'},
-        {name:'projectBoard', materialName:'white'},
-        {name:'sScreen2', materialName:'s2screen'},
-        {name:'sScreen1', materialName:'screenProject2'},
-        {name:'sDisk1', materialName:'scene2mserver'},
-        {name:'sDisk2', materialName:'scene2mserver'},
-        {name:'sDisk3', materialName:'scene2mserver'},
-        {name:'sDisk4', materialName:'scene2mserver'},
-        {name:'sDisk5', materialName:'scene2mserver'},
-        {name:'sScreenBoard', materialName:'sScreenBoard'},
-        {name:'serverOut', materialName:'scene2server'},
-        {name:'serverIn', materialName:'scene2mserver'},
-        {name:'circleServer', materialName:'circle'},
-        {name:'circleServer1', materialName:'circle'},
-        {name:'circleServer2', materialName:'circle'},
-        {name:'circleServer3', materialName:'circle'},
-        {name:'wire', materialName: 'wire'}
+        { name: 'sMonitor1', materialName: 'white' },
+        { name: 'sMonitor2', materialName: 'white' },
+        { name: 'projectBoard', materialName: 'white' },
+        { name: 'sScreen2', materialName: 's2screen' },
+        { name: 'sScreen1', materialName: 'screenProject2' },
+        { name: 'sDisk1', materialName: 'scene2mserver' },
+        { name: 'sDisk2', materialName: 'scene2mserver' },
+        { name: 'sDisk3', materialName: 'scene2mserver' },
+        { name: 'sDisk4', materialName: 'scene2mserver' },
+        { name: 'sDisk5', materialName: 'scene2mserver' },
+        { name: 'sScreenBoard', materialName: 'sScreenBoard' },
+        { name: 'serverOut', materialName: 'scene2server' },
+        { name: 'serverIn', materialName: 'scene2mserver' },
+        { name: 'circleServer', materialName: 'circle' },
+        { name: 'circleServer1', materialName: 'circle' },
+        { name: 'circleServer2', materialName: 'circle' },
+        { name: 'circleServer3', materialName: 'circle' },
+        { name: 'wire', type: 'group', materialName: ['wire', 'circle'] }
     ],
     'materials': [
         {
@@ -82,12 +82,12 @@ const scene2Info = {
             type: StandardMaterialObj,
             wrapping: true,
             textures: [
-                {map:'map', filepath: './texture/Metal_Plate_013_basecolor.jpg'},
-                {map: 'normalMap', filepath: './texture/Metal_Plate_013_normal.jpg'},
+                { map: 'map', filepath: './texture/Metal_Plate_013_basecolor.jpg' },
+                { map: 'normalMap', filepath: './texture/Metal_Plate_013_normal.jpg' },
                 // {map: 'height', filepath: './texture/Metal_Plate_013_height.png'},
-                {map: 'roughnessMap', filepath: './texture/Metal_Plate_013_roughness.jpg'},
-                {map: 'aoMap', filepath:'./texture/Metal_Plate_013_ambientOcclusion.jpg'},
-                {map: 'metalnessMap', filepath: './texture/Metal_Plate_013_metallic.jpg'}
+                { map: 'roughnessMap', filepath: './texture/Metal_Plate_013_roughness.jpg' },
+                { map: 'aoMap', filepath: './texture/Metal_Plate_013_ambientOcclusion.jpg' },
+                { map: 'metalnessMap', filepath: './texture/Metal_Plate_013_metallic.jpg' }
             ],
         },
         {
@@ -97,32 +97,31 @@ const scene2Info = {
             repeat: [1.5, 1],
             wrapping: true,
             textures: [
-                {map:'map', filepath:'./texture/Sci-fi_Pipes_001_basecolor.jpg'},
-                {map: 'normalMap', filepath:'./texture/Sci-fi_Pipes_001_normal.jpg'},
-                {map: 'roughnessMap',filepath:'./texture/Sci-fi_Pipes_001_roughness.jpg'},
-                {map: 'aoMap', filepath:'./texture/Sci-fi_Pipes_001_ambientOcclusion.jpg'},
-                {map: 'metalnessMap', filepath: './texture/Sci-fi_Pipes_001_metallic.jpg'},
+                { map: 'map', filepath: './texture/Sci-fi_Pipes_001_basecolor.jpg' },
+                { map: 'normalMap', filepath: './texture/Sci-fi_Pipes_001_normal.jpg' },
+                { map: 'roughnessMap', filepath: './texture/Sci-fi_Pipes_001_roughness.jpg' },
+                { map: 'aoMap', filepath: './texture/Sci-fi_Pipes_001_ambientOcclusion.jpg' },
+                { map: 'metalnessMap', filepath: './texture/Sci-fi_Pipes_001_metallic.jpg' },
             ],
         }
-        
-    ]
+    ],
 }
 
 const scene1Info = {
     'objFile': './model/scene1.glb',
     'models': [
-        { name: 'outertBoard', materialName:'outBoarder' },
-        { name: 'videoScreen', materialName:'video' },
-        { name: 'desk',  materialName:'wood' },
-        { name: 'desk2', materialName:'wood' },
-        { name: 'chair_b',  materialName:'chair' },
-        { name: 'chair_f',  materialName:'chair' },
-        { name: 'chair_b2', materialName:'chair' },
-        { name: 'chair_f2', materialName:'chair' },
-        { name: 'silver', materialName:'silver' },
-        { name: 'silver2', materialName:'silver' },
-        { name: 'monitor', materialName:'monitor' },
-        { name: 'com2', materialName:'monitor' },
+        { name: 'outertBoard', materialName: 'outBoarder' },
+        { name: 'videoScreen', materialName: 'video' },
+        { name: 'desk', materialName: 'wood' },
+        { name: 'desk2', materialName: 'wood' },
+        { name: 'chair_b', materialName: 'chair' },
+        { name: 'chair_f', materialName: 'chair' },
+        { name: 'chair_b2', materialName: 'chair' },
+        { name: 'chair_f2', materialName: 'chair' },
+        { name: 'silver', materialName: 'silver' },
+        { name: 'silver2', materialName: 'silver' },
+        { name: 'monitor', materialName: 'monitor' },
+        { name: 'com2', materialName: 'monitor' },
     ],
     'groups': [
         {
@@ -141,19 +140,19 @@ const scene1Info = {
             components: ['outertBoard', 'videoScreen']
         }
     ],
-    'materials':[
+    'materials': [
         {
             name: 'wood',
             encoding: false,
             type: StandardMaterialObj,
             textures: [
-                {map:'map', filepath:'./texture/Wood_Barrel_Top_001_basecolor.jpg'},
-                {map: 'normalMap', filepath:'./texture/Wood_Barrel_Top_001_normal.jpg'},
-                {map:'heightMap', filepath:'./texture/Wood_Barrel_Top_001_height.png'},
-                {map:'roughnessMap', filepath:'./texture/Wood_Barrel_Top_001_roughness.jpg'},
-                {map: 'aoMap', filepath:'./texture/Wood_Barrel_Top_001_ambientOcclusion.jpg'}
+                { map: 'map', filepath: './texture/Wood_Barrel_Top_001_basecolor.jpg' },
+                { map: 'normalMap', filepath: './texture/Wood_Barrel_Top_001_normal.jpg' },
+                { map: 'heightMap', filepath: './texture/Wood_Barrel_Top_001_height.png' },
+                { map: 'roughnessMap', filepath: './texture/Wood_Barrel_Top_001_roughness.jpg' },
+                { map: 'aoMap', filepath: './texture/Wood_Barrel_Top_001_ambientOcclusion.jpg' }
             ],
-        }, 
+        },
         {
             name: 'chair',
             encoding: THREE.sRGBEncoding,
@@ -192,23 +191,32 @@ const scene1Info = {
 }
 
 class SceneEnv {
-    constructor(objFile, models, groups, materials){
+    constructor(objFile, models, groups, materials) {
         this.objFile = objFile
         this.root = new THREE.Group()
         this.models = models
         this.groups = groups
         this.materials = materials
     }
-    mappingMaterial(){
+    mappingMaterial() {
         const models = this['models']
         const materials = this['materials']
-        models.forEach( (model) => {
-            const material = materials.find( material => material['name'] === model['materialName'])
-            model['material'] = material['obj']
+        models.forEach((model) => {
+
+            if (model.type !== 'group') {
+                const material = materials.find(material => material['name'] === model['materialName'])
+                model['material'] = material['obj']
+            } else {
+                model['material'] = new Array()
+                model.materialName.forEach(name => {
+                    const material = materials.find(material => material['name'] === name)
+                    model['material'].push(material['obj'])
+                })
+            }
         })
     }
     makingMaterials() {
-        this.materials.forEach( material => {
+        this.materials.forEach(material => {
             material.type.makingMaterial(material)
         })
     }
@@ -217,25 +225,35 @@ class SceneEnv {
             this.objFile,
             (gltf) => {
                 const root = gltf.scene
+
                 this.models.forEach(model => {
-                    this.settingChildMaterial(root, model.name, model.material)
-                })
-    
-                this.groups.forEach(group => {
-                    group['obj'] = this.settingGroup(root, group.components)
-                    this.root.add(group['obj'])
-                })
-    
-                this.groups.forEach(group => {
-                    if (Object.keys(group).includes('clonePositions')) {
-                        const clones = this.cloneGroups(group.obj, group.clonePositions)
-                        group['cloneobjs'] = clones
-                        clones.forEach(clone => {
-                            this.root.add(clone)
-                        })
-    
+                    if (model.type !== 'group') {
+                        this.settingChildMaterial(root, model.name, model.material)
+                    }else{
+                        const wireRe = /wire*/
+                        const wireObjs = root.children.filter(child => wireRe.test(child.name))
+                        this.settingWireMaterial(wireObjs, model.material[0], model.material[1])
                     }
                 })
+
+                if(this.groups !== null){
+                    this.groups.forEach(group => {
+                        group['obj'] = this.settingGroup(root, group.components)
+                        this.root.add(group['obj'])
+                    })
+    
+                    this.groups.forEach(group => {
+                        if (Object.keys(group).includes('clonePositions')) {
+                            const clones = this.cloneGroups(group.obj, group.clonePositions)
+                            group['cloneobjs'] = clones
+                            clones.forEach(clone => {
+                                this.root.add(clone)
+                            })
+                        }
+                    })
+                }else{
+                    this.root = root
+                }
                 scene.add(this.root)
                 // sceneObjects.push(sceneObj.root)
             }
@@ -254,7 +272,7 @@ class SceneEnv {
         positions.forEach(position => {
             const clone = rawObj.clone()
             clone.position.set(position.x, position.y, position.z)
-    
+
             result.push(clone)
         })
         return result
@@ -272,9 +290,18 @@ class SceneEnv {
         const obj = root.children.find((child) => child.name === objName)
         obj.material = material
     }
+    settingWireMaterial(objs, firstMaterial, secondMaterial) {
+        objs.forEach((obj, i) => {
+            if (i % 2 == 0) {
+                obj.material = firstMaterial
+            } else {
+                obj.material = secondMaterial
+            }
+        })
+    }
 }
 
 const scene1Obj = new SceneEnv(scene1Info.objFile, scene1Info.models, scene1Info.groups, scene1Info.materials)
-const scene2Obj = new SceneEnv(scene2Info.objFile, scene2Info.models, scene2Info.groups, scene2Info.materials)
+const scene2Obj = new SceneEnv(scene2Info.objFile, scene2Info.models, null, scene2Info.materials)
 
 export { scene2Obj, scene1Obj, THREE, manager, gltfLoader, scene }

@@ -72,11 +72,12 @@ gltfLoader.load(
 )
 
 scene1Obj.makingMaterials()
-// scene1Obj.mappingMaterial()
-// scene1Obj.loadScene()
+scene1Obj.mappingMaterial()
+scene1Obj.loadScene()
 
-// scene2Obj.makingMaterials()
-// scene2Obj.mappingMaterial()
+scene2Obj.makingMaterials()
+scene2Obj.mappingMaterial()
+scene2Obj.loadScene()
 
 let scene2Object = []
 const sceneMoveZindex = 5
@@ -169,55 +170,55 @@ const scene2serverMaterial = new THREE.MeshStandardMaterial({
 
 
 let wireObjs
-loadScene2()
-function loadScene2() {
-    gltfLoader.load(
-        './model/scend2_desk_mserver_screen_server_wire.glb',
-        (gltf) => {
-            const root = gltf.scene
-            root.position.set(0, 0, sceneMoveZindex * -1)
+// loadScene2()
+// function loadScene2() {
+//     gltfLoader.load(
+//         './model/scend2_desk_mserver_screen_server_wire.glb',
+//         (gltf) => {
+//             const root = gltf.scene
+//             root.position.set(0, 0, sceneMoveZindex * -1)
 
-            const s2Desk = root.children.find((child) => child.name === 'sDesk')
-            s2Desk.material = sideMaterial
-            changeCircleMaterial(root, circleMaterial)
+//             const s2Desk = root.children.find((child) => child.name === 'sDesk')
+//             s2Desk.material = sideMaterial
+//             changeCircleMaterial(root, circleMaterial)
 
-            settingChildMaterial(root, 'sMonitor1', witeMaterial)
-            settingChildMaterial(root, 'sMonitor2', witeMaterial)
-            settingChildMaterial(root, 'sScreen2', s2screenMaterial1)
-            settingChildMaterial(root, 'projectBoard', witeMaterial)
-            settingChildMaterial(root, 'sScreen1', screenProject2Material)
+//             settingChildMaterial(root, 'sMonitor1', witeMaterial)
+//             settingChildMaterial(root, 'sMonitor2', witeMaterial)
+//             settingChildMaterial(root, 'sScreen2', s2screenMaterial1)
+//             settingChildMaterial(root, 'projectBoard', witeMaterial)
+//             settingChildMaterial(root, 'sScreen1', screenProject2Material)
 
-            settingChildMaterial(root, 'sDisk1', scene2mserverMaterial)
-            settingChildMaterial(root, 'sDisk2', scene2mserverMaterial)
-            settingChildMaterial(root, 'sDisk3', scene2mserverMaterial)
-            settingChildMaterial(root, 'sDisk4', scene2mserverMaterial)
-            settingChildMaterial(root, 'sDisk5', scene2mserverMaterial)
-            settingChildMaterial(root, 'sScreenBoard', screenBoardMaterial)
-            settingChildMaterial(root, 'serverOut', scene2serverMaterial)
-            settingChildMaterial(root, 'serverIn', scene2mserverMaterial)
-            settingChildMaterial(root, 'circleServer', circleMaterial)
-            settingChildMaterial(root, 'circleServer1', circleMaterial)
-            settingChildMaterial(root, 'circleServer2', circleMaterial)
-            settingChildMaterial(root, 'circleServer3', circleMaterial)
+//             settingChildMaterial(root, 'sDisk1', scene2mserverMaterial)
+//             settingChildMaterial(root, 'sDisk2', scene2mserverMaterial)
+//             settingChildMaterial(root, 'sDisk3', scene2mserverMaterial)
+//             settingChildMaterial(root, 'sDisk4', scene2mserverMaterial)
+//             settingChildMaterial(root, 'sDisk5', scene2mserverMaterial)
+//             settingChildMaterial(root, 'sScreenBoard', screenBoardMaterial)
+//             settingChildMaterial(root, 'serverOut', scene2serverMaterial)
+//             settingChildMaterial(root, 'serverIn', scene2mserverMaterial)
+//             settingChildMaterial(root, 'circleServer', circleMaterial)
+//             settingChildMaterial(root, 'circleServer1', circleMaterial)
+//             settingChildMaterial(root, 'circleServer2', circleMaterial)
+//             settingChildMaterial(root, 'circleServer3', circleMaterial)
 
-            const wireRe = /wire*/
-            wireObjs = root.children.filter(child => wireRe.test(child.name))
-            settingWireMaterial(wireObjs, wireMaterial, circleMaterial)
-            scene.add(root)
-            scene2Object.push(root)
-        }
-    )
-}
+//             const wireRe = /wire*/
+//             wireObjs = root.children.filter(child => wireRe.test(child.name))
+//             settingWireMaterial(wireObjs, wireMaterial, circleMaterial)
+//             scene.add(root)
+//             scene2Object.push(root)
+//         }
+//     )
+// }
 
-function settingWireMaterial(objs, firstMaterial, secondMaterial) {
-    objs.forEach((obj, i) => {
-        if (i % 2 == 0) {
-            obj.material = firstMaterial
-        } else {
-            obj.material = secondMaterial
-        }
-    })
-}
+// function settingWireMaterial(objs, firstMaterial, secondMaterial) {
+//     objs.forEach((obj, i) => {
+//         if (i % 2 == 0) {
+//             obj.material = firstMaterial
+//         } else {
+//             obj.material = secondMaterial
+//         }
+//     })
+// }
 
 let mixer
 gltfLoader.load(
@@ -236,10 +237,10 @@ gltfLoader.load(
     }
 )
 
-function settingChildMaterial(root, objName, material) {
-    const obj = root.children.find((child) => child.name === objName)
-    obj.material = material
-}
+// function settingChildMaterial(root, objName, material) {
+//     const obj = root.children.find((child) => child.name === objName)
+//     obj.material = material
+// }
 
 function changeCircleMaterial(root, colorMaterial) {
     const circles = []
