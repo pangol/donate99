@@ -1,7 +1,63 @@
-import { THREE, manager, gltfLoader, scene } from './game.js'
+import { RGB_PVRTC_2BPPV1_Format } from '../lib/three.module.js'
+import { THREE, game } from './game.js'
 import { MaterialObj, VideoMaterialObj, BasicMaterialObj, StandardMaterialObj } from './MaterialObj.js'
 
 const sceneMoveZindex = 5
+
+const phoneInfo = {
+    position: {x:0,y:0, z:0},
+    objFile: './model/phone_s_m_nm.glb',
+    models: [
+        {name:'body', materialName:'body'},
+        {name:'front', materialName:'front'},
+        {name:'side', materialName:'side'},
+    ],
+    materials: [
+        {
+            name:'side',
+            encoding: false,
+            type: MaterialObj,
+            textures: [
+                0xAEE1CD
+            ],
+        },{
+            name: 'body',
+            encoding:false,
+            type:StandardMaterialObj,
+            textures: [
+                { map: 'map', filepath: './texture/Plastic006_1K_Color.jpg' },
+                { map: 'normalMap', filepath: './texture/Plastic006_1K_NormalDX.jpg' },
+                { map: 'metalnessMap', filepath: './texture/Plastic006_1K_Roughness.jpg' }
+            ]
+        },{
+            name: 'front',
+            encoding: THREE.sRGBEncoding,
+            type:StandardMaterialObj,
+            textures: [
+                { map: 'map', filepath: './texture/Wood_Barrel_Top_001_basecolor.jpg' },
+                { map: 'normalMap', filepath: './texture/Wood_Barrel_Top_001_normal.jpg' },
+                { map: 'heightMap', filepath: './texture/Wood_Barrel_Top_001_height.png' },
+                { map: 'roughnessMap', filepath: './texture/Wood_Barrel_Top_001_roughness.jpg' },
+                { map: 'aoMap', filepath: './texture/Wood_Barrel_Top_001_ambientOcclusion.jpg' }
+            ],
+        },{
+            name: 'scene2Floor',
+            encoding: THREE.sRGBEncoding,
+            type: StandardMaterialObj,
+            wrapping:true,
+            repeat:[1,1.5],
+            textures:[
+                { map: 'map', filepath: './texture/Metal_Plate_012_basecolor.jpg' },
+                { map: 'normalMap', filepath: './texture/Metal_Plate_012_normal.jpg' },
+                // { map: 'heightMap', filepath: './texture/Wood_Barrel_Top_001_height.png' },
+                { map: 'roughnessMap', filepath: './texture/Metal_Plate_012_roughness.jpg' },
+                { map: 'aoMap', filepath: './texture/Metal_Plate_012_ambientOcclusion.jpg' },
+                { map: 'metalnessMap', filepath: './texture/Metal_Plate_012_metallic.jpg' }
+            ]
+        }
+
+    ]
+}
 
 const scene2Info = {
     'position':{x:0,y:0, z:sceneMoveZindex * -1},
@@ -249,7 +305,7 @@ class SceneEnv {
         })
     }
     loadScene() {
-        gltfLoader.load(
+        game.gltfLoader.load(
             this.objFile,
             (gltf) => {
                 const root = gltf.scene
@@ -281,7 +337,7 @@ class SceneEnv {
                     this.root = root
                 }
                 this.root.position.set(this.position.x,this.position.y,this.position.z)
-                scene.add(this.root)
+                game.scene.add(this.root)
                 // sceneObjects.push(sceneObj.root)
             }
         )
@@ -344,9 +400,16 @@ class SceneEnv {
         circles.push(this.root.children.find((child) => child.name === 'circleServer3'))
         circles.forEach(circle => circle.material = colorMaterial)
     }
+    cachingMaterial(names){
+        this.cacheMaterial = []
+        names.forEach( name => {
+            this.cacheMaterial.push(this.materials.find( material => material.name === name).obj)
+        })
+    }
 }
 
 const scene1Obj = new SceneEnv(scene1Info.objFile, scene1Info.models, scene1Info.groups, scene1Info.materials, scene1Info.position)
 const scene2Obj = new SceneEnv(scene2Info.objFile, scene2Info.models, null, scene2Info.materials, scene2Info.position)
+const phoneObj = new SceneEnv(phoneInfo.objFile, phoneInfo.models, null, phoneInfo.materials, phoneInfo.position)
 
-export { scene2Obj, scene1Obj, THREE, manager, gltfLoader, scene, sceneMoveZindex }
+export { scene2Obj, scene1Obj, phoneObj, THREE, game }
