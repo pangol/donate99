@@ -2,8 +2,18 @@ import * as THREE from '../lib/three.module.js'
 import { manager } from './game.js'
 
 class MaterialObj {
+    
     static makingMaterial(material) {
         material.obj =  new THREE.MeshStandardMaterial({ color: material['textures'][0] })
+    }
+
+    static settingRotation(material, texture){
+        texture.rotation = material.rotation
+    }
+
+    static settingCenter(material, texture){
+        texture.center.x = material.center[0]
+        texture.center.y = material.center[1]
     }
 
     static settingEncoding(material, texture){
@@ -27,8 +37,14 @@ class VideoMaterialObj extends MaterialObj {
 class BasicMaterialObj extends MaterialObj {
     static makingMaterial(material) {
         const basicTexture = new THREE.TextureLoader(manager).load(material['textures'][0])
-        if (material['encoding']) {
+        if(material['encoding']) {
             this.settingEncoding(material, basicTexture)
+        }
+        if(material['center']) {
+            this.settingCenter(material, basicTexture)
+        }
+        if(material['rotation']) {
+            this.settingRotation(material, basicTexture)
         }
         material.obj = new THREE.MeshStandardMaterial({
             map: basicTexture,

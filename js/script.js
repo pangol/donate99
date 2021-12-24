@@ -1,6 +1,9 @@
 // import * as THREE from '../lib/three.module.js'
 import { OrbitControls } from '../lib/OrbitControls.js'
-import { scene1Obj, scene2Obj, THREE, manager, gltfLoader, scene } from './SceneEnv.js'
+import { 
+    scene1Obj, scene2Obj, THREE, manager, gltfLoader, scene,
+    sceneMoveZindex
+} from './SceneEnv.js'
 
 //Debug UI
 const gui = new dat.GUI()
@@ -135,6 +138,7 @@ renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 // renderer.setClearColor(0xffc0cb, 1);
 renderer.outputEncoding = THREE.sRGBEncoding
+
 //resize
 window.addEventListener('resize', () => {
     const canvas = document.querySelector('canvas.webgl')
@@ -192,14 +196,20 @@ nextSceneBtn.addEventListener('click', function (event) {
         changebgColor(sceneState)
         changeSceneOnePosition('next')
     } else {
-        sceneState = 0
+        sceneState = 1
     }
 })
 
 beforeSceneBtn.addEventListener('click', function (event) {
-    sceneState--
-    changebgColor(sceneState)
-    changeSceneOnePosition('before')
+    const firstState = 0
+    if (sceneState != firstState){
+        sceneState--
+        changebgColor(sceneState)
+        changeSceneOnePosition('before')
+    }else{
+        sceneState = 0
+    }
+   
 })
 
 function changebgColor(state) {
@@ -223,19 +233,8 @@ function changeSceneOnePosition(direction) {
     if (direction != 'next') {
         zIndex *= -1
     }
-    //change Scene1
-    desks.forEach(desk => {
-        gsap.to(desk.position, { duration: duration, delay: 0, z: desk.position.z + zIndex })
-    })
-    desks2.forEach(desk => {
-        gsap.to(desk.position, { duration: duration, delay: 0, z: desk.position.z + zIndex })
-    })
-    gsap.to(whiteBoardObject.position, { duration: duration, delay: 0, z: whiteBoardObject.position.z + zIndex })
-
-    //change Scene2
-    scene2Object.forEach(obj => {
-        gsap.to(obj.position, { duration: duration, delay: 0, z: obj.position.z + zIndex })
-    })
+    gsap.to(scene1Obj.root.position, { duration: duration, delay: 0, z: scene1Obj.root.position.z + zIndex })
+    gsap.to(scene2Obj.root.position, { duration: duration, delay: 0, z: scene2Obj.root.position.z + zIndex })
 }
 
 tick()

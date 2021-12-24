@@ -349,4 +349,4 @@ class SceneEnv {
 const scene1Obj = new SceneEnv(scene1Info.objFile, scene1Info.models, scene1Info.groups, scene1Info.materials, scene1Info.position)
 const scene2Obj = new SceneEnv(scene2Info.objFile, scene2Info.models, null, scene2Info.materials, scene2Info.position)
 
-export { scene2Obj, scene1Obj, THREE, manager, gltfLoader, scene }
+export { scene2Obj, scene1Obj, THREE, manager, gltfLoader, scene, sceneMoveZindex }
