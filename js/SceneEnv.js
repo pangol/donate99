@@ -1,7 +1,10 @@
 import { THREE, manager, gltfLoader, scene } from './game.js'
 import { MaterialObj, VideoMaterialObj, BasicMaterialObj, StandardMaterialObj } from './MaterialObj.js'
 
+const sceneMoveZindex = 5
+
 const scene2Info = {
+    'position':{x:0,y:0, z:sceneMoveZindex * -1},
     'objFile': './model/scend2_desk_mserver_screen_server_wire.glb',
     'models': [
         { name: 'sMonitor1', materialName: 'white' },
@@ -9,6 +12,7 @@ const scene2Info = {
         { name: 'projectBoard', materialName: 'white' },
         { name: 'sScreen2', materialName: 's2screen' },
         { name: 'sScreen1', materialName: 'screenProject2' },
+        { name: 'sDesk', materialName: 'side' },
         { name: 'sDisk1', materialName: 'scene2mserver' },
         { name: 'sDisk2', materialName: 'scene2mserver' },
         { name: 'sDisk3', materialName: 'scene2mserver' },
@@ -21,9 +25,23 @@ const scene2Info = {
         { name: 'circleServer1', materialName: 'circle' },
         { name: 'circleServer2', materialName: 'circle' },
         { name: 'circleServer3', materialName: 'circle' },
+        { name: 'circleBtn1', materialName: 'circle' },
+        { name: 'circleBtn1', materialName: 'circle' },
+        { name: 'circleBtn2', materialName: 'circle' },
+        { name: 'circleBtn3', materialName: 'circle' },
         { name: 'wire', type: 'group', materialName: ['wire', 'circle'] }
     ],
     'materials': [
+        {
+            name:'side',
+            encoding:false,
+            type:StandardMaterialObj,
+            textures: [
+                { map: 'map', filepath: './texture/Plastic006_1K_Color.jpg' },
+                { map: 'normalMap', filepath: './texture/Plastic006_1K_NormalDX.jpg' },
+                { map: 'metalnessMap', filepath: './texture/Plastic006_1K_Roughness.jpg' }
+            ],
+        },
         {
             name: 'white',
             encoding: false,
@@ -46,6 +64,14 @@ const scene2Info = {
             type: MaterialObj,
             textures: [
                 0xfcf400
+            ],
+        },
+        {
+            name: 'sDisk',
+            encoding: false,
+            type: MaterialObj,
+            textures: [
+                0xffff00
             ],
         },
         {
@@ -109,6 +135,7 @@ const scene2Info = {
 
 const scene1Info = {
     'objFile': './model/scene1.glb',
+    'position': {x:0, y:0, z:0},
     'models': [
         { name: 'outertBoard', materialName: 'outBoarder' },
         { name: 'videoScreen', materialName: 'video' },
@@ -191,12 +218,13 @@ const scene1Info = {
 }
 
 class SceneEnv {
-    constructor(objFile, models, groups, materials) {
+    constructor(objFile, models, groups, materials, position) {
         this.objFile = objFile
         this.root = new THREE.Group()
         this.models = models
         this.groups = groups
         this.materials = materials
+        this.position = position
     }
     mappingMaterial() {
         const models = this['models']
@@ -230,9 +258,7 @@ class SceneEnv {
                     if (model.type !== 'group') {
                         this.settingChildMaterial(root, model.name, model.material)
                     }else{
-                        const wireRe = /wire*/
-                        const wireObjs = root.children.filter(child => wireRe.test(child.name))
-                        this.settingWireMaterial(wireObjs, model.material[0], model.material[1])
+                        this.settingWireMaterial(this.gettingWireObjs(), model.material[0], model.material[1])
                     }
                 })
 
@@ -254,6 +280,7 @@ class SceneEnv {
                 }else{
                     this.root = root
                 }
+                this.root.position.set(this.position.x,this.position.y,this.position.z)
                 scene.add(this.root)
                 // sceneObjects.push(sceneObj.root)
             }
@@ -299,9 +326,27 @@ class SceneEnv {
             }
         })
     }
+    gettingWireObjs(){
+        const wireRe = /wire*/
+        const wireObjs = this.root.children.filter(child => wireRe.test(child.name))
+        return wireObjs
+    }
+    changeCircleMaterial(colorMaterial) {
+        const circles = []
+        circles.push(this.root.children.find((child) => child.name === 'circleBtn1'))
+        circles.push(this.root.children.find((child) => child.name === 'circleBtn2'))
+        circles.push(this.root.children.find((child) => child.name === 'circleBtn3'))
+        circles.push(this.root.children.find((child) => child.name === 'circleBtn4'))
+        circles.push(this.root.children.find((child) => child.name === 'circleBtn5'))
+        circles.push(this.root.children.find((child) => child.name === 'circleServer'))
+        circles.push(this.root.children.find((child) => child.name === 'circleServer1'))
+        circles.push(this.root.children.find((child) => child.name === 'circleServer2'))
+        circles.push(this.root.children.find((child) => child.name === 'circleServer3'))
+        circles.forEach(circle => circle.material = colorMaterial)
+    }
 }
 
-const scene1Obj = new SceneEnv(scene1Info.objFile, scene1Info.models, scene1Info.groups, scene1Info.materials)
-const scene2Obj = new SceneEnv(scene2Info.objFile, scene2Info.models, null, scene2Info.materials)
+const scene1Obj = new SceneEnv(scene1Info.objFile, scene1Info.models, scene1Info.groups, scene1Info.materials, scene1Info.position)
+const scene2Obj = new SceneEnv(scene2Info.objFile, scene2Info.models, null, scene2Info.materials, scene2Info.position)
 
 export { scene2Obj, scene1Obj, THREE, manager, gltfLoader, scene }

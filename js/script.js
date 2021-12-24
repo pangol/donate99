@@ -1,4 +1,3 @@
-
 // import * as THREE from '../lib/three.module.js'
 import { OrbitControls } from '../lib/OrbitControls.js'
 import { scene1Obj, scene2Obj, THREE, manager, gltfLoader, scene } from './SceneEnv.js'
@@ -79,42 +78,11 @@ scene2Obj.makingMaterials()
 scene2Obj.mappingMaterial()
 scene2Obj.loadScene()
 
-let scene2Object = []
-const sceneMoveZindex = 5
-
-const circleMaterial = new THREE.MeshBasicMaterial({ color: 0x7CCAD3 })
-const wireMaterial = new THREE.MeshBasicMaterial({ color: 0xfcf400 })
-const sDiskMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 })
-const witeMaterial = new THREE.MeshBasicMaterial({ color: 0xf0f0f0 })
-
-
-const s2screenTexture1 = new THREE.TextureLoader(manager).load('./texture/project1.png');
-s2screenTexture1.encoding = THREE.sRGBEncoding;
-s2screenTexture1.center.x = 0.5
-s2screenTexture1.center.y = 0.5
-s2screenTexture1.rotation = 3.15
-const s2screenMaterial1 = new THREE.MeshBasicMaterial({ map: s2screenTexture1 })
-
 const testTexture = new THREE.TextureLoader(manager).load('./texture/uv-test-bw.png');
 testTexture.encoding = THREE.sRGBEncoding;
 testTexture.center.x = 0.5
 testTexture.center.y = 0.5
 const testMaterial = new THREE.MeshBasicMaterial({ map: testTexture })
-
-const screenProject2Texture = new THREE.TextureLoader(manager).load('./texture/project2.png');
-screenProject2Texture.encoding = THREE.sRGBEncoding;
-screenProject2Texture.center.x = 0.5
-screenProject2Texture.center.y = 0.5
-// screenProject2Texture.rotation = 3.15
-const screenProject2Material = new THREE.MeshBasicMaterial({ map: screenProject2Texture })
-
-const screendBoardTexture = new THREE.TextureLoader(manager).load('./texture/total_project.png');
-screendBoardTexture.encoding = THREE.sRGBEncoding;
-screendBoardTexture.center.x = 0.5
-screendBoardTexture.center.y = 0.5
-// screendBoardTexture.rotation = 3.15
-const screenBoardMaterial = new THREE.MeshBasicMaterial({ map: screendBoardTexture })
-
 
 const scene2Floor = new THREE.TextureLoader(manager).load('./texture/Metal_Plate_012_basecolor.jpg')
 scene2Floor.encoding = THREE.sRGBEncoding;
@@ -133,93 +101,6 @@ const scene2FloorMaterial = new THREE.MeshStandardMaterial({
     metalnessMap: scene2FloorMm
 })
 
-
-const scene2mserver = new THREE.TextureLoader(manager).load('./texture/Metal_Plate_013_basecolor.jpg')
-scene2mserver.encoding = THREE.sRGBEncoding;
-// scene2mserver.repeat.set(1,1.5)
-scene2mserver.wrapT = THREE.RepeatWrapping;
-scene2mserver.wrapU = THREE.RepeatWrapping;
-const scene2mserverNormal = new THREE.TextureLoader(manager).load('./texture/Metal_Plate_013_normal.jpg')
-const scene2mserverRough = new THREE.TextureLoader(manager).load('./texture/Metal_Plate_013_roughness.jpg')
-const scene2mserverAo = new THREE.TextureLoader(manager).load('./texture/Metal_Plate_013_ambientOcclusion.jpg')
-const scene2mserverMm = new THREE.TextureLoader(manager).load('./texture/Metal_Plate_013_metallic.jpg')
-const scene2mserverMaterial = new THREE.MeshStandardMaterial({
-    map: scene2mserver,
-    normalMap: scene2mserverNormal,
-    roughnessMap: scene2mserverRough,
-    aoMap: scene2mserverAo,
-    metalnessMap: scene2mserverMm
-})
-
-const scene2server = new THREE.TextureLoader(manager).load('./texture/Sci-fi_Pipes_001_basecolor.jpg')
-scene2server.encoding = THREE.sRGBEncoding;
-scene2server.repeat.set(1.5, 1)
-scene2server.wrapT = THREE.RepeatWrapping;
-scene2server.wrapU = THREE.RepeatWrapping;
-const scene2serverNormal = new THREE.TextureLoader(manager).load('./texture/Sci-fi_Pipes_001_normal.jpg')
-const scene2serverRough = new THREE.TextureLoader(manager).load('./texture/Sci-fi_Pipes_001_roughness.jpg')
-const scene2serverAo = new THREE.TextureLoader(manager).load('./texture/Sci-fi_Pipes_001_ambientOcclusion.jpg')
-const scene2serverMm = new THREE.TextureLoader(manager).load('./texture/Sci-fi_Pipes_001_metallic.jpg')
-const scene2serverMaterial = new THREE.MeshStandardMaterial({
-    map: scene2server,
-    normalMap: scene2serverNormal,
-    roughnessMap: scene2serverRough,
-    aoMap: scene2serverAo,
-    metalnessMap: scene2serverMm
-})
-
-
-let wireObjs
-// loadScene2()
-// function loadScene2() {
-//     gltfLoader.load(
-//         './model/scend2_desk_mserver_screen_server_wire.glb',
-//         (gltf) => {
-//             const root = gltf.scene
-//             root.position.set(0, 0, sceneMoveZindex * -1)
-
-//             const s2Desk = root.children.find((child) => child.name === 'sDesk')
-//             s2Desk.material = sideMaterial
-//             changeCircleMaterial(root, circleMaterial)
-
-//             settingChildMaterial(root, 'sMonitor1', witeMaterial)
-//             settingChildMaterial(root, 'sMonitor2', witeMaterial)
-//             settingChildMaterial(root, 'sScreen2', s2screenMaterial1)
-//             settingChildMaterial(root, 'projectBoard', witeMaterial)
-//             settingChildMaterial(root, 'sScreen1', screenProject2Material)
-
-//             settingChildMaterial(root, 'sDisk1', scene2mserverMaterial)
-//             settingChildMaterial(root, 'sDisk2', scene2mserverMaterial)
-//             settingChildMaterial(root, 'sDisk3', scene2mserverMaterial)
-//             settingChildMaterial(root, 'sDisk4', scene2mserverMaterial)
-//             settingChildMaterial(root, 'sDisk5', scene2mserverMaterial)
-//             settingChildMaterial(root, 'sScreenBoard', screenBoardMaterial)
-//             settingChildMaterial(root, 'serverOut', scene2serverMaterial)
-//             settingChildMaterial(root, 'serverIn', scene2mserverMaterial)
-//             settingChildMaterial(root, 'circleServer', circleMaterial)
-//             settingChildMaterial(root, 'circleServer1', circleMaterial)
-//             settingChildMaterial(root, 'circleServer2', circleMaterial)
-//             settingChildMaterial(root, 'circleServer3', circleMaterial)
-
-//             const wireRe = /wire*/
-//             wireObjs = root.children.filter(child => wireRe.test(child.name))
-//             settingWireMaterial(wireObjs, wireMaterial, circleMaterial)
-//             scene.add(root)
-//             scene2Object.push(root)
-//         }
-//     )
-// }
-
-// function settingWireMaterial(objs, firstMaterial, secondMaterial) {
-//     objs.forEach((obj, i) => {
-//         if (i % 2 == 0) {
-//             obj.material = firstMaterial
-//         } else {
-//             obj.material = secondMaterial
-//         }
-//     })
-// }
-
 let mixer
 gltfLoader.load(
     './model/readyPlay_c_r.glb',
@@ -236,26 +117,6 @@ gltfLoader.load(
         action.play();
     }
 )
-
-// function settingChildMaterial(root, objName, material) {
-//     const obj = root.children.find((child) => child.name === objName)
-//     obj.material = material
-// }
-
-function changeCircleMaterial(root, colorMaterial) {
-    const circles = []
-    circles.push(root.children.find((child) => child.name === 'circleBtn1'))
-    circles.push(root.children.find((child) => child.name === 'circleBtn2'))
-    circles.push(root.children.find((child) => child.name === 'circleBtn3'))
-    circles.push(root.children.find((child) => child.name === 'circleBtn4'))
-    circles.push(root.children.find((child) => child.name === 'circleBtn5'))
-    circles.push(root.children.find((child) => child.name === 'circleServer'))
-    circles.push(root.children.find((child) => child.name === 'circleServer1'))
-    circles.push(root.children.find((child) => child.name === 'circleServer2'))
-    circles.push(root.children.find((child) => child.name === 'circleServer3'))
-    circles.forEach(circle => circle.material = colorMaterial)
-}
-
 
 //Lights
 const ambientLight = new THREE.AmbientLight(0xffffff, 1)
@@ -306,15 +167,17 @@ const tick = () => {
     }
 
     //animate scene2
-    if (scene2Object.length > 0) {
-        const scene2root = scene2Object[0]
+    if (scene2Obj.root.children.length > 0) {
+        const circleMaterial = scene2Obj.materials.find( material => material.name === 'circle').obj
+        const sDiskMaterial = scene2Obj.materials.find( material => material.name === 'sDisk').obj
+        const wireMaterial = scene2Obj.materials.find( material => material.name === 'wire').obj
+        
         if (Math.sin(elapsedTime * 4) > 0) {
-            changeCircleMaterial(scene2root, circleMaterial)
-            settingWireMaterial(wireObjs, wireMaterial, circleMaterial)
+            scene2Obj.changeCircleMaterial(circleMaterial)
+            scene2Obj.settingWireMaterial(scene2Obj.gettingWireObjs(), wireMaterial, circleMaterial)
         } else {
-            changeCircleMaterial(scene2root, sDiskMaterial)
-            settingWireMaterial(wireObjs, circleMaterial, wireMaterial)
-
+            scene2Obj.changeCircleMaterial(sDiskMaterial)
+            scene2Obj.settingWireMaterial(scene2Obj.gettingWireObjs(), circleMaterial, wireMaterial)
         }
     }
     if (mixer) mixer.update(delta);
@@ -323,7 +186,6 @@ const tick = () => {
 }
 
 nextSceneBtn.addEventListener('click', function (event) {
-
     const lastState = 1
     if (sceneState != lastState) {
         sceneState++
@@ -332,7 +194,6 @@ nextSceneBtn.addEventListener('click', function (event) {
     } else {
         sceneState = 0
     }
-
 })
 
 beforeSceneBtn.addEventListener('click', function (event) {
