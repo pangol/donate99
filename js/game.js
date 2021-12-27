@@ -14,7 +14,7 @@ class Game {
             width: this.canvas.offsetWidth,
             height: window.innerHeight
         }
-        this.gui = new dat.GUI()
+        // this.gui = new dat.GUI()
         this.sceneMoveZindex = sceneMoveZindex
         this.sceneState = 0
         this.loadingDom = document.getElementById('loading')
@@ -28,7 +28,7 @@ class Game {
     }
     settingLights() {
         this.light = new THREE.AmbientLight(0xffffff, 1)
-        this.gui.add(this.light, 'intensity').min(0).max(5).step(0.001)
+        // this.gui.add(this.light, 'intensity').min(0).max(5).step(0.001)
         this.scene.add(this.light)
     }
     settingLoadingManger() {

@@ -1,10 +1,10 @@
 import {
-    scene1Obj, scene2Obj, THREE, game, phoneObj
+    scene1Obj, scene2Obj, THREE, game, phoneObj, cha1Obj
 } from './SceneEnv.js'
 
 //get Element
 const nextSceneBtn = document.querySelector('#nextSceneBtn')
-const beForeSceneBtn = document.querySelector('#beforeSceneBtn')
+const beforeSceneBtn = document.querySelector('#beforeSceneBtn')
 
 phoneObj.makingMaterials()
 phoneObj.mappingMaterial()
@@ -19,6 +19,8 @@ scene2Obj.makingMaterials()
 scene2Obj.mappingMaterial()
 scene2Obj.loadScene()
 
+cha1Obj.loadModel()
+
 const testTexture = new THREE.TextureLoader(game.manager).load('./texture/uv-test-bw.png');
 testTexture.encoding = THREE.sRGBEncoding;
 testTexture.center.x = 0.5
@@ -26,22 +28,22 @@ testTexture.center.y = 0.5
 const testMaterial = new THREE.MeshBasicMaterial({ map: testTexture })
 
 
-let mixer
-game.gltfLoader.load(
-    './model/readyPlay_c_r.glb',
-    (gltf) => {
-        const root = gltf.scene
-        const clips = gltf.animations;
-        // console.log(clips)
-        root.scale.set(.6, .6, .6)
-        root.rotation.y = Math.PI
-        game.scene.add(root)
+// let mixer
+// game.gltfLoader.load(
+//     './model/readyPlay_c_r.glb',
+//     (gltf) => {
+//         const root = gltf.scene
+//         const clips = gltf.animations;
+//         // console.log(clips)
+//         root.scale.set(.6, .6, .6)
+//         root.rotation.y = Math.PI
+//         game.scene.add(root)
 
-        mixer = new THREE.AnimationMixer(root);
-        const action = mixer.clipAction(clips[0]); // access first animation clip
-        action.play();
-    }
-)
+//         mixer = new THREE.AnimationMixer(root);
+//         const action = mixer.clipAction(clips[0]); // access first animation clip
+//         action.play();
+//     }
+// )
 
 const clock = new THREE.Clock()
 const tick = () => {
@@ -76,7 +78,8 @@ const tick = () => {
             scene2Obj.settingWireMaterial(scene2Obj.gettingWireObjs(), circleMaterial, wireMaterial)
         }
     }
-    if (mixer) mixer.update(delta);
+    if (cha1Obj.mixer) cha1Obj.mixer.update(delta);
+    
     game.renderer.render(game.scene, game.camera)
     window.requestAnimationFrame(tick)
 }
@@ -101,7 +104,6 @@ beforeSceneBtn.addEventListener('click', function (event) {
     } else {
         game.sceneState = 0
     }
-
 })
 
 function changebgColor(state) {
