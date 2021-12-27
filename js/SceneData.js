@@ -61,7 +61,6 @@ const phoneInfo = {
                 { map: 'metalnessMap', filepath: './texture/Metal_Plate_012_metallic.jpg' }
             ]
         }
-
     ]
 }
 

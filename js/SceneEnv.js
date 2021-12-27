@@ -1,4 +1,3 @@
-import { RGB_PVRTC_2BPPV1_Format } from '../lib/three.module.js'
 import { THREE, game } from './game.js'
 import { cha1Info, scene1Info, scene2Info, phoneInfo } from './SceneData.js'
 
@@ -13,7 +12,7 @@ class SceneEnv {
     }
     mappingMaterial() {
         const models = this['models']
-        const materials = this['materials']
+        const materials = game['materials']
         models.forEach((model) => {
 
             if (model.type !== 'group') {
@@ -26,11 +25,6 @@ class SceneEnv {
                     model['material'].push(material['obj'])
                 })
             }
-        })
-    }
-    makingMaterials() {
-        this.materials.forEach(material => {
-            material.type.makingMaterial(material)
         })
     }
     loadScene() {
@@ -132,7 +126,7 @@ class SceneEnv {
     cachingMaterial(names) {
         this.cacheMaterial = []
         names.forEach(name => {
-            this.cacheMaterial.push(this.materials.find(material => material.name === name).obj)
+            this.cacheMaterial.push(game.materials.find(material => material.name === name).obj)
         })
     }
 }
@@ -148,6 +142,7 @@ class simpleModel {
         this.clips = null
         this.mixer = null
         this.action = null
+        this.root = null
     }
     loadModel() {
         game.gltfLoader.load(
@@ -163,6 +158,7 @@ class simpleModel {
                 this.mixer = new THREE.AnimationMixer(root);
                 this.action = this.mixer.clipAction(this.clips[0]); // access first animation clip
                 this.action.play();
+                this.root = root
             })
     }
 }
