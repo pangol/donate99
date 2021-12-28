@@ -50,11 +50,12 @@ h1{
     outline:0;
     width:0;
     height: 10%;
-    background-color: black;
+    background-color: #3d3d3d;
     text-align: center;
     color:white;
     z-index: 100;
 }
+
 #loading p{
     padding-top: 10px;
 }
@@ -66,15 +67,26 @@ h1{
 }
 
 .header{
-    margin: 20px 0;
-    margin-left: -70px;
+    margin: 0 20px 20px -70px;
     background-color: white;
     padding: 20px;
     box-shadow: 10px 10px rgba(255, 192, 203, .9);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .header p {
     text-shadow: #ffc0c0 1px 0px 10px;
+}
+
+.stage{
+    display: none;
+}
+
+.stage01{
+    display: block;
 }
 
 #info{
@@ -90,6 +102,57 @@ h1{
 }
 
 .sceneBtn{
-    border: 1px solid black;
+    border: 0px;
+    background-color: transparent;
     padding:20px;
+}
+
+.sceneBtn:hover{
+    cursor: pointer;
+    background-color: #3d3d3d;
+    color: white;
+}
+
+.link_container{
+    padding-top: 5px;
+    border-top: 1px solid #3d3d3d;
+}
+
+.link_container p {
+    margin-top: 1rem;
+}
+.org-text{
+    font-weight: bolder;
+}
+
+.donation a{
+    padding: .5rem;
+    border-radius: 5px;
+    text-decoration: none;
+    background-color: #3d3d3d;
+    color:white;
+}
+
+.donation a:hover{
+    background-color: white;
+    border:1px solid #3d3d3d;
+    color:#3d3d3d;
+}
+
+.copyright{
+    position: fixed;
+    bottom:0px;
+    right:0px;
+}
+
+.copyright p{
+    margin-top:0;
+}
+
+.copyright:hover .copyright-text{
+    display: block;
+}
+
+.copyright-text{
+    display: none;
 }
