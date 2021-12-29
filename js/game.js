@@ -63,8 +63,8 @@ class Game {
     settingResize() {
         window.addEventListener('resize', () => {
             const canvas = document.querySelector('canvas.webgl')
-            canvas.style.width = window.innerWidth * 70 / 100
-            this.sizes.width = window.innerWidth * 70 / 100
+            canvas.style.width = window.innerWidth * 60 / 100
+            this.sizes.width = window.innerWidth * 60 / 100
             this.sizes.height = window.innerHeight
 
             this.camera.aspect = this.sizes.width / this.sizes.height
