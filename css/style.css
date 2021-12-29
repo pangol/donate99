@@ -28,7 +28,7 @@ h1{
 }
 
 .webgl{
-    width:70%;
+    width:60%;
     position: absolute;
     top:0;
     left:0;
@@ -38,9 +38,9 @@ h1{
 
 .contents{
     position: absolute;
-    width:30%;
+    /* width:40%; */
     top:0;
-    left:70%;
+    left:60%;
 }
 
 #loading{
@@ -85,7 +85,7 @@ h1{
     display: none;
 }
 
-.stage01{
+.stage00{
     display: block;
 }
 
@@ -121,8 +121,12 @@ h1{
 .link_container p {
     margin-top: 1rem;
 }
-.org-text{
+
+.org-text, .org-title{
     font-weight: bolder;
+}
+.link_container .org-text{
+    margin-top: .5rem;
 }
 
 .donation a{
@@ -155,4 +159,15 @@ h1{
 
 .copyright-text{
     display: none;
+}
+
+.stage-project{
+    border:1px solid black;
+    margin-top: 5px;
+    padding: 5px;
+    font-size:1rem;
+}
+
+.project-description{
+    font-size:.8em;
 }

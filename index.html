@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="kr">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <title>구구컬리지 후원하기</title>
 </head>
+
 <body>
     <canvas class="webgl"></canvas>
     <video id="video" loop muted crossOrigin="anonymous" playsinline style="display:none">
@@ -24,29 +26,59 @@
         <div class="container">
             <div class="header">
                 <button class="sceneBtn" id="beforeSceneBtn"><</button>
-                <div class="header-text stage stage01">
-                    <h1>온라인 학습 플랫폼</h1>
-                </div>
-                <div class="header-text stage stage02">
-                    <h1>주요 프로젝트 소개</h1>
-                </div>
-                <div class="header-text stage stage03">
-                    <h1>후원자분들의 이야기</h1>
-                </div>
-                <button class="sceneBtn" id="nextSceneBtn">></button>
+                        <div class="header-text stage stage00">
+                            <h1>온라인 학습 플랫폼</h1>
+                        </div>
+                        <div class="header-text stage stage01">
+                            <h1>주요 프로젝트 소개</h1>
+                        </div>
+                        <div class="header-text stage stage02">
+                            <h1>후원자분들의 이야기</h1>
+                        </div>
+                        <button class="sceneBtn" id="nextSceneBtn">></button>
             </div>
             <div class="description">
-                <div class="stage01">
+                <div class="stage stage00">
                     <p>구구컬리지에서는 누구든, 언제든 학습할 수 있게 강의를 무료로 온라인 사이트에서 제공하고 있습니다.
-                    <a href="https://99college.org">구구컬리지 사이트</a>를 방문하셔서 학습을 시작해보세요</p>
+                        <a href="https://99college.org">구구컬리지 사이트</a>를 방문하셔서 학습을 시작해보세요
+                    </p>
+                    <br>
+                    <p>강의 영상 뿐만 아니라 문제를 풀어보면서 이해도를 스스로 체크해볼 수 있습니다.</p>
+                </div>
+                <div class="stage stage01">
+                    <div class="stage-project">
+                        <h4 class="project-title">ㄱㅈㄱㅅ</p>
+                        <p class="project-description">
+                            검정고시를 준비하시는 분들이 시간과 돈에 구애받지 않고 학습을 진행할 수 있는
+                            검정고시 기출문제 풀이 어플리케이션입니다. 안드로이드, 웹에서 실행할 수 있습니다.
+                            <a href="">자세히보기</a>
+                        </p>
+                    </div>
+                    <div class="stage-project">
+                        <h4 class="project-title">CMS99</p>
+                        <p class="project-description">
+                            비영리단체 정기이체 자동화 솔루션입니다. 정기후원을 받을 때 필요한 후원자 입력 작성과
+                            서명 절차를 웹, URL을 통해 진행할 수 있고 입력받은 정보를 통해 자동으로 정기후원서명 파일을 생성합니다.
+                            오픈소스로 누구든 참여해서 개선할 수 있습니다.
+                            <a href="">자세히보기</a>
+                        </p>
+                    </div>
+                </div>
+                <div class="stage stage02">
+                    <p>구구컬리지에서는 누구든, 언제든 학습할 수 있게 강의를 무료로 온라인 사이트에서 제공하고 있습니다.
+                        <a href="https://99college.org">구구컬리지 사이트</a>를 방문하셔서 학습을 시작해보세요
+                    </p>
                     <br>
                     <p>강의 영상 뿐만 아니라 문제를 풀어보면서 이해도를 스스로 체크해볼 수 있습니다.</p>
                 </div>
             </div>
             <br>
             <div class="link_container">
-                <p class="org-text">99%를 위한 교육 - 구구컬리지</p>
-                <p class="donation"><a href="https://secure.donus.org/99college/pay/step1?utm_source=99college&utm_medium=page&utm_campaign=99college_donation_page&utm_id=donation_first_page&utm_term=99college_to_donation&utm_content=99college+donation+page">후원하기</a></p>
+                <p class="org-title">99%를 위한 교육 - 구구컬리지</p>
+                <p class="org-text">후원을 통해 지속적인 활동을 할 수 있게 응원해주세요!</p>
+                <p class="donation"><a
+                        href="https://secure.donus.org/99college/pay/step1?utm_source=99college&utm_medium=page&utm_campaign=99college_donation_page&utm_id=donation_first_page&utm_term=99college_to_donation&utm_content=99college+donation+page">후원하기</a>
+                </p>
                 <div class="copyright">
                     <p>저작권</p>
                     <p class="copyright-text">texture reference</p>
@@ -58,4 +90,5 @@
     <script src="lib/datGui.js"></script>
     <script type="module" src="./js/script.js"></script>
 </body>
+
 </html>

@@ -69,6 +69,7 @@ nextSceneBtn.addEventListener('click', function (event) {
     if (game.sceneState != lastState) {
         game.sceneState++
         changebgColor(game.sceneState)
+        changeUI(game.sceneState)
         changeSceneOnePosition('next')
     } else {
         game.sceneState = 1
@@ -80,16 +81,33 @@ beforeSceneBtn.addEventListener('click', function (event) {
     if (game.sceneState != firstState) {
         game.sceneState--
         changebgColor(game.sceneState)
+        changeUI(game.sceneState)
         changeSceneOnePosition('before')
     } else {
         game.sceneState = 0
     }
 })
 
+function changeUI(state){
+    const stageDoms = document.querySelectorAll('.stage')
+    stageDoms.forEach( dom => {
+        dom.style.display = 'none'
+    })
+    let blockDoms = null
+    if( state === 1){
+        blockDoms = document.querySelectorAll('.stage01')
+    }else{
+        blockDoms = document.querySelectorAll('.stage00')
+    }
+    blockDoms.forEach( dom => {
+        dom.style.display = 'block'
+    })
+}
+
 function changebgColor(state) {
     const duration = 2
     const frontObj = phoneObj.root.children.find( child => child.name == 'front')
-    if (state == 1) {
+    if (state === 1) {
         gsap.to('#info', { duration: duration, delay: 0, backgroundColor: '#64c1cb' })
         gsap.to('.webgl', { duration: duration, delay: 0, backgroundImage: 'linear-gradient(to right, rgba(100, 192, 203, 1) 40%, rgba(100, 192, 203, .8))' })
         gsap.to('.header', { duration: duration, delay: 0, boxShadow: '10px 10px rgb(100 192 203 / 90%)' })
