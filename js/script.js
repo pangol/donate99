@@ -71,6 +71,7 @@ nextSceneBtn.addEventListener('click', function (event) {
         changebgColor(game.sceneState)
         changeUI(game.sceneState)
         changeSceneOnePosition('next')
+        changeChaStageAnimation(game.sceneState)
     } else {
         game.sceneState = 1
     }
@@ -83,10 +84,39 @@ beforeSceneBtn.addEventListener('click', function (event) {
         changebgColor(game.sceneState)
         changeUI(game.sceneState)
         changeSceneOnePosition('before')
+        changeChaStageAnimation(game.sceneState)
     } else {
         game.sceneState = 0
     }
 })
+
+function changeChaStageAnimation(state){
+    if( state === 1){
+        changeAnimation(cha1Obj, 2)
+        gsap.to(cha1Obj.root.position, { duration: 2, delay: 0, z: cha1Obj.root.position.z - 1 })
+        gsap.to(cha1Obj.root.rotation, { duration: 0, delay: 2, y: Math.PI/-2})
+        gsap.to(cha1Obj.root.position, { duration: 2, delay: 2, x: cha1Obj.root.position.x - .5,
+            onComplete: () => {
+                changeAnimation(cha1Obj, 0)
+            }
+        })
+    }else{
+        changeAnimation(cha1Obj, 2)
+        gsap.to(cha1Obj.root.rotation, { duration: 0, delay: 0, y: Math.PI/2})
+        gsap.to(cha1Obj.root.position, { duration: 2, delay: 0, x: 0})
+        gsap.to(cha1Obj.root.rotation, { duration: 0, delay: 2, y: Math.PI * 2})
+        gsap.to(cha1Obj.root.position, { duration: 2, delay: 2, z: 0})
+        gsap.to(cha1Obj.root.rotation, { duration: 0, delay: 4, y: Math.PI, onComplete: ()=>{
+            changeAnimation(cha1Obj, 0)
+        }})
+    }
+}
+
+function changeAnimation(character,index){
+    character.action.stop()
+    character.action = character.mixer.clipAction(character.clips[index]);
+    character.action.play()
+}
 
 function changeUI(state){
     const stageDoms = document.querySelectorAll('.stage')
