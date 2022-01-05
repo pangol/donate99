@@ -1,5 +1,5 @@
 import {
-    scene1Obj, scene2Obj, THREE, game, phoneObj, cha1Obj
+    scene1Obj, scene2Obj, THREE, game, phoneObj, cha1Obj, scene3d1Obj, scene3d2Obj, scene3d3Obj
 } from './SceneEnv.js'
 
 //get Element
@@ -18,6 +18,9 @@ scene2Obj.mappingMaterial()
 scene2Obj.loadScene()
 
 cha1Obj.loadModel()
+scene3d1Obj.loadModel()
+scene3d2Obj.loadModel()
+scene3d3Obj.loadModel()
 
 const testTexture = new THREE.TextureLoader(game.manager).load('./texture/uv-test-bw.png');
 testTexture.encoding = THREE.sRGBEncoding;
@@ -59,6 +62,9 @@ const tick = () => {
         }
     }
     if (cha1Obj.mixer) cha1Obj.mixer.update(delta);
+    if (scene3d1Obj.mixer) scene3d1Obj.mixer.update(delta)
+    if (scene3d2Obj.mixer) scene3d2Obj.mixer.update(delta)
+    if (scene3d3Obj.mixer) scene3d3Obj.mixer.update(delta)
     
     game.renderer.render(game.scene, game.camera)
     window.requestAnimationFrame(tick)

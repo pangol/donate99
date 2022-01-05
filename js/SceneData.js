@@ -2,6 +2,29 @@ import * as THREE from '../lib/three.module.js'
 import { MaterialObj, VideoMaterialObj, BasicMaterialObj, StandardMaterialObj } from './MaterialObj.js'
 import { game } from './game.js'
 
+const scene3d3Info = {
+    position: {x:0,y:0, z:0},
+    objFile: './model/scene3_d3.glb',
+    rotation: [null, null, null],
+    scale:[.6,.6,.6],
+    animationIndex:0
+}
+
+const scene3d2Info = {
+    position: {x:0,y:0, z:0},
+    objFile: './model/scene3_d2.glb',
+    rotation: [null, null, null],
+    scale:[.6,.6,.6],
+    animationIndex:0
+}
+const scene3d1Info = {
+    position: {x:0,y:0, z:0},
+    objFile: './model/scene3_d1.glb',
+    rotation: [null, null, null],
+    scale:[.6,.6,.6],
+    animationIndex:0
+}
+
 const cha1Info = {
     position: {x:0,y:0, z:0},
     objFile: './model/readyPlay_c_r.glb',
@@ -278,4 +301,4 @@ const scene1Info = {
     ]
 }
 
-export { scene1Info, scene2Info, phoneInfo, cha1Info }
+export { scene1Info, scene2Info, phoneInfo, cha1Info, scene3d1Info, scene3d2Info, scene3d3Info }

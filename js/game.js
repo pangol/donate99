@@ -41,7 +41,7 @@ class Game {
             console.log('Loading complete!')
         };
         this.manager.onProgress = function (url, itemsLoaded, itemsTotal) {
-            game.loadingDom.style.width = (itemsLoaded / itemsTotal) * 70 + '%'
+            game.loadingDom.style.width = (itemsLoaded / itemsTotal) * 60 + '%'
         };
         this.manager.onError = function (url) {
             console.log('There was an error loading ' + url);
