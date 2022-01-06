@@ -172,3 +172,14 @@ h1{
     font-size:1em;
     font-weight: normal;
 }
+
+.game_say{
+    position: absolute;
+    font-size:.5em;
+    top: 10;
+    left:10;
+    background-color: transparent;
+    border:1px solid white;
+    border-radius: 5px;
+    padding: 2px;
+}

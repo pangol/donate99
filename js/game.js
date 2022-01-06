@@ -23,7 +23,7 @@ class Game {
         this.camera = new THREE.PerspectiveCamera(75, this.sizes.width / this.sizes.height)
         this.camera.position.z = 1
         this.camera.position.x = 2
-        this.camera.position.y = 3
+        this.camera.position.y = 3.5
         this.scene.add(this.camera)
     }
     settingLights() {

@@ -19,6 +19,7 @@ scene2Obj.loadScene()
 
 cha1Obj.loadModel()
 scene3d1Obj.loadModel()
+
 scene3d2Obj.loadModel()
 scene3d3Obj.loadModel()
 

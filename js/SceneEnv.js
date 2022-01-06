@@ -152,7 +152,7 @@ class simpleModel {
                 root.position.set(this.position.x, this.position.y, this.position.z)
                 this.clips = gltf.animations;
 
-                root.scale.set(this.scale[0],this.scale[1],this.scale[2])
+                root.scale.set(this.scale[0], this.scale[1], this.scale[2])
                 root.rotation.y = this.rotation[1]
                 game.scene.add(root)
 
@@ -164,27 +164,9 @@ class simpleModel {
     }
 }
 
-class animationModel extends simpleModel{
-    constructor(objFile, position, rotation, scale, animationIndex){
+class animationModel extends simpleModel {
+    constructor(objFile, position, rotation, scale, animationIndex) {
         super(objFile, position, rotation, scale, animationIndex)
-    }
-    loadModel(){
-        game.gltfLoader.load(
-            this.objFile,
-            (gltf) => {
-                const root = gltf.scene
-                root.position.set(this.position.x, this.position.y, this.position.z)
-                this.clips = gltf.animations;
-                root.scale.set(this.scale[0],this.scale[1],this.scale[2])
-                root.rotation.y = this.rotation[1]
-
-                game.scene.add(root)
-
-                this.mixer = new THREE.AnimationMixer(root);
-                this.action = this.mixer.clipAction(this.clips[0]); // access first animation clip
-                this.action.play();
-                this.root = root
-            })
     }
 }
 
@@ -192,9 +174,9 @@ const scene1Obj = new SceneEnv(scene1Info.objFile, scene1Info.models, scene1Info
 const scene2Obj = new SceneEnv(scene2Info.objFile, scene2Info.models, null, scene2Info.materials, scene2Info.position)
 const phoneObj = new SceneEnv(phoneInfo.objFile, phoneInfo.models, null, phoneInfo.materials, phoneInfo.position)
 const cha1Obj = new simpleModel(cha1Info.objFile, cha1Info.position, cha1Info.rotation, cha1Info.scale, cha1Info.animationIndex)
-const scene3d1Obj = new simpleModel(scene3d1Info.objFile, scene3d1Info.position, scene3d1Info.rotation, scene3d1Info.scale, scene3d1Info.animationIndex)
-const scene3d2Obj = new simpleModel(scene3d2Info.objFile, scene3d2Info.position, scene3d2Info.rotation, scene3d2Info.scale, scene3d2Info.animationIndex)
-const scene3d3Obj = new simpleModel(scene3d3Info.objFile, scene3d3Info.position, scene3d3Info.rotation, scene3d3Info.scale, scene3d3Info.animationIndex)
+const scene3d1Obj = new animationModel(scene3d1Info.objFile, scene3d1Info.position, scene3d1Info.rotation, scene3d1Info.scale, scene3d1Info.animationIndex)
+const scene3d2Obj = new animationModel(scene3d2Info.objFile, scene3d2Info.position, scene3d2Info.rotation, scene3d2Info.scale, scene3d2Info.animationIndex)
+const scene3d3Obj = new animationModel(scene3d3Info.objFile, scene3d3Info.position, scene3d3Info.rotation, scene3d3Info.scale, scene3d3Info.animationIndex)
 
 
-export { scene3d3Obj, scene3d2Obj,scene3d1Obj, cha1Obj, scene2Obj, scene1Obj, phoneObj, THREE, game }
+export { scene3d3Obj, scene3d2Obj, scene3d1Obj, cha1Obj, scene2Obj, scene1Obj, phoneObj, THREE, game }
