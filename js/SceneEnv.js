@@ -212,8 +212,7 @@ class MakeScene {
             model.loadModel()
         })
     }
-    changePosition() {
-    }
+   
 }
 
 const scene1Obj = new SceneEnv(scene1Info.objFile, scene1Info.models, scene1Info.groups, scene1Info.materials, scene1Info.position)

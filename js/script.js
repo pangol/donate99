@@ -70,7 +70,7 @@ const tick = () => {
 }
 
 nextSceneBtn.addEventListener('click', function (event) {
-    const lastState = 1
+    const lastState = 2
     if (game.sceneState != lastState) {
         game.sceneState++
         changebgColor(game.sceneState)
@@ -78,7 +78,7 @@ nextSceneBtn.addEventListener('click', function (event) {
         changeSceneOnePosition('next')
         changeChaStageAnimation(game.sceneState)
     } else {
-        game.sceneState = 1
+        game.sceneState = 2
     }
 })
 
@@ -96,7 +96,16 @@ beforeSceneBtn.addEventListener('click', function (event) {
 })
 
 function changeChaStageAnimation(state){
-    if( state === 1){
+    if( state === 2){
+        changeAnimation(cha1Obj, 2)
+        gsap.to(cha1Obj.root.rotation, { duration: 0, delay: 0, y: Math.PI/2})
+        gsap.to(cha1Obj.root.position, { duration: 2, delay: 0, x: 0})
+        gsap.to(cha1Obj.root.rotation, { duration: 0, delay: 2, y: Math.PI * 2})
+        gsap.to(cha1Obj.root.position, { duration: 2, delay: 2, z: 0})
+        gsap.to(cha1Obj.root.rotation, { duration: 0, delay: 4, y: 0, onComplete: ()=>{
+            changeAnimation(cha1Obj, 1)
+        }})
+    }else if( state === 1){
         changeAnimation(cha1Obj, 2)
         gsap.to(cha1Obj.root.position, { duration: 2, delay: 0, z: cha1Obj.root.position.z - 1 })
         gsap.to(cha1Obj.root.rotation, { duration: 0, delay: 2, y: Math.PI/-2})
@@ -129,7 +138,9 @@ function changeUI(state){
         dom.style.display = 'none'
     })
     let blockDoms = null
-    if( state === 1){
+    if( state === 2){
+        blockDoms = document.querySelectorAll('.stage02')
+    }else if( state === 1){
         blockDoms = document.querySelectorAll('.stage01')
     }else{
         blockDoms = document.querySelectorAll('.stage00')
@@ -163,6 +174,9 @@ function changeSceneOnePosition(direction) {
     }
     gsap.to(scene1Obj.root.position, { duration: duration, delay: 0, z: scene1Obj.root.position.z + zIndex })
     gsap.to(scene2Obj.root.position, { duration: duration, delay: 0, z: scene2Obj.root.position.z + zIndex })
+    scene3Obj.modelInfo.forEach( model => {
+        gsap.to(model.root.position, {duration: duration, delay:0, z: model.root.position.z + zIndex})
+    })
 }
 
 tick()
