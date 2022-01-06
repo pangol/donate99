@@ -1,5 +1,16 @@
-import { THREE, game } from './game.js'
-import { cha1Info, scene1Info, scene2Info, phoneInfo, scene3d1Info, scene3d2Info, scene3d3Info } from './SceneData.js'
+import {
+    THREE,
+    game
+} from './game.js'
+import {
+    cha1Info,
+    scene1Info,
+    scene2Info,
+    phoneInfo,
+    scene3d1Info,
+    scene3d2Info,
+    scene3d3Info
+} from './SceneData.js'
 
 class SceneEnv {
     constructor(objFile, models, groups, materials, position) {
@@ -132,7 +143,7 @@ class SceneEnv {
 }
 
 
-class simpleModel {
+class SimpleModel {
     constructor(objFile, position, rotation, scale, animationIndex) {
         this.objFile = objFile
         this.position = position
@@ -164,19 +175,64 @@ class simpleModel {
     }
 }
 
-class animationModel extends simpleModel {
-    constructor(objFile, position, rotation, scale, animationIndex) {
+class CompositionModel extends SimpleModel{
+    constructor(objFile, position, rotation, scale, animationIndex){
         super(objFile, position, rotation, scale, animationIndex)
+    }
+    loadModel(){
+        game.gltfLoader.load(
+            this.objFile,
+            (gltf) => {
+                const root = gltf.scene
+                this.clips = gltf.animations;
+
+                root.scale.set(this.scale[0], this.scale[1], this.scale[2])
+                root.rotation.y = this.rotation[1]
+                game.scene.add(root)
+
+                this.mixer = new THREE.AnimationMixer(root);
+                this.action = this.mixer.clipAction(this.clips[0]); // access first animation clip
+                this.action.play();
+                this.root = root
+                this.changePosition()
+            })
+    }
+    changePosition(){
+        this.root.position.set(this.position.x, this.position.y, this.position.z)
+    }
+}
+
+class MakeScene {
+    constructor(modelInfo, position) {
+        this.modelInfo = modelInfo
+        this.position = position
+    }
+    makeScene() {
+        this.modelInfo.forEach (model => {
+            model.loadModel()
+        })
+    }
+    changePosition() {
     }
 }
 
 const scene1Obj = new SceneEnv(scene1Info.objFile, scene1Info.models, scene1Info.groups, scene1Info.materials, scene1Info.position)
 const scene2Obj = new SceneEnv(scene2Info.objFile, scene2Info.models, null, scene2Info.materials, scene2Info.position)
 const phoneObj = new SceneEnv(phoneInfo.objFile, phoneInfo.models, null, phoneInfo.materials, phoneInfo.position)
-const cha1Obj = new simpleModel(cha1Info.objFile, cha1Info.position, cha1Info.rotation, cha1Info.scale, cha1Info.animationIndex)
-const scene3d1Obj = new animationModel(scene3d1Info.objFile, scene3d1Info.position, scene3d1Info.rotation, scene3d1Info.scale, scene3d1Info.animationIndex)
-const scene3d2Obj = new animationModel(scene3d2Info.objFile, scene3d2Info.position, scene3d2Info.rotation, scene3d2Info.scale, scene3d2Info.animationIndex)
-const scene3d3Obj = new animationModel(scene3d3Info.objFile, scene3d3Info.position, scene3d3Info.rotation, scene3d3Info.scale, scene3d3Info.animationIndex)
+const cha1Obj = new SimpleModel(cha1Info.objFile, cha1Info.position, cha1Info.rotation, cha1Info.scale, cha1Info.animationIndex)
+const scene3d1Obj = new CompositionModel(scene3d1Info.objFile, scene3d1Info.position, scene3d1Info.rotation, scene3d1Info.scale, scene3d1Info.animationIndex)
+const scene3d2Obj = new CompositionModel(scene3d2Info.objFile, scene3d2Info.position, scene3d2Info.rotation, scene3d2Info.scale, scene3d2Info.animationIndex)
+const scene3d3Obj = new CompositionModel(scene3d3Info.objFile, scene3d3Info.position, scene3d3Info.rotation, scene3d3Info.scale, scene3d3Info.animationIndex)
+const scene3Obj = new MakeScene([
+    scene3d1Obj, scene3d2Obj, scene3d3Obj
+])
 
-
-export { scene3d3Obj, scene3d2Obj, scene3d1Obj, cha1Obj, scene2Obj, scene1Obj, phoneObj, THREE, game }
+export {
+    scene3Obj,
+    cha1Obj,
+    scene2Obj,
+    scene1Obj,
+    phoneObj,
+    THREE,
+    game
+}

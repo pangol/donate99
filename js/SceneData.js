@@ -3,7 +3,7 @@ import { MaterialObj, VideoMaterialObj, BasicMaterialObj, StandardMaterialObj } 
 import { game } from './game.js'
 
 const scene3d3Info = {
-    position: {x:0,y:0, z:0},
+    position: {x:0,y:0, z:game.sceneMoveZindex * -2},
     objFile: './model/scene3_d3.glb',
     rotation: [null, null, null],
     scale:[.6,.6,.6],
@@ -11,14 +11,14 @@ const scene3d3Info = {
 }
 
 const scene3d2Info = {
-    position: {x:0,y:0, z:0},
+    position: {x:0,y:0, z:game.sceneMoveZindex * -2},
     objFile: './model/scene3_d2.glb',
     rotation: [null, null, null],
     scale:[.6,.6,.6],
     animationIndex:0
 }
 const scene3d1Info = {
-    position: {x:0,y:0, z:0},
+    position: {x:0,y:0, z:game.sceneMoveZindex * -2},
     objFile: './model/scene3_d1.glb',
     rotation: [null, null, null],
     scale:[.6,.6,.6],
