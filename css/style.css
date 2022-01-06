@@ -172,3 +172,26 @@ h1{
     font-size:1em;
     font-weight: normal;
 }
+
+.donation_people{
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #3d3d3d;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.donation_people img{
+    border-radius: 100%;
+    width: 70px;
+    height: 70px;
+}
+
+.donation_people p {
+    margin-left: 15px;
+}
+
+.donation_say{
+    font-size: 1em;
+}
