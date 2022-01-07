@@ -17,11 +17,6 @@
     font-family: 'GmarketSansMedium';
 }
 
-html,
-body{
-    overflow: hidden;
-}
-
 h1{
     font-size:1.5rem;
     font-family: 'GmarketSansBold';
@@ -89,6 +84,10 @@ h1{
     display: block;
 }
 
+.description{
+    font-size:1em;
+}
+
 #info{
     position: fixed;
     top: 10px; left:10px;
@@ -114,39 +113,45 @@ h1{
 }
 
 .link_container{
-    padding-top: 5px;
-    border-top: 1px solid #3d3d3d;
+    border:1px solid #3d3d3d;
+    position: fixed;
+    bottom:0;
+    width: 100%;
+    padding: 10px;
+    color:#3d3d3d;
+    font-size: 1em;
 }
 
 .link_container p {
-    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.org-text, .org-title{
-    font-weight: bolder;
-}
-.link_container .org-text{
-    margin-top: .5rem;
-}
-
-.donation a{
-    padding: .5rem;
+.link_container a{
+    margin-left:1em;
+    padding:8px;
+    padding-bottom: 7px;
+    border: 1px solid #3d3d3d;
     border-radius: 5px;
     text-decoration: none;
-    background-color: #3d3d3d;
-    color:white;
+    background-color: #fdfdfd;
+    color:#3d3d3d;
 }
 
-.donation a:hover{
-    background-color: white;
+.link_container a:hover{
+    background-color: #3d3d3d;
     border:1px solid #3d3d3d;
-    color:#3d3d3d;
+    color: #fdfdfd;
 }
 
 .copyright{
     position: fixed;
+    background-color: #fdfdfd;
+    color:#3d3d3d;
     bottom:0px;
     right:0px;
+    font-size:.8em;
 }
 
 .copyright p{
@@ -194,4 +199,67 @@ h1{
 
 .donation_say{
     font-size: 1em;
+}
+
+.profile_img{
+    font-size:0px;
+}
+
+@media screen and (max-width: 1200px) {
+    h1{
+        font-size: 1.3em;
+    }
+    .header{
+        padding: 10px;
+    }
+    .donation_people img{
+        width: 50px;
+        height: 50px;
+    }
+    .donation_people{
+        padding: 3px;
+    }
+    .donation_say{
+        font-size: .8em;
+    }
+    .stage-project{
+        font-size: .8em;
+    }
+}
+
+@media screen and (max-width: 768px){
+    h1{
+        font-size: 1em;
+    }
+    .header{
+        padding: 5px;
+    }
+    .description{
+        font-size:.8em;
+    }
+    .donation_people{
+        padding: 5px;
+    }
+    .donation_people img{
+        width: 30px;
+        height: 30px;
+    }
+    .donation_say{
+        font-size: .8em;
+    }
+    .link_container p{
+        display: block;
+    }
+    .stage-project{
+        font-size: .5em;
+    }
+    #info{
+        font-size: .3em;
+    }
+}
+
+@media screen and (max-width: 360px){
+    #info{
+        display: none;
+    }
 }
