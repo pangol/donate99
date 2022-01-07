@@ -45,14 +45,14 @@ h1{
     outline:0;
     width:0;
     height: 10%;
-    background-color: #3d3d3d;
+    background-color: #dcaea0;
     text-align: center;
     color:white;
     z-index: 100;
 }
 
 #loading p{
-    padding-top: 10px;
+    padding-top: 20px;
 }
 
 .container{
