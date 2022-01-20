@@ -205,6 +205,23 @@ h1{
     font-size:0px;
 }
 
+.donation_Btn{
+    position: fixed;
+    top: 100px;
+    left: 10px;
+    border:1px solid #fdfdfd;
+    padding: 10px;
+    border-radius: 3px;
+    color:#fdfdfd;
+    text-decoration: none;
+    font-size: .8rem;
+}
+
+.donation_Btn:hover{
+    color:#ffc0c0;
+    background-color: #fdfdfd;
+}
+
 @media screen and (max-width: 1200px) {
     h1{
         font-size: 1.3em;
@@ -226,6 +243,7 @@ h1{
         font-size: .8em;
     }
 }
+
 
 @media screen and (max-width: 768px){
     h1{
@@ -253,13 +271,16 @@ h1{
     .stage-project{
         font-size: .5em;
     }
-    #info{
+    #info, .donation_Btn{
         font-size: .3em;
     }
 }
+
+
 
 @media screen and (max-width: 360px){
     #info{
         display: none;
     }
+
 }
